@@ -12,13 +12,13 @@ export default function PanelControlGlobal() {
               <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
               <input className="w-full bg-slate-50 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#1A4F8B]/20" placeholder="Buscar ayuda, envíos o reportes..." type="text"/>
             </div>
-            <button className="sm:hidden text-slate-500">
+            <button className="sm:hidden text-slate-500" onClick={() => alert('Abriendo búsqueda móvil...')}>
               <span className="material-symbols-outlined notranslate">search</span>
             </button>
           </div>
           <div className="flex items-center gap-3 md:gap-6">
             <div className="flex items-center gap-2 md:gap-4">
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80">
+              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80" onClick={() => alert('Mostrando notificaciones...')}>
                 <span className="material-symbols-outlined notranslate">notifications</span>
               </button>
             </div>
@@ -106,7 +106,7 @@ export default function PanelControlGlobal() {
                 </div>
                 <div className="p-4 bg-slate-50 flex justify-between items-center px-6">
                   <p className="text-xs text-slate-500">Última actualización: hace 4 minutos</p>
-                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline">
+                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline" onClick={() => alert('Navegando al mapa completo...')}>
                     Ver Mapa Completo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
                   </button>
                 </div>
@@ -114,7 +114,7 @@ export default function PanelControlGlobal() {
               <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100 flex justify-between items-center">
                   <h4 className="font-headline-md text-headline-md">Flujo de Actividad</h4>
-                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">Filtrar</button>
+                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full" onClick={() => alert('Abriendo filtros...')}>Filtrar</button>
                 </div>
                 <div className="p-6">
                   <div className="relative space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
@@ -204,7 +204,7 @@ export default function PanelControlGlobal() {
                       <div className="h-full bg-purple-600 rounded-full" style={{ width: '28%' }}></div>
                     </div>
                   </div>
-                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors">Ver Detalles de Inventario</button>
+                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors" onClick={() => alert('Cargando detalles de inventario...')}>Ver Detalles de Inventario</button>
                 </div>
               </div>
               <div className="bg-primary-container rounded-xl p-6 text-white relative overflow-hidden">
@@ -213,7 +213,7 @@ export default function PanelControlGlobal() {
                   <span className="material-symbols-outlined text-3xl mb-4" data-icon="volunteer_activism">volunteer_activism</span>
                   <h4 className="text-lg font-bold mb-2">Impulsa una Campaña</h4>
                   <p className="text-blue-100 text-sm mb-6 leading-relaxed">Las necesidades de Refugio han aumentado un 15% esta semana. Crea una nueva campaña de recaudación focalizada.</p>
-                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors">Iniciar Campaña</button>
+                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors" onClick={() => alert('Iniciando nueva campaña...')}>Iniciar Campaña</button>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function PanelControlGlobal() {
         </div>
       </main>
       <div className="fixed bottom-8 right-8 z-50">
-        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group">
+        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group" onClick={() => alert('Acción rápida global...')}>
           <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform" data-icon="add">add</span>
         </button>
       </div>

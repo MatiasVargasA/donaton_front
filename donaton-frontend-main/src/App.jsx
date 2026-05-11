@@ -11,19 +11,17 @@ import Login from './components/Login';
 import RegistroUsuario from './components/RegistroUsuario';
 import './App.css';
 
-// Componente para manejar la ruta raíz dinámicamente
-const RootRoute = () => {
+const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  // Si el usuario está logueado, vamos al panel. Si no, al login.
-  return user ? <MainLayout /> : <Navigate to="/login" replace />;
+  return user ? children : <Navigate to="/login" replace />;
 };
 
 function MainLayout() {
   return (
     <div className="App flex flex-col md:flex-row min-h-screen">
       <Sidebar />
-      <div className="flex-1 md:ml-64 pt-16 md:pt-0">
-        <main className="p-4 md:p-8">
+      <div className="flex-1 pt-[72px] md:pt-0 md:ml-64 w-full max-w-[100vw] overflow-x-hidden">
+        <div className="w-full h-full">
           <Routes>
             <Route path="/" element={<PanelControlGlobal />} />
             <Route path="/mapa" element={<MapaNecesidades />} />
@@ -31,7 +29,7 @@ function MainLayout() {
             <Route path="/reportes" element={<ReportesTerreno />} />
             <Route path="/perfil" element={<PerfilUsuario />} />
           </Routes>
-        </main>
+        </div>
       </div>
     </div>
   );
@@ -42,14 +40,15 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Ruta raíz inteligente */}
-          <Route path="/" element={<RootRoute />} />
-          
           <Route path="/login" element={<Login />} />
           <Route path="/registro-usuario" element={<RegistroUsuario />} />
           
-          {/* Rutas protegidas */}
-          <Route path="/*" element={<RootRoute />} />
+          {/* Rutas protegidas bajo MainLayout */}
+          <Route path="/*" element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          } />
         </Routes>
       </Router>
     </AuthProvider>

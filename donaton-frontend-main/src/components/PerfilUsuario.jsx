@@ -39,7 +39,7 @@ export default function PerfilUsuario() {
               <div className="flex-grow space-y-stack-xs text-center md:text-left">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-stack-xs">
                   <h1 className="font-headline-lg text-headline-lg text-on-surface">Elena Rodríguez</h1>
-                  <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2">
+                  <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2" onClick={() => alert('Modo edición activado.')}>
                     <span className="material-symbols-outlined text-sm" data-icon="edit">edit</span>
                     Editar Perfil
                   </button>
@@ -115,7 +115,7 @@ export default function PerfilUsuario() {
             <div className="lg:col-span-2 space-y-stack-sm">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-headline-md text-headline-md text-on-surface">Historial de Actividad</h3>
-                <button className="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">Ver todo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
+                <button className="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onClick={() => alert('Cargando historial completo...')}>Ver todo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
               </div>
               <div className="space-y-4">
                 {/* Activity Card 1 */}

@@ -55,7 +55,7 @@ export default function Sidebar() {
         </NavLink>
       </nav>
       <div className="px-4 mb-6">
-        <button className="w-full py-3 px-4 bg-secondary text-on-secondary rounded-lg font-bold text-sm flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+        <button className="w-full py-3 px-4 bg-secondary text-on-secondary rounded-lg font-bold text-sm flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity" onClick={() => alert('Abriendo formulario de Nueva Emergencia...')}>
           <span className="material-symbols-outlined">add_alert</span>
           Nueva Emergencia
         </button>
@@ -69,11 +69,11 @@ export default function Sidebar() {
           <span className="material-symbols-outlined">person</span>
           <span className="font-public-sans text-sm tracking-wide">Perfil</span>
         </NavLink>
-        <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer" href="#">
+        <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer" onClick={(e) => { e.preventDefault(); alert('Abriendo Configuración...'); }}>
           <span className="material-symbols-outlined">settings</span>
           <span className="font-public-sans text-sm tracking-wide">Configuración</span>
         </a>
-        <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer" href="#">
+        <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer" onClick={(e) => { e.preventDefault(); alert('Cerrando Sesión...'); window.location.href = '/login'; }}>
           <span className="material-symbols-outlined">logout</span>
           <span className="font-public-sans text-sm tracking-wide">Cerrar Sesión</span>
         </a>

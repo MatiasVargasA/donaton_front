@@ -41,17 +41,18 @@ export default function ReportesTerreno() {
               <h1 className="font-headline-lg text-headline-lg text-primary mb-2">Reportes de Terreno</h1>
               <p className="font-body-md text-body-md text-on-surface-variant">Monitoreo y evaluación de incidencias críticas en tiempo real.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">
+            <div className="flex flex-wrap items-center gap-3">
+              <button className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap" onClick={() => alert('Generando y descargando reporte.csv...')}>
                 <span className="material-symbols-outlined text-[18px]">download</span>
                 Exportar CSV
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-label-md text-label-md shadow-sm hover:opacity-90 transition-opacity">
+              <button className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-label-md text-label-md shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap" onClick={() => alert('Abriendo formulario de Nuevo Reporte...')}>
                 <span className="material-symbols-outlined text-[18px]">add</span>
                 Nuevo Reporte
               </button>
             </div>
           </div>
+
 
           {/* Dashboard Analytics Quick View */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
@@ -138,7 +139,7 @@ export default function ReportesTerreno() {
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">schedule</span> Hace 15 minutos</span>
                     </div>
                   </div>
-                  <button className="p-2 hover:bg-slate-50 rounded-full"><span className="material-symbols-outlined">more_vert</span></button>
+                  <button className="p-2 hover:bg-slate-50 rounded-full" onClick={() => alert('Más opciones...')}><span className="material-symbols-outlined">more_vert</span></button>
                 </div>
                 <p className="font-body-md text-on-surface-variant mb-6">El albergue temporal ha superado su capacidad máxima tras el desbordamiento del río. Se requiere envío urgente de kits de higiene y agua potable para 200 familias adicionales.</p>
                 <div className="flex items-center justify-between border-t border-outline-variant pt-4">

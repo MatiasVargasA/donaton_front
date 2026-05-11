@@ -18,7 +18,7 @@ export default function RegistroDonaciones() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
+          <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full" onClick={() => alert('Notificaciones...')}>
             <span className="material-symbols-outlined" data-icon="notifications">notifications</span>
           </button>
           <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
@@ -150,7 +150,7 @@ export default function RegistroDonaciones() {
                     </div>
                   </div>
                 </div>
-                <button className="w-full py-2 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/5 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full py-2 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/5 transition-colors flex items-center justify-center gap-2" onClick={() => alert('Abriendo selector de archivos...')}>
                   <span className="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
                   Subir Archivos
                 </button>
@@ -177,10 +177,10 @@ export default function RegistroDonaciones() {
                   </div>
                 </div>
                 <div className="mt-8 space-y-3 relative z-10">
-                  <button className="w-full bg-secondary text-white py-4 rounded-lg font-bold text-lg shadow-md hover:bg-[#802a00] transition-transform active:scale-[0.98]">
+                  <button className="w-full bg-secondary text-white py-4 rounded-lg font-bold text-lg shadow-md hover:bg-[#802a00] transition-transform active:scale-[0.98]" onClick={() => alert('Donación Confirmada y guardada exitosamente.')}>
                     Confirmar Donación
                   </button>
-                  <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg font-medium transition-colors">
+                  <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg font-medium transition-colors" onClick={() => alert('Borrador guardado localmente.')}>
                     Guardar como Borrador
                   </button>
                 </div>

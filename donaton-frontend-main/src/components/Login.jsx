@@ -9,6 +9,7 @@ export default function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -104,7 +105,7 @@ export default function Login() {
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center">
                   <label className="font-label-md text-xs font-semibold text-outline uppercase tracking-wider" htmlFor="password">Contraseña</label>
-                  <a className="text-xs font-medium text-primary hover:underline transition-all" href="#">¿Olvidó su contraseña?</a>
+                  <a className="text-xs font-medium text-primary hover:underline transition-all" href="#" onClick={(e) => { e.preventDefault(); alert('Enviando enlace de recuperación...'); }}>¿Olvidó su contraseña?</a>
                 </div>
                 <div className="relative">
                   <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">lock</span>
@@ -113,13 +114,13 @@ export default function Login() {
                     id="password"
                     name="password"
                     placeholder="••••••••"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <button className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button">
-                    <span className="material-symbols-outlined notranslate text-xl">visibility</span>
+                  <button className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <span className="material-symbols-outlined notranslate text-xl">{showPassword ? "visibility_off" : "visibility"}</span>
                   </button>
                 </div>
               </div>
@@ -138,7 +139,7 @@ export default function Login() {
             </div>
 
             {/* SSO Login */}
-            <button className="w-full flex items-center justify-center gap-3 border border-outline-variant bg-white py-3 rounded-lg font-medium text-on-surface hover:bg-slate-50 transition-all" type="button">
+            <button className="w-full flex items-center justify-center gap-3 border border-outline-variant bg-white py-3 rounded-lg font-medium text-on-surface hover:bg-slate-50 transition-all" type="button" onClick={() => alert('Iniciando sesión con proveedor SSO...')}>
               <span className="material-symbols-outlined notranslate text-xl text-primary">id_card</span>
               Inicio de sesión con SSO
             </button>

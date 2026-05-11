@@ -14,7 +14,7 @@ export default function MapaNecesidades() {
               <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
               <input className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Buscar regiones, necesidades o incidentes..." type="text"/>
             </div>
-            <button className="sm:hidden text-slate-500">
+            <button className="sm:hidden text-slate-500" onClick={() => alert('Búsqueda móvil...')}>
               <span className="material-symbols-outlined notranslate">search</span>
             </button>
           </div>
@@ -190,14 +190,14 @@ export default function MapaNecesidades() {
             </div>
             {/* Map Controls Overlay */}
             <div className="absolute bottom-8 left-8 flex flex-col gap-2 z-40">
-              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-slate-50 transition-colors border border-slate-200">
+              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-slate-50 transition-colors border border-slate-200" onClick={() => alert('Acercando mapa (+)')}>
                 <span className="material-symbols-outlined" data-icon="add">add</span>
               </button>
-              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-slate-50 transition-colors border border-slate-200">
+              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-slate-50 transition-colors border border-slate-200" onClick={() => alert('Alejando mapa (-)')}>
                 <span className="material-symbols-outlined" data-icon="remove">remove</span>
               </button>
               <div className="h-px w-6 bg-slate-200 my-1 self-center"></div>
-              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-primary hover:bg-slate-50 transition-colors border border-slate-200">
+              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-primary hover:bg-slate-50 transition-colors border border-slate-200" onClick={() => alert('Centrando en ubicación actual...')}>
                 <span className="material-symbols-outlined" data-icon="my_location">my_location</span>
               </button>
             </div>
@@ -227,10 +227,11 @@ export default function MapaNecesidades() {
         </div>
       </main>
       {/* FAB Action Button */}
-      <button className="fixed bottom-8 z-50 h-14 w-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform group" style={{ right: "340px" }}>
+      <button className="fixed bottom-8 right-8 lg:right-[340px] z-50 h-14 w-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform group" onClick={() => alert('Abriendo formulario de reporte...')}>
         <span className="material-symbols-outlined text-2xl" data-icon="add_location">add_location</span>
         <span className="absolute right-full mr-4 bg-primary text-white px-3 py-1.5 rounded-lg text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Reportar Necesidad</span>
       </button>
+
     </div>
   );
 }
