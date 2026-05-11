@@ -7,6 +7,7 @@ import PanelControlGlobal from './components/PanelControlGlobal';
 import MapaNecesidades from './components/MapaNecesidades';
 import PerfilUsuario from './components/PerfilUsuario';
 import Login from './components/Login';
+import RegistroUsuario from './components/RegistroUsuario';
 import './App.css';
 
 function MainLayout() {
@@ -31,6 +32,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/registro-usuario" element={<RegistroUsuario />} />
         <Route path="/*" element={<MainLayout />} />
       </Routes>
     </Router>
