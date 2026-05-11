@@ -5,30 +5,30 @@ export default function PanelControlGlobal() {
   return (
     <>
 
-      <main className="ml-64 min-h-screen">
-        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-40 flex justify-between items-center w-full px-6">
+      <main className="min-h-screen">
+        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6">
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" data-icon="search">search</span>
+            <div className="relative w-full max-w-md hidden sm:block">
+              <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
               <input className="w-full bg-slate-50 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#1A4F8B]/20" placeholder="Buscar ayuda, envíos o reportes..." type="text"/>
             </div>
+            <button className="sm:hidden text-slate-500" onClick={() => alert('Abriendo búsqueda móvil...')}>
+              <span className="material-symbols-outlined notranslate">search</span>
+            </button>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-4">
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80">
-                <span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-              </button>
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80">
-                <span className="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+          <div className="flex items-center gap-3 md:gap-6">
+            <div className="flex items-center gap-2 md:gap-4">
+              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80" onClick={() => alert('Mostrando notificaciones...')}>
+                <span className="material-symbols-outlined notranslate">notifications</span>
               </button>
             </div>
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
-              <div className="text-right">
+            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 md:pl-6">
+              <div className="text-right hidden xs:block">
                 <p className="text-sm font-bold text-on-surface leading-tight">Admin Central</p>
                 <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Coordinador Global</p>
               </div>
-              <Link to="/perfil" className="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
-                <img alt="Avatar del usuario administrativo" data-alt="professional portrait of a middle-aged administrative man with a neutral and confident expression in a clean studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
+              <Link to="/perfil" className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
+                <img alt="Avatar del usuario administrativo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
               </Link>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function PanelControlGlobal() {
                 </div>
                 <div className="p-4 bg-slate-50 flex justify-between items-center px-6">
                   <p className="text-xs text-slate-500">Última actualización: hace 4 minutos</p>
-                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline">
+                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline" onClick={() => alert('Navegando al mapa completo...')}>
                     Ver Mapa Completo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
                   </button>
                 </div>
@@ -114,7 +114,7 @@ export default function PanelControlGlobal() {
               <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100 flex justify-between items-center">
                   <h4 className="font-headline-md text-headline-md">Flujo de Actividad</h4>
-                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">Filtrar</button>
+                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full" onClick={() => alert('Abriendo filtros...')}>Filtrar</button>
                 </div>
                 <div className="p-6">
                   <div className="relative space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
@@ -204,7 +204,7 @@ export default function PanelControlGlobal() {
                       <div className="h-full bg-purple-600 rounded-full" style={{ width: '28%' }}></div>
                     </div>
                   </div>
-                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors">Ver Detalles de Inventario</button>
+                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors" onClick={() => alert('Cargando detalles de inventario...')}>Ver Detalles de Inventario</button>
                 </div>
               </div>
               <div className="bg-primary-container rounded-xl p-6 text-white relative overflow-hidden">
@@ -213,7 +213,7 @@ export default function PanelControlGlobal() {
                   <span className="material-symbols-outlined text-3xl mb-4" data-icon="volunteer_activism">volunteer_activism</span>
                   <h4 className="text-lg font-bold mb-2">Impulsa una Campaña</h4>
                   <p className="text-blue-100 text-sm mb-6 leading-relaxed">Las necesidades de Refugio han aumentado un 15% esta semana. Crea una nueva campaña de recaudación focalizada.</p>
-                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors">Iniciar Campaña</button>
+                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors" onClick={() => alert('Iniciando nueva campaña...')}>Iniciar Campaña</button>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@ export default function PanelControlGlobal() {
         </div>
       </main>
       <div className="fixed bottom-8 right-8 z-50">
-        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group">
+        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group" onClick={() => alert('Acción rápida global...')}>
           <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform" data-icon="add">add</span>
         </button>
       </div>

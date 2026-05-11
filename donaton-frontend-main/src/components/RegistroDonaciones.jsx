@@ -5,9 +5,9 @@ export default function RegistroDonaciones() {
   return (
     <>
       {/* TopAppBar Shell */}
-      <header className="bg-white dark:bg-slate-900 text-[#1A4F8B] dark:text-blue-400 font-public-sans text-sm font-medium docked full-width top-0 z-40 border-b border-slate-200 dark:border-slate-800 flat no shadows flex justify-between items-center w-full px-6 h-16 fixed">
-        <div className="flex items-center gap-margin-desktop">
-          <span className="text-2xl font-black text-[#1A4F8B] dark:text-blue-400 tracking-tight">Donaton</span>
+      <header className="bg-white dark:bg-slate-900 text-[#1A4F8B] dark:text-blue-400 font-public-sans text-sm font-medium sticky top-0 z-30 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center w-full px-4 md:px-6 h-16">
+        <div className="flex items-center gap-4">
+          <span className="text-xl font-bold md:hidden">Donaciones</span>
           <div className="hidden md:flex gap-6 items-center">
             <nav className="flex gap-4">
               <span className="text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer active:opacity-80 px-2 py-1">Panel de Control</span>
@@ -18,7 +18,7 @@ export default function RegistroDonaciones() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
+          <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full" onClick={() => alert('Notificaciones...')}>
             <span className="material-symbols-outlined" data-icon="notifications">notifications</span>
           </button>
           <button className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors rounded-full">
@@ -31,7 +31,7 @@ export default function RegistroDonaciones() {
       </header>
 
       {/* Main Content */}
-      <main className="lg:ml-64 pt-24 pb-12 px-margin-mobile md:px-margin-desktop">
+      <main className="pt-8 pb-12 px-4 md:px-8">
         <div className="max-w-[1200px] mx-auto">
           {/* Header Section */}
           <div className="mb-stack-lg">
@@ -150,7 +150,7 @@ export default function RegistroDonaciones() {
                     </div>
                   </div>
                 </div>
-                <button className="w-full py-2 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/5 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full py-2 border-2 border-primary text-primary font-bold rounded-lg hover:bg-primary/5 transition-colors flex items-center justify-center gap-2" onClick={() => alert('Abriendo selector de archivos...')}>
                   <span className="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
                   Subir Archivos
                 </button>
@@ -177,10 +177,10 @@ export default function RegistroDonaciones() {
                   </div>
                 </div>
                 <div className="mt-8 space-y-3 relative z-10">
-                  <button className="w-full bg-secondary text-white py-4 rounded-lg font-bold text-lg shadow-md hover:bg-[#802a00] transition-transform active:scale-[0.98]">
+                  <button className="w-full bg-secondary text-white py-4 rounded-lg font-bold text-lg shadow-md hover:bg-[#802a00] transition-transform active:scale-[0.98]" onClick={() => alert('Donación Confirmada y guardada exitosamente.')}>
                     Confirmar Donación
                   </button>
-                  <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg font-medium transition-colors">
+                  <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 rounded-lg font-medium transition-colors" onClick={() => alert('Borrador guardado localmente.')}>
                     Guardar como Borrador
                   </button>
                 </div>

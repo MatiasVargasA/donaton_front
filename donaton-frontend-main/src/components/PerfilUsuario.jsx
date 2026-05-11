@@ -4,21 +4,23 @@ import { Link } from 'react-router-dom';
 export default function PerfilUsuario() {
   return (
     <>
-      <main className="ml-64 min-h-screen">
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-40 flex justify-between items-center w-full px-6 h-16">
+      <main className="min-h-screen">
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6 h-16">
           <div className="flex items-center gap-4">
-            <span className="text-2xl font-black text-[#1A4F8B] tracking-tight">Donaton</span>
-            <div className="h-6 w-px bg-slate-200 mx-2"></div>
-            <h2 className="font-public-sans text-sm font-medium text-slate-500">Perfil de Usuario</h2>
+            <span className="text-xl font-bold md:hidden">Perfil</span>
+            <div className="hidden md:flex items-center">
+              <span className="text-2xl font-black text-[#1A4F8B] tracking-tight">Donaton</span>
+              <div className="h-6 w-px bg-slate-200 mx-4"></div>
+              <h2 className="font-public-sans text-sm font-medium text-slate-500">Perfil de Usuario</h2>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative">
-              <span className="material-symbols-outlined text-slate-500 cursor-pointer p-2 hover:bg-slate-50 rounded-full transition-colors" data-icon="notifications">notifications</span>
+              <span className="material-symbols-outlined notranslate text-slate-500 cursor-pointer p-2 hover:bg-slate-50 rounded-full transition-colors">notifications</span>
               <span className="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border-2 border-white"></span>
             </div>
-            <span className="material-symbols-outlined text-slate-500 cursor-pointer p-2 hover:bg-slate-50 rounded-full transition-colors" data-icon="help_outline">help_outline</span>
             <Link to="/perfil">
-              <img alt="Avatar del usuario administrativo" className="w-8 h-8 rounded-full border border-slate-200 object-cover" data-alt="A professional headshot of a woman in her late 30s with a warm and confident expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5i87aY5GVUeUjtZ7peH4rTv8XBxBUb8vyZXTcq-bj3XDB0ZAXK4I-u0vG3ft0SzRlhlKqORDCGJ9Yjty8JlKk250-qKDYhhGBUWDh4rXHqqRT86zveudy_95fKrUH7-wBeSyrvXWKeY55gdwJsrFxDQJ2t_3q5lRrJ-ma3CLdamoHI76A83_NCFkq-0RPPlFaUSX0o5dHVL3rS6Qy7aIehi7xeHpID55LW4j9AGLLhJxPdrrzfzAG-Pwrwj7WPBHASeh6SA7okks"/>
+              <img alt="Avatar del usuario administrativo" className="w-8 h-8 rounded-full border border-slate-200 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5i87aY5GVUeUjtZ7peH4rTv8XBxBUb8vyZXTcq-bj3XDB0ZAXK4I-u0vG3ft0SzRlhlKqORDCGJ9Yjty8JlKk250-qKDYhhGBUWDh4rXHqqRT86zveudy_95fKrUH7-wBeSyrvXWKeY55gdwJsrFxDQJ2t_3q5lRrJ-ma3CLdamoHI76A83_NCFkq-0RPPlFaUSX0o5dHVL3rS6Qy7aIehi7xeHpID55LW4j9AGLLhJxPdrrzfzAG-Pwrwj7WPBHASeh6SA7okks"/>
             </Link>
           </div>
         </header>
@@ -37,7 +39,7 @@ export default function PerfilUsuario() {
               <div className="flex-grow space-y-stack-xs text-center md:text-left">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-stack-xs">
                   <h1 className="font-headline-lg text-headline-lg text-on-surface">Elena Rodríguez</h1>
-                  <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2">
+                  <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2" onClick={() => alert('Modo edición activado.')}>
                     <span className="material-symbols-outlined text-sm" data-icon="edit">edit</span>
                     Editar Perfil
                   </button>
@@ -113,7 +115,7 @@ export default function PerfilUsuario() {
             <div className="lg:col-span-2 space-y-stack-sm">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-headline-md text-headline-md text-on-surface">Historial de Actividad</h3>
-                <button className="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">Ver todo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
+                <button className="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onClick={() => alert('Cargando historial completo...')}>Ver todo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
               </div>
               <div className="space-y-4">
                 {/* Activity Card 1 */}
