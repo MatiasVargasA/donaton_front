@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
     // Check if user is logged in on mount
     const savedToken = localStorage.getItem('donaton_token');
     const savedUser = localStorage.getItem('donaton_user');
-    
+
     if (savedToken && savedUser) {
       setToken(savedToken);
       setUser(JSON.parse(savedUser));

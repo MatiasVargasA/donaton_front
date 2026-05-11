@@ -5,10 +5,10 @@ export default function ReportesTerreno() {
   return (
     <>
       {/* TopAppBar */}
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 fixed top-0 z-40 w-full">
-        <div className="flex justify-between items-center w-full px-6 h-16">
-          <div className="flex items-center gap-8">
-            <span className="text-2xl font-black text-[#1A4F8B] dark:text-blue-400 tracking-tight">Donaton</span>
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 w-full">
+        <div className="flex justify-between items-center w-full px-4 md:px-6 h-16">
+          <div className="flex items-center gap-4">
+            <span className="text-xl font-bold md:hidden">Reportes</span>
             <div className="hidden md:flex relative group">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
               <input className="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-primary-container outline-none transition-all" placeholder="Buscar reportes..." type="text"/>
@@ -33,7 +33,7 @@ export default function ReportesTerreno() {
 
 
       {/* Main Content */}
-      <main className="md:ml-64 pt-16 min-h-screen">
+      <main className="min-h-screen">
         <div className="p-8 max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -41,17 +41,18 @@ export default function ReportesTerreno() {
               <h1 className="font-headline-lg text-headline-lg text-primary mb-2">Reportes de Terreno</h1>
               <p className="font-body-md text-body-md text-on-surface-variant">Monitoreo y evaluación de incidencias críticas en tiempo real.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors">
+            <div className="flex flex-wrap items-center gap-3">
+              <button className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 border border-outline rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container transition-colors whitespace-nowrap" onClick={() => alert('Generando y descargando reporte.csv...')}>
                 <span className="material-symbols-outlined text-[18px]">download</span>
                 Exportar CSV
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-label-md text-label-md shadow-sm hover:opacity-90 transition-opacity">
+              <button className="flex-1 md:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-label-md text-label-md shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap" onClick={() => alert('Abriendo formulario de Nuevo Reporte...')}>
                 <span className="material-symbols-outlined text-[18px]">add</span>
                 Nuevo Reporte
               </button>
             </div>
           </div>
+
 
           {/* Dashboard Analytics Quick View */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-stack-lg">
@@ -138,7 +139,7 @@ export default function ReportesTerreno() {
                       <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">schedule</span> Hace 15 minutos</span>
                     </div>
                   </div>
-                  <button className="p-2 hover:bg-slate-50 rounded-full"><span className="material-symbols-outlined">more_vert</span></button>
+                  <button className="p-2 hover:bg-slate-50 rounded-full" onClick={() => alert('Más opciones...')}><span className="material-symbols-outlined">more_vert</span></button>
                 </div>
                 <p className="font-body-md text-on-surface-variant mb-6">El albergue temporal ha superado su capacidad máxima tras el desbordamiento del río. Se requiere envío urgente de kits de higiene y agua potable para 200 familias adicionales.</p>
                 <div className="flex items-center justify-between border-t border-outline-variant pt-4">
@@ -304,25 +305,6 @@ export default function ReportesTerreno() {
         </div>
       </main>
 
-      {/* Mobile Navigation (Bottom Bar) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 flex justify-around items-center h-16 px-4">
-        <a className="flex flex-col items-center gap-1 text-slate-500">
-          <span className="material-symbols-outlined">dashboard</span>
-          <span className="text-[10px]">Inicio</span>
-        </a>
-        <a className="flex flex-col items-center gap-1 text-slate-500">
-          <span className="material-symbols-outlined">location_on</span>
-          <span className="text-[10px]">Mapa</span>
-        </a>
-        <a className="flex flex-col items-center gap-1 text-[#1A4F8B] font-bold">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>analytics</span>
-          <span className="text-[10px]">Reportes</span>
-        </a>
-        <a className="flex flex-col items-center gap-1 text-slate-500">
-          <span className="material-symbols-outlined">person</span>
-          <span className="text-[10px]">Perfil</span>
-        </a>
-      </nav>
     </>
   );
 }
