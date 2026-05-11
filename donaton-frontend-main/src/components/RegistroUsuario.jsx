@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../api';
+import toast from 'react-hot-toast';
 
 const RegistroUsuario = () => {
   const navigate = useNavigate();
@@ -20,29 +22,44 @@ const RegistroUsuario = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      toast.error('Las contraseñas no coinciden');
       return;
     }
-    
-    // Aquí puedes agregar la lógica para enviar los datos al backend
-    console.log('Formulario de registro enviado:', formData);
-    alert('Cuenta creada exitosamente (simulado)');
-    
-    // Redirigir al panel de control u otra página después del registro
-    navigate('/');
-  };
 
+    try {
+
+      await api.post('/usuarios', {
+        nombre: formData.fullName,
+        correo: formData.email,
+        password: formData.password,
+        organizacion: formData.organization,
+        rol: 'USER'
+      });
+
+      toast.success('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
+
+      navigate('/login');
+
+    } catch (error) {
+
+      console.error(error);
+      toast.error('Error al registrar usuario. Intenta con otro correo.');
+
+    }
+  };
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden bg-surface font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed w-full absolute inset-0 z-50 overflow-y-auto">
       {/* Left Side: Hero Section */}
       <div className="relative hidden md:flex md:w-1/2 lg:w-3/5 bg-primary overflow-hidden">
-        <img 
-          alt="Humanitarian Aid Workers" 
-          className="absolute inset-0 w-full h-full object-cover" 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeeIyVsDDOQkKpM0HNGE2gUe3XdvAxa6xiqr5r3VW1NmSbIVqVYJzy9OAp1EgCqHlt4ubQ3XITGlm7woskatA6P0Cctdn_7Csn9cjOpuAOBFoKh-KCtRsZxp0xaXf7TeaNFwT3zbeCua2TjUM8_6oBQxC55wSAkjdIqbbhk7WbUx67xdfekcbNVYBpMPbNqDuni0sPF9agXdcF-a7HXlFpJul6cVEoTDhTfGTub5yrMWxIrr5BOTMEcVvLyzzZV_fPn7TCht2MCVI" 
+        <img
+          alt="Humanitarian Aid Workers"
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeeIyVsDDOQkKpM0HNGE2gUe3XdvAxa6xiqr5r3VW1NmSbIVqVYJzy9OAp1EgCqHlt4ubQ3XITGlm7woskatA6P0Cctdn_7Csn9cjOpuAOBFoKh-KCtRsZxp0xaXf7TeaNFwT3zbeCua2TjUM8_6oBQxC55wSAkjdIqbbhk7WbUx67xdfekcbNVYBpMPbNqDuni0sPF9agXdcF-a7HXlFpJul6cVEoTDhTfGTub5yrMWxIrr5BOTMEcVvLyzzZV_fPn7TCht2MCVI"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0, 56, 108, 0.4), rgba(0, 56, 108, 0.9))' }}></div>
         <div className="relative z-10 flex flex-col justify-between h-full p-12 lg:p-20 text-left">
@@ -69,7 +86,7 @@ const RegistroUsuario = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Right Side: Registration Form */}
       <div className="flex-1 flex flex-col bg-surface overflow-y-auto">
         {/* Mobile Brand Header */}
@@ -86,12 +103,12 @@ const RegistroUsuario = () => {
             <div className="space-y-2">
               <label className="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" htmlFor="fullName">Nombre Completo</label>
               <div className="relative">
-                <input 
-                  className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface" 
-                  id="fullName" 
-                  name="fullName" 
-                  placeholder="Ej. Juan Pérez" 
-                  required 
+                <input
+                  className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="Ej. Juan Pérez"
+                  required
                   type="text"
                   value={formData.fullName}
                   onChange={handleChange}
@@ -103,12 +120,12 @@ const RegistroUsuario = () => {
             <div className="space-y-2">
               <label className="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" htmlFor="email">Correo Institucional</label>
               <div className="relative">
-                <input 
-                  className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface" 
-                  id="email" 
-                  name="email" 
-                  placeholder="nombre@organizacion.org" 
-                  required 
+                <input
+                  className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface"
+                  id="email"
+                  name="email"
+                  placeholder="nombre@organizacion.org"
+                  required
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -120,10 +137,10 @@ const RegistroUsuario = () => {
             <div className="space-y-2">
               <label className="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" htmlFor="organization">Nombre de la Organización</label>
               <div className="relative">
-                <select 
-                  className="w-full h-12 px-4 pr-10 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface appearance-none" 
-                  id="organization" 
-                  name="organization" 
+                <select
+                  className="w-full h-12 px-4 pr-10 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface appearance-none"
+                  id="organization"
+                  name="organization"
                   required
                   value={formData.organization}
                   onChange={handleChange}
@@ -143,12 +160,12 @@ const RegistroUsuario = () => {
               <div className="space-y-2">
                 <label className="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" htmlFor="password">Contraseña</label>
                 <div className="relative">
-                  <input 
-                    className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface" 
-                    id="password" 
-                    name="password" 
-                    placeholder="••••••••" 
-                    required 
+                  <input
+                    className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
@@ -159,12 +176,12 @@ const RegistroUsuario = () => {
               <div className="space-y-2">
                 <label className="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" htmlFor="confirmPassword">Confirmar</label>
                 <div className="relative">
-                  <input 
-                    className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface" 
-                    id="confirmPassword" 
-                    name="confirmPassword" 
-                    placeholder="••••••••" 
-                    required 
+                  <input
+                    className="w-full h-12 px-4 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none font-body-md text-on-surface"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    required
                     type="password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
@@ -176,11 +193,11 @@ const RegistroUsuario = () => {
             {/* Terms and Conditions */}
             <div className="flex items-start gap-3 pt-2">
               <div className="flex items-center h-5">
-                <input 
-                  className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" 
-                  id="terms" 
-                  name="terms" 
-                  required 
+                <input
+                  className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary"
+                  id="terms"
+                  name="terms"
+                  required
                   type="checkbox"
                   checked={formData.terms}
                   onChange={handleChange}
@@ -199,7 +216,7 @@ const RegistroUsuario = () => {
           {/* Footer Link */}
           <div className="mt-10 pt-8 border-t border-outline-variant text-center">
             <p className="text-on-surface-variant">
-              ¿Ya tienes una cuenta? 
+              ¿Ya tienes una cuenta?
               <Link className="text-primary font-bold ml-1 hover:underline" to="/login">Iniciar Sesión</Link>
             </p>
           </div>

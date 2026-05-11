@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import api from '../api';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,34 +14,46 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
+
     e.preventDefault();
+
     setError('');
     setLoading(true);
 
     try {
-      // Uso de api.js para la conexion con el backend
-      const response = await api.post('/auth/login', {
-        correo: email,
-        password: password
-      });
 
-      const token = response.data.token || response.data;
-      // Usar los datos reales del usuario si el backend los provee, 
-      // de lo contrario, creamos un objeto básico.
-      const userData = response.data.user || { 
-        email, 
-        name: 'Usuario Institucional', 
-        role: 'admin' 
+      const response = await api.post(
+        '/auth/login',
+        {
+          correo: email,
+          password: password
+        }
+      );
+
+      const token = response.data.token;
+
+      // Usamos los datos reales que devuelve tu backend
+      const userData = {
+        nombre: response.data.nombre || response.data.user?.nombre || email.split('@')[0],
+        correo: response.data.correo || response.data.user?.correo || email,
+        rol: response.data.role || response.data.user?.rol || 'USER',
+        organizacion: response.data.organizacion || response.data.user?.organizacion || 'Donatón'
       };
 
       login(userData, token);
-      alert('Inicio de sesión exitoso');
+      toast.success(`¡Bienvenido de nuevo, ${userData.nombre}!`);
+
       navigate('/');
-    } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.message || 'Credenciales incorrectas o error de conexión al backend');
+
+    } catch (error) {
+
+      console.error(error);
+      toast.error('Credenciales incorrectas. Intenta de nuevo.');
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
@@ -147,7 +160,7 @@ export default function Login() {
             {/* Registration Link */}
             <div className="text-center mt-2">
               <p className="text-sm text-on-surface-variant">
-                ¿No tienes una cuenta? 
+                ¿No tienes una cuenta?
                 <Link className="text-primary font-bold ml-1 hover:underline" to="/registro-usuario">
                   Crear Cuenta Institucional
                 </Link>

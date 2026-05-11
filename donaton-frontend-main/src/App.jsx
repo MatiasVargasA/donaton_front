@@ -9,6 +9,8 @@ import MapaNecesidades from './components/MapaNecesidades';
 import PerfilUsuario from './components/PerfilUsuario';
 import Login from './components/Login';
 import RegistroUsuario from './components/RegistroUsuario';
+import GestionLogistica from './components/GestionLogistica';
+import { Toaster } from 'react-hot-toast';
 import './App.css';
 
 function ProtectedRoute({ children }) {
@@ -30,6 +32,7 @@ function MainLayout() {
             <Route path="/mapa" element={<MapaNecesidades />} />
             <Route path="/registro" element={<RegistroDonaciones />} />
             <Route path="/reportes" element={<ReportesTerreno />} />
+            <Route path="/logistica" element={<GestionLogistica />} />
             <Route path="/perfil" element={<PerfilUsuario />} />
           </Routes>
         </div>
@@ -41,6 +44,7 @@ function MainLayout() {
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-right" reverseOrder={false} />
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />

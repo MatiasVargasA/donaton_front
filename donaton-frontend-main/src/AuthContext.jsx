@@ -4,43 +4,48 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
-    const savedToken = localStorage.getItem('donaton_token');
+    // Cargar usuario y token desde localStorage al iniciar
     const savedUser = localStorage.getItem('donaton_user');
+    const token = localStorage.getItem('donaton_token');
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+    if (savedUser && token) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Error parsing saved user", e);
+        localStorage.removeItem('donaton_user');
+        localStorage.removeItem('donaton_token');
+      }
     }
     setLoading(false);
   }, []);
 
-  const login = (userData, userToken) => {
-    // This will be called after a successful backend response
-    localStorage.setItem('donaton_token', userToken);
-    localStorage.setItem('donaton_user', JSON.stringify(userData));
-    setToken(userToken);
+  const login = (userData, token) => {
     setUser(userData);
+    localStorage.setItem('donaton_token', token);
+    localStorage.setItem('donaton_user', JSON.stringify(userData));
   };
 
   const logout = () => {
+    setUser(null);
     localStorage.removeItem('donaton_token');
     localStorage.removeItem('donaton_user');
-    setToken(null);
-    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }

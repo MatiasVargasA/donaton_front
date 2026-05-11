@@ -1,230 +1,155 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { apiDonaciones, apiNecesidades } from '../api';
 
 export default function PanelControlGlobal() {
-  return (
-    <>
+  const [donaciones, setDonaciones] = useState([]);
+  const [necesidades, setNecesidades] = useState([]);
+  const [totalCantidad, setTotalCantidad] = useState(0);
 
-      <main className="min-h-screen">
-        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md hidden sm:block">
-              <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-              <input className="w-full bg-slate-50 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#1A4F8B]/20" placeholder="Buscar ayuda, envíos o reportes..." type="text"/>
-            </div>
-            <button className="sm:hidden text-slate-500" onClick={() => alert('Abriendo búsqueda móvil...')}>
-              <span className="material-symbols-outlined notranslate">search</span>
-            </button>
-          </div>
-          <div className="flex items-center gap-3 md:gap-6">
-            <div className="flex items-center gap-2 md:gap-4">
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80" onClick={() => alert('Mostrando notificaciones...')}>
-                <span className="material-symbols-outlined notranslate">notifications</span>
-              </button>
-            </div>
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 md:pl-6">
-              <div className="text-right hidden xs:block">
-                <p className="text-sm font-bold text-on-surface leading-tight">Admin Central</p>
-                <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Coordinador Global</p>
-              </div>
-              <Link to="/perfil" className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
-                <img alt="Avatar del usuario administrativo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
-              </Link>
-            </div>
-          </div>
-        </header>
-        <div className="p-8 max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">Resumen Operativo Global</h2>
-            <p className="font-body-md text-body-md text-slate-500">Estado en tiempo real de la respuesta humanitaria y distribución de recursos.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#1A4F8B] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="payments">payments</span>
-                </div>
-                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">+12% hoy</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Fondos Desplegados</p>
-              <h3 className="text-2xl font-black text-on-surface">$4.2M <span className="text-sm font-normal text-slate-400">USD</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="warning">warning</span>
-                </div>
-                <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded">Alta Prioridad</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Alertas Críticas</p>
-              <h3 className="text-2xl font-black text-on-surface">14 <span className="text-sm font-normal text-slate-400">Activas</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="groups">groups</span>
-                </div>
-                <span className="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Meta 85%</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Vidas Impactadas</p>
-              <h3 className="text-2xl font-black text-on-surface">128.4k <span className="text-sm font-normal text-slate-400">Personas</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="local_shipping">local_shipping</span>
-                </div>
-                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">En ruta</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Entregas Hoy</p>
-              <h3 className="text-2xl font-black text-on-surface">342 <span className="text-sm font-normal text-slate-400">Kits</span></h3>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                  <h4 className="font-headline-md text-headline-md">Mapa de Intervención Activa</h4>
-                  <div className="flex gap-2">
-                    <span className="flex items-center gap-1 text-xs text-slate-500"><span className="w-2 h-2 rounded-full bg-red-500"></span> Emergencia</span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500"><span className="w-2 h-2 rounded-full bg-green-500"></span> Despliegue</span>
-                  </div>
-                </div>
-                <div className="relative h-[400px] w-full bg-slate-100 overflow-hidden">
-                  <img alt="Mapa regional interactivo" className="w-full h-full object-cover opacity-80" data-alt="clean minimal topographic map of a region with subtle grid lines and highlighted hot zones in red and blue" data-location="Mexico City" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMqX9djb8_4C_VhJVOxyZjNUAGlMgf0bP8s5iqS5znnEiqj_zjWwMFxjc-1x0OCCNrLhQN5WSjKkIpEgEsCzngvUXb1_vUkYVCuvXD7PMVjotXZGD5pCMX8_zDtdZHoxqA8hYhE5CV9PMfs7O9piYPIsg6xXjmijVF9pCvWASkY9s19DzV0QRwnrMA4CLC-XALzbumlrtfmwWEbv8Gb_ejdcw_5dNzTjD-y3xLBDXQJgWX3FtKWD45TnJeRIznOlURp7jjRtwwCo"/>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
-                  <div className="absolute top-1/4 left-1/3 group cursor-pointer">
-                    <div className="w-4 h-4 bg-red-500 rounded-full animate-ping absolute opacity-75"></div>
-                    <div className="relative w-4 h-4 bg-red-600 border-2 border-white rounded-full"></div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Sector Norte: Agua Potable</div>
-                  </div>
-                  <div className="absolute bottom-1/3 right-1/4 group cursor-pointer">
-                    <div className="w-4 h-4 bg-green-500 rounded-full animate-ping absolute opacity-75"></div>
-                    <div className="relative w-4 h-4 bg-green-600 border-2 border-white rounded-full"></div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Logística Central: Suministros</div>
-                  </div>
-                </div>
-                <div className="p-4 bg-slate-50 flex justify-between items-center px-6">
-                  <p className="text-xs text-slate-500">Última actualización: hace 4 minutos</p>
-                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline" onClick={() => alert('Navegando al mapa completo...')}>
-                    Ver Mapa Completo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
-                  </button>
-                </div>
-              </div>
-              <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                  <h4 className="font-headline-md text-headline-md">Flujo de Actividad</h4>
-                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full" onClick={() => alert('Abriendo filtros...')}>Filtrar</button>
-                </div>
-                <div className="p-6">
-                  <div className="relative space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
-                    <div className="relative pl-10">
-                      <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-blue-100 border-4 border-white flex items-center justify-center">
-                        <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-                      </div>
-                      <div className="flex justify-between items-start mb-1">
-                        <h5 className="text-sm font-bold text-on-surface">Envío confirmado a Sector Este</h5>
-                        <span className="text-[10px] font-bold text-slate-400">HACE 15 MIN</span>
-                      </div>
-                      <p className="text-sm text-slate-600 mb-2">2,500 kits de higiene médica han salido del almacén central.</p>
-                      <div className="flex gap-2">
-                        <span className="text-[10px] px-2 py-0.5 bg-surface-variant text-primary rounded font-bold uppercase tracking-wider">Logística</span>
-                        <span className="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded font-bold uppercase tracking-wider">ID: #8821</span>
-                      </div>
-                    </div>
-                    <div className="relative pl-10">
-                      <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-orange-100 border-4 border-white flex items-center justify-center">
-                        <span className="w-2 h-2 rounded-full bg-orange-600"></span>
-                      </div>
-                      <div className="flex justify-between items-start mb-1">
-                        <h5 className="text-sm font-bold text-on-surface">Alerta de Escasez: Zona Inundada A</h5>
-                        <span className="text-[10px] font-bold text-slate-400">HACE 1 HORA</span>
-                      </div>
-                      <p className="text-sm text-slate-600 mb-2">Se requiere refuerzo de raciones de alimentos secos para 500 familias.</p>
-                      <div className="flex gap-2">
-                        <span className="text-[10px] px-2 py-0.5 bg-orange-100 text-orange-700 rounded font-bold uppercase tracking-wider">Crítico</span>
-                        <span className="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded font-bold uppercase tracking-wider">Refugio 4</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-8">
-              <div className="bg-white border border-slate-200 rounded-xl shadow-sm">
-                <div className="p-6 border-b border-slate-100">
-                  <h4 className="font-headline-md text-headline-md">Necesidades Prioritarias</h4>
-                </div>
-                <div className="p-6 space-y-6">
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-blue-600" data-icon="water_drop">water_drop</span>
-                        <span className="text-sm font-bold">Agua Potable</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">75% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-600 rounded-full" style={{ width: '75%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-green-600" data-icon="medication">medication</span>
-                        <span className="text-sm font-bold">Insumos Médicos</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">42% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-600 rounded-full" style={{ width: '42%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-orange-600" data-icon="restaurant">restaurant</span>
-                        <span className="text-sm font-bold">Raciones Alimenticias</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">90% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-orange-600 rounded-full" style={{ width: '90%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-purple-600" data-icon="home">home</span>
-                        <span className="text-sm font-bold">Kits de Refugio</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">28% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-purple-600 rounded-full" style={{ width: '28%' }}></div>
-                    </div>
-                  </div>
-                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors" onClick={() => alert('Cargando detalles de inventario...')}>Ver Detalles de Inventario</button>
-                </div>
-              </div>
-              <div className="bg-primary-container rounded-xl p-6 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-                <div className="relative z-10">
-                  <span className="material-symbols-outlined text-3xl mb-4" data-icon="volunteer_activism">volunteer_activism</span>
-                  <h4 className="text-lg font-bold mb-2">Impulsa una Campaña</h4>
-                  <p className="text-blue-100 text-sm mb-6 leading-relaxed">Las necesidades de Refugio han aumentado un 15% esta semana. Crea una nueva campaña de recaudación focalizada.</p>
-                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors" onClick={() => alert('Iniciando nueva campaña...')}>Iniciar Campaña</button>
-                </div>
-              </div>
-            </div>
-          </div>
+  useEffect(() => {
+    cargarDonaciones();
+    cargarNecesidades();
+  }, []);
+
+  const cargarDonaciones = async () => {
+    try {
+      const response = await apiDonaciones.get('/donaciones');
+      const data = response.data;
+      setDonaciones(data);
+      const suma = data.reduce((acc, d) => acc + d.cantidad, 0);
+      setTotalCantidad(suma);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const cargarNecesidades = async () => {
+    try {
+      const response = await apiNecesidades.get('/necesidades');
+      setNecesidades(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-[#F1F5F9] p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header Section */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-black text-slate-800 tracking-tight mb-2">Panel de Control</h1>
+          <p className="text-slate-500 font-medium italic">Visión estratégica de la ayuda humanitaria en tiempo real.</p>
         </div>
-      </main>
-      <div className="fixed bottom-8 right-8 z-50">
-        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group" onClick={() => alert('Acción rápida global...')}>
-          <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform" data-icon="add">add</span>
-        </button>
+
+        {/* Status Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          
+          <div className="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-[#1A4F8B] flex items-center justify-between">
+            <div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Total Donaciones</p>
+              <p className="text-4xl font-black text-[#1A4F8B]">{donaciones.length}</p>
+            </div>
+            <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1A4F8B]">
+              <span className="material-symbols-outlined text-3xl">volunteer_activism</span>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-green-500 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Artículos Recibidos</p>
+              <p className="text-4xl font-black text-green-600">{totalCantidad}</p>
+            </div>
+            <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
+              <span className="material-symbols-outlined text-3xl">inventory_2</span>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl shadow-sm border-b-4 border-orange-500 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Necesidades Críticas</p>
+              <p className="text-4xl font-black text-orange-600">{necesidades.length}</p>
+            </div>
+            <div className="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600">
+              <span className="material-symbols-outlined text-3xl">emergency</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          
+          {/* Section: Donations */}
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h2 className="text-xl font-bold text-[#1A4F8B] flex items-center gap-2">
+                <span className="material-symbols-outlined">history</span>
+                Donaciones Recientes
+              </h2>
+              <Link to="/registro" className="text-xs font-bold text-blue-600 hover:underline">Ver todas</Link>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {donaciones.length === 0 ? (
+                  <p className="text-center text-slate-400 py-10">No hay donaciones registradas.</p>
+                ) : (
+                  donaciones.slice(0, 5).map((d) => (
+                    <div key={d.id} className="flex items-center gap-4 p-4 rounded-2xl bg-blue-50/30 border border-blue-100/50 hover:bg-blue-50 transition-colors">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#1A4F8B] shadow-sm">
+                        <span className="material-symbols-outlined">local_shipping</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold text-slate-700">{d.tipo}</p>
+                        <p className="text-xs text-slate-500">Origen: {d.origen}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-black text-[#1A4F8B]">+{d.cantidad}</p>
+                        <p className="text-[10px] text-slate-400 uppercase font-bold">Unidades</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Section: Needs/Reports */}
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+              <h2 className="text-xl font-bold text-orange-600 flex items-center gap-2">
+                <span className="material-symbols-outlined">warning</span>
+                Necesidades en Terreno
+              </h2>
+              <Link to="/reportes" className="text-xs font-bold text-orange-600 hover:underline">Gestionar reportes</Link>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {necesidades.length === 0 ? (
+                  <p className="text-center text-slate-400 py-10">No hay reportes de necesidad.</p>
+                ) : (
+                  necesidades.slice(0, 5).map((n) => (
+                    <div key={n.id} className="flex items-center gap-4 p-4 rounded-2xl bg-orange-50/30 border border-orange-100/50 hover:bg-orange-50 transition-colors">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-orange-600 shadow-sm">
+                        <span className="material-symbols-outlined">person_pin_circle</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold text-slate-700">{n.descripcion}</p>
+                        <p className="text-xs text-slate-500">Ubicación: {n.ubicacion}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-black text-orange-600">{n.cantidadNecesaria}</p>
+                        <p className="text-[10px] text-slate-400 uppercase font-bold">Requerido</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </>
+    </main>
   );
 }
