@@ -6,22 +6,24 @@ export default function MapaNecesidades() {
     <div className="flex h-screen bg-background font-body-md text-on-background overflow-hidden">
 
       {/* Main Content Canvas */}
-      <main className="ml-64 flex-1 flex flex-col relative h-full">
+      <main className="flex-1 flex flex-col relative h-full">
         {/* TopAppBar */}
-        <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-40 h-16 flex justify-between items-center px-6 sticky top-0">
+        <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 z-30 h-16 flex justify-between items-center px-4 md:px-6 sticky top-0">
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" data-icon="search">search</span>
+            <div className="relative w-full max-w-md hidden sm:block">
+              <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
               <input className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Buscar regiones, necesidades o incidentes..." type="text"/>
             </div>
+            <button className="sm:hidden text-slate-500">
+              <span className="material-symbols-outlined notranslate">search</span>
+            </button>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 md:gap-6">
             <div className="flex items-center gap-4">
-              <span className="material-symbols-outlined text-slate-500 cursor-pointer hover:text-primary transition-colors" data-icon="notifications">notifications</span>
-              <span className="material-symbols-outlined text-slate-500 cursor-pointer hover:text-primary transition-colors" data-icon="help_outline">help_outline</span>
+              <span className="material-symbols-outlined notranslate text-slate-500 cursor-pointer hover:text-primary transition-colors">notifications</span>
             </div>
             <Link to="/perfil" className="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-white shadow-sm block">
-              <img alt="Avatar del usuario administrativo" data-alt="Close-up portrait of a professional man in his 40s with a kind expression and clean-cut appearance for an administrative profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9MTjmtOdGzPBT-IUjsP7J_pjEK1WUyNVYGBUmGZBQ6wCZ3FmdpvKUC1SbCwD2iX057iKkxsqzFEqoJfUvUHrVft7D8gTDJ-5T0dTz-Hbp0WdeZjkBz_r4MkwpfjecQDqvZrCsSaRsv6syXRLvCLhRvrnUBNWOtk9Fmzl9h4-nZHpXF3dA_mjpM0kOsD4YsSr9DhGqRYDW0b_cq29FntS79ZL3iYndUnWElkcy50dirZO9PN2xfPGZ_k9t7CvxFBTMgf8xhBZyviM"/>
+              <img alt="Avatar del usuario administrativo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9MTjmtOdGzPBT-IUjsP7J_pjEK1WUyNVYGBUmGZBQ6wCZ3FmdpvKUC1SbCwD2iX057iKkxsqzFEqoJfUvUHrVft7D8gTDJ-5T0dTz-Hbp0WdeZjkBz_r4MkwpfjecQDqvZrCsSaRsv6syXRLvCLhRvrnUBNWOtk9Fmzl9h4-nZHpXF3dA_mjpM0kOsD4YsSr9DhGqRYDW0b_cq29FntS79ZL3iYndUnWElkcy50dirZO9PN2xfPGZ_k9t7CvxFBTMgf8xhBZyviM"/>
             </Link>
           </div>
         </header>
@@ -29,7 +31,7 @@ export default function MapaNecesidades() {
         {/* Map Workspace Area */}
         <div className="flex-1 relative overflow-hidden bg-surface flex">
           {/* Filter Sidebar (Right side, overlay or docked) */}
-          <div className="w-80 h-full bg-white/90 backdrop-blur-md border-l border-slate-200 z-30 flex flex-col shadow-xl">
+          <div className="hidden lg:flex w-80 h-full bg-white/90 backdrop-blur-md border-l border-slate-200 z-30 flex-col shadow-xl">
             <div className="p-6 border-b border-slate-100">
               <h2 className="font-headline-md text-primary mb-1">Filtros de Red</h2>
               <p className="text-xs text-outline font-label-md">Personalizar vista de despliegue</p>

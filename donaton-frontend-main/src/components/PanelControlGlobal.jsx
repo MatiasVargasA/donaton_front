@@ -5,30 +5,30 @@ export default function PanelControlGlobal() {
   return (
     <>
 
-      <main className="ml-64 min-h-screen">
-        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-40 flex justify-between items-center w-full px-6">
+      <main className="min-h-screen">
+        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6">
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg" data-icon="search">search</span>
+            <div className="relative w-full max-w-md hidden sm:block">
+              <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
               <input className="w-full bg-slate-50 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#1A4F8B]/20" placeholder="Buscar ayuda, envíos o reportes..." type="text"/>
             </div>
+            <button className="sm:hidden text-slate-500">
+              <span className="material-symbols-outlined notranslate">search</span>
+            </button>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-6">
+            <div className="flex items-center gap-2 md:gap-4">
               <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80">
-                <span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-              </button>
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80">
-                <span className="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+                <span className="material-symbols-outlined notranslate">notifications</span>
               </button>
             </div>
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-6">
-              <div className="text-right">
+            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 md:pl-6">
+              <div className="text-right hidden xs:block">
                 <p className="text-sm font-bold text-on-surface leading-tight">Admin Central</p>
                 <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Coordinador Global</p>
               </div>
-              <Link to="/perfil" className="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
-                <img alt="Avatar del usuario administrativo" data-alt="professional portrait of a middle-aged administrative man with a neutral and confident expression in a clean studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
+              <Link to="/perfil" className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
+                <img alt="Avatar del usuario administrativo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
               </Link>
             </div>
           </div>
