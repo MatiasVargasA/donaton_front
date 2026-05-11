@@ -8,6 +8,7 @@ import MapaNecesidades from './components/MapaNecesidades';
 import PerfilUsuario from './components/PerfilUsuario';
 import Login from './components/Login';
 import { useAuth } from './AuthContext';
+import RegistroUsuario from './components/RegistroUsuario';
 import './App.css';
 
 function ProtectedRoute({ children }) {
@@ -40,13 +41,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route 
-          path="/*" 
+        <Route path="/registro-usuario" element={<RegistroUsuario />} />
+        <Route
+          path="/*"
           element={
             <ProtectedRoute>
               <MainLayout />
             </ProtectedRoute>
-          } 
+          }
         />
       </Routes>
     </Router>
