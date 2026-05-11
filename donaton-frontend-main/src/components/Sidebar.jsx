@@ -1,10 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 export default function Sidebar() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const baseLinkClasses = "flex items-center gap-3 px-4 py-3 hover:pl-5 transition-all duration-200 cursor-pointer";
   const activeClasses = "bg-white text-[#1A4F8B] font-bold border-r-4 border-[#1A4F8B] shadow-sm";
   const inactiveClasses = "text-slate-600 hover:bg-slate-100";
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside className="h-screen w-64 border-r fixed left-0 top-0 bg-slate-50 border-slate-200 z-50 flex flex-col py-6">
@@ -60,10 +68,13 @@ export default function Sidebar() {
           <span className="material-symbols-outlined" data-icon="settings">settings</span>
           <span className="font-public-sans text-sm tracking-wide">Configuración</span>
         </a>
-        <a className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer" href="#">
+        <button 
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 hover:pl-5 transition-all duration-200 cursor-pointer"
+        >
           <span className="material-symbols-outlined" data-icon="logout">logout</span>
           <span className="font-public-sans text-sm tracking-wide">Cerrar Sesión</span>
-        </a>
+        </button>
       </div>
     </aside>
   );
