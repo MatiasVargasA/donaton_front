@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import ReportesTerreno from './components/ReportesTerreno';
 import RegistroDonaciones from './components/RegistroDonaciones';
 import PanelControlGlobal from './components/PanelControlGlobal';
@@ -25,8 +26,9 @@ function MainLayout() {
   return (
     <div className="App flex flex-col md:flex-row min-h-screen">
       <Sidebar />
-      <div className="flex-1 pt-[72px] md:pt-0 md:ml-64 w-full max-w-[100vw] overflow-x-hidden">
-        <div className="w-full h-full">
+      <div className="flex-1 pt-[72px] md:pt-0 md:ml-[280px] w-full max-w-[100vw] overflow-x-hidden flex flex-col">
+        <Header />
+        <div className="w-full h-full flex-1 bg-surface">
           <Routes>
             <Route path="/" element={<PanelControlGlobal />} />
             <Route path="/mapa" element={<MapaNecesidades />} />
