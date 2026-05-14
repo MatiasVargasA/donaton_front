@@ -24,11 +24,11 @@ function ProtectedRoute({ children }) {
 
 function MainLayout() {
   return (
-    <div className="App flex flex-col md:flex-row min-h-screen">
+    <div className="d-flex w-100 min-vh-100">
       <Sidebar />
-      <div className="flex-1 pt-[72px] md:pt-0 md:ml-[280px] w-full max-w-[100vw] overflow-x-hidden flex flex-col">
+      <div className="main-content-wrapper flex-grow-1 w-100 overflow-hidden d-flex flex-column">
         <Header />
-        <div className="w-full h-full flex-1 bg-surface">
+        <div className="flex-grow-1 bg-light">
           <Routes>
             <Route path="/" element={<PanelControlGlobal />} />
             <Route path="/mapa" element={<MapaNecesidades />} />
