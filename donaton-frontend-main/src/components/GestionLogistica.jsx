@@ -60,43 +60,51 @@ export default function GestionLogistica() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'ENTREGADO': return 'bg-green-100 text-green-700 border-green-200';
-      case 'EN CAMINO': return 'bg-blue-100 text-blue-700 border-blue-200';
-      default: return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'ENTREGADO': return 'bg-success bg-opacity-10 text-success border border-success';
+      case 'EN CAMINO': return 'bg-primary bg-opacity-10 text-primary border border-primary';
+      default: return 'bg-warning bg-opacity-10 text-warning border border-warning';
+    }
+  };
+
+  const getStatusIconColor = (status) => {
+    switch (status) {
+      case 'ENTREGADO': return 'bg-success text-white';
+      case 'EN CAMINO': return 'bg-primary text-white';
+      default: return 'bg-warning text-dark';
     }
   };
 
   return (
-    <main className="min-h-screen bg-[#F1F5F9] pb-20">
+    <div className="container-fluid p-0 bg-light min-vh-100 pb-5">
       {/* Header Logistics */}
-      <div className="bg-[#0F172A] text-white py-14 px-8 mb-10 shadow-2xl">
-        <div className="max-w-6xl mx-auto flex items-center gap-8">
-          <div className="w-20 h-20 bg-blue-500 rounded-3xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-            <span className="material-symbols-outlined text-5xl">local_shipping</span>
+      <div className="bg-dark text-white py-5 px-4 mb-4 shadow">
+        <div className="container d-flex align-items-center gap-4">
+          <div className="bg-primary rounded d-flex align-items-center justify-content-center shadow" style={{ width: '80px', height: '80px' }}>
+            <span className="material-symbols-outlined fs-1">local_shipping</span>
           </div>
           <div>
-            <h1 className="text-5xl font-black tracking-tighter mb-2">Gestión Logística</h1>
-            <p className="text-slate-400 text-lg font-medium">Coordinación de despacho y transporte de ayuda humanitaria.</p>
+            <h1 className="display-4 fw-bold mb-1">Gestión Logística</h1>
+            <p className="fs-5 text-secondary mb-0">Coordinación de despacho y transporte de ayuda humanitaria.</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="container py-4">
+        <div className="row g-4">
 
-        {/* Form Column */}
-        <div className="lg:col-span-1">
-          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 sticky top-10">
-            <h2 className="text-2xl font-black text-slate-800 mb-8">Programar Envío</h2>
+          {/* Form Column */}
+          <div className="col-lg-4">
+            <form onSubmit={handleSubmit} className="card shadow-sm border-0 p-4 sticky-top rounded-4" style={{ top: '20px' }}>
+              <h3 className="fw-bold text-dark mb-4">Programar Envío</h3>
 
-            <div className="space-y-6">
-              <div>
-                <label className="text-xs font-black text-slate-400 uppercase mb-3 block tracking-widest">Destino (Reporte Terreno)</label>
+              <div className="mb-4">
+                <label className="form-label small fw-bold text-secondary text-uppercase tracking-widest">Destino (Reporte Terreno)</label>
                 <select
                   name="destino"
                   value={formData.destino}
                   onChange={handleChange}
                   required
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all font-bold text-slate-700"
+                  className="form-select form-select-lg bg-light fw-bold text-dark"
                 >
                   <option value="">Seleccione destino...</option>
                   {necesidades.map((n) => (
@@ -106,23 +114,19 @@ export default function GestionLogistica() {
               </div>
 
               {formData.destino && (
-                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-                  <p className="font-bold text-blue-800">
-                    Destino seleccionado:
-                  </p>
-                  <p className="text-sm text-slate-700">
-                    {formData.destino}
-                  </p>
+                <div className="alert alert-primary mb-4 p-3">
+                  <p className="fw-bold mb-1">Destino seleccionado:</p>
+                  <p className="small mb-0">{formData.destino}</p>
                 </div>
               )}
 
-              <div>
-                <label className="text-xs font-black text-slate-400 uppercase mb-3 block tracking-widest">Medio de Transporte</label>
+              <div className="mb-4">
+                <label className="form-label small fw-bold text-secondary text-uppercase tracking-widest">Medio de Transporte</label>
                 <select
                   name="transporte"
                   value={formData.transporte}
                   onChange={handleChange}
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all font-bold text-slate-700"
+                  className="form-select form-select-lg bg-light fw-bold text-dark"
                 >
                   <option value="Camión Institucional">Camión Institucional</option>
                   <option value="Vehículo de Rescate">Vehículo de Rescate</option>
@@ -131,8 +135,8 @@ export default function GestionLogistica() {
                 </select>
               </div>
 
-              <div>
-                <label className="text-xs font-black text-slate-400 uppercase mb-3 block tracking-widest">Cantidad a Despachar</label>
+              <div className="mb-4">
+                <label className="form-label small fw-bold text-secondary text-uppercase tracking-widest">Cantidad a Despachar</label>
                 <input
                   type="number"
                   name="cantidad"
@@ -140,74 +144,82 @@ export default function GestionLogistica() {
                   onChange={handleChange}
                   required
                   placeholder="Ej: 500"
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-blue-500 outline-none transition-all font-bold"
+                  className="form-control form-control-lg bg-light fw-bold"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-600/20 hover:bg-blue-700 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
               >
                 {loading ? 'Procesando...' : 'Iniciar Despacho'}
               </button>
+            </form>
+          </div>
+
+          {/* Tracking List Column */}
+          <div className="col-lg-8">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h2 className="fw-bold text-dark d-flex align-items-center gap-2 mb-0">
+                <span className="material-symbols-outlined text-primary fs-3">trolley</span>
+                Seguimiento de Envíos
+              </h2>
+              <button onClick={cargarDatos} className="btn btn-light border d-flex align-items-center justify-content-center text-secondary">
+                <span className="material-symbols-outlined">refresh</span>
+              </button>
             </div>
-          </form>
-        </div>
 
-        {/* Tracking List Column */}
-        <div className="lg:col-span-2">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-black text-slate-800 flex items-center gap-3">
-              <span className="material-symbols-outlined text-blue-600">trolley</span>
-              Seguimiento de Envíos
-            </h2>
-            <button onClick={cargarDatos} className="p-3 bg-white rounded-2xl border border-slate-200 text-slate-500 hover:text-blue-600 transition-colors">
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-          </div>
-
-          <div className="grid gap-6">
-            {envios.length === 0 ? (
-              <div className="bg-white rounded-[2.5rem] p-16 text-center border-2 border-dashed border-slate-200">
-                <span className="material-symbols-outlined text-7xl text-slate-200 mb-4">package</span>
-                <p className="text-slate-400 font-bold text-xl italic">No hay envíos programados actualmente.</p>
-              </div>
-            ) : (
-              envios.map((e) => (
-                <div key={e.id} className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex flex-col md:flex-row gap-6 items-center group hover:shadow-xl transition-all">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 ${getStatusColor(e.estado)}`}>
-                    <span className="material-symbols-outlined text-3xl">
-                      {e.transporte.includes('Avión') ? 'flight' : e.transporte.includes('Camión') ? 'local_shipping' : 'directions_car'}
-                    </span>
-                  </div>
-
-                  <div className="flex-1 text-center md:text-left">
-                    <div className="flex flex-col md:flex-row items-center gap-3 mb-1">
-                      <p className="text-xl font-black text-slate-800">{e.destino}</p>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black border ${getStatusColor(e.estado)}`}>
-                        {e.estado}
-                      </span>
-                    </div>
-                    <p className="text-sm text-slate-500 font-bold uppercase tracking-tight">Vía: {e.transporte}</p>
-                  </div>
-
-                  <div className="w-full md:w-auto flex items-center justify-between md:justify-end gap-10 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-10">
-                    <div className="text-center">
-                      <p className="text-2xl font-black text-blue-600">{e.cantidad}</p>
-                      <p className="text-[10px] font-black text-slate-400 uppercase">Unidades</p>
-                    </div>
-                    <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-300 group-hover:text-blue-500 transition-colors">
-                      <span className="material-symbols-outlined">arrow_forward_ios</span>
-                    </div>
-                  </div>
+            <div className="d-flex flex-column gap-4">
+              {envios.length === 0 ? (
+                <div className="card border-0 shadow-sm p-5 text-center bg-white border border-secondary border-opacity-25 border-dashed rounded-4">
+                  <span className="material-symbols-outlined display-1 text-secondary opacity-50 mb-3">package</span>
+                  <p className="text-secondary fw-bold fs-5 font-italic mb-0">No hay envíos programados actualmente.</p>
                 </div>
-              ))
-            )}
-          </div>
-        </div>
+              ) : (
+                envios.map((e) => (
+                  <div key={e.id} className="card border-0 shadow-sm p-4 rounded-4 hover-shadow transition">
+                    <div className="row align-items-center">
+                      <div className="col-auto">
+                        <div className={`rounded d-flex align-items-center justify-content-center shadow-sm ${getStatusIconColor(e.estado)}`} style={{ width: '64px', height: '64px' }}>
+                          <span className="material-symbols-outlined fs-2">
+                            {e.transporte.includes('Avión') ? 'flight' : e.transporte.includes('Camión') ? 'local_shipping' : 'directions_car'}
+                          </span>
+                        </div>
+                      </div>
 
+                      <div className="col text-center text-md-start mb-3 mb-md-0">
+                        <div className="d-flex flex-column flex-md-row align-items-md-center gap-2 mb-1">
+                          <h5 className="fw-bold text-dark mb-0">{e.destino}</h5>
+                          <span className={`badge rounded-pill ${getStatusColor(e.estado)}`}>
+                            {e.estado}
+                          </span>
+                        </div>
+                        <p className="small text-secondary fw-bold text-uppercase mb-0">Vía: {e.transporte}</p>
+                      </div>
+
+                      <div className="col-12 col-md-auto d-flex align-items-center justify-content-between justify-content-md-end gap-4 border-top border-md-top-0 border-md-start pt-3 pt-md-0 ps-md-4">
+                        <div className="text-center">
+                          <p className="fs-3 fw-bold text-primary mb-0">{e.cantidad}</p>
+                          <p className="small text-secondary fw-bold text-uppercase mb-0" style={{ fontSize: '10px' }}>Unidades</p>
+                        </div>
+                        <button className="btn btn-light rounded d-flex align-items-center justify-content-center text-secondary p-2">
+                          <span className="material-symbols-outlined">arrow_forward_ios</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
-    </main>
+      <style>{`
+        .hover-shadow:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; transform: translateY(-2px); }
+        .border-dashed { border-style: dashed !important; }
+      `}</style>
+    </div>
   );
 }

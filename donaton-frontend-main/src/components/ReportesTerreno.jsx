@@ -50,70 +50,70 @@ export default function ReportesTerreno() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FFFBF7] pb-12">
+    <div className="container-fluid p-0 bg-light min-vh-100">
       {/* Emergency Header */}
-      <div className="bg-gradient-to-r from-orange-600 to-amber-500 text-white py-12 px-8 mb-10 shadow-lg shadow-orange-900/10">
-        <div className="max-w-4xl mx-auto flex items-center gap-6">
-          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md">
-            <span className="material-symbols-outlined text-4xl">emergency_share</span>
+      <div className="bg-danger text-white py-5 px-4 mb-4 shadow" style={{ background: 'linear-gradient(to right, #e65100, #ff8f00)' }}>
+        <div className="container d-flex align-items-center gap-4">
+          <div className="bg-white bg-opacity-25 rounded d-flex align-items-center justify-content-center" style={{ width: '64px', height: '64px' }}>
+            <span className="material-symbols-outlined fs-1">emergency_share</span>
           </div>
           <div>
-            <h1 className="text-4xl font-black tracking-tight">Reportes de Terreno</h1>
-            <p className="text-orange-50 opacity-90">Gestión de alertas y necesidades críticas en zonas de emergencia.</p>
+            <h1 className="display-5 fw-bold mb-0">Reportes de Terreno</h1>
+            <p className="fs-5 text-white-50 mb-0">Gestión de alertas y necesidades críticas en zonas de emergencia.</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-5 gap-10">
+      <div className="container py-4">
+        <div className="row g-4">
+          
+          {/* List Column */}
+          <div className="col-lg-7 order-2 order-lg-1">
+            <h4 className="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+              <span className="material-symbols-outlined text-danger">notification_important</span>
+              Alertas Activas
+            </h4>
 
-        {/* List Column (Priority on mobile) */}
-        <div className="lg:col-span-3 order-2 lg:order-1">
-          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-orange-600">notification_important</span>
-            Alertas Activas
-          </h2>
-
-          <div className="space-y-4">
-            {necesidades.length === 0 ? (
-              <div className="bg-white rounded-3xl p-10 text-center border-2 border-dashed border-orange-100">
-                <p className="text-slate-400 font-medium italic">No hay reportes de necesidad activos.</p>
-              </div>
-            ) : (
-              necesidades.map((n) => (
-                <div key={n.id} className="bg-white p-6 rounded-3xl shadow-sm border-l-8 border-orange-500 flex flex-col gap-4 hover:shadow-md transition-all">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-lg font-black text-slate-800">{n.descripcion}</p>
-                      <div className="flex items-center gap-2 text-slate-400 mt-1">
-                        <span className="material-symbols-outlined text-sm">location_on</span>
-                        <span className="text-xs font-bold uppercase tracking-wider">{n.ubicacion}</span>
-                      </div>
-                    </div>
-                    <div className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">
-                      Urgente
-                    </div>
-                  </div>
-
-                  <div className="bg-orange-50/50 p-4 rounded-2xl flex justify-between items-center border border-orange-100/50">
-                    <span className="text-sm font-bold text-slate-500 italic">Déficit estimado</span>
-                    <span className="text-2xl font-black text-orange-600">
-                      {n.cantidadNecesaria} <span className="text-xs font-bold opacity-60">Requerido</span>
-                    </span>
-                  </div>
+            <div className="d-flex flex-column gap-3">
+              {necesidades.length === 0 ? (
+                <div className="card border-0 shadow-sm p-5 text-center bg-white border border-danger border-opacity-25 border-dashed">
+                  <p className="text-secondary font-italic mb-0">No hay reportes de necesidad activos.</p>
                 </div>
-              ))
-            )}
+              ) : (
+                necesidades.map((n) => (
+                  <div key={n.id} className="card border-0 shadow-sm border-start border-4 border-danger hover-shadow transition p-4">
+                    <div className="d-flex justify-content-between align-items-start mb-3">
+                      <div>
+                        <h5 className="fw-bold text-dark mb-1">{n.descripcion}</h5>
+                        <div className="d-flex align-items-center gap-1 text-secondary small">
+                          <span className="material-symbols-outlined fs-6">location_on</span>
+                          <span className="fw-bold text-uppercase">{n.ubicacion}</span>
+                        </div>
+                      </div>
+                      <span className="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-1 text-uppercase">
+                        Urgente
+                      </span>
+                    </div>
+
+                    <div className="bg-danger bg-opacity-10 p-3 rounded d-flex justify-content-between align-items-center border border-danger border-opacity-25">
+                      <span className="small fw-bold text-secondary font-italic">Déficit estimado</span>
+                      <span className="fs-4 fw-bold text-danger mb-0">
+                        {n.cantidadNecesaria} <span className="small opacity-75">Requerido</span>
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Form Column */}
-        <div className="lg:col-span-2 order-1 lg:order-2">
-          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-3xl shadow-xl border border-orange-50 sticky top-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-6">Nuevo Reporte</h2>
+          {/* Form Column */}
+          <div className="col-lg-5 order-1 order-lg-2">
+            <form onSubmit={handleSubmit} className="card shadow-sm border-0 border-top border-4 border-warning p-4 sticky-top" style={{ top: '20px' }}>
+              <h4 className="fw-bold text-dark mb-4">Nuevo Reporte</h4>
 
-            <div className="space-y-5">
-              <div>
-                <label className="text-xs font-bold text-orange-400 uppercase mb-2 block">Descripción de Necesidad</label>
+              <div className="mb-3">
+                <label className="form-label small fw-bold text-warning text-uppercase">Descripción de Necesidad</label>
                 <textarea
                   name="descripcion"
                   value={formData.descripcion}
@@ -121,12 +121,13 @@ export default function ReportesTerreno() {
                   required
                   rows="3"
                   placeholder="Ej: Se requieren 500 litros de agua potable para sector norte."
-                  className="w-full p-4 bg-orange-50/30 border-2 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all resize-none"
+                  className="form-control form-control-lg bg-warning bg-opacity-10 border-0"
+                  style={{ resize: 'none' }}
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-orange-400 uppercase mb-2 block">Población Afectada / Unidades</label>
+              <div className="mb-3">
+                <label className="form-label small fw-bold text-warning text-uppercase">Población Afectada / Unidades</label>
                 <input
                   type="number"
                   name="cantidadNecesaria"
@@ -134,13 +135,13 @@ export default function ReportesTerreno() {
                   onChange={handleChange}
                   required
                   placeholder="0"
-                  className="w-full p-4 bg-orange-50/30 border-2 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all"
+                  className="form-control form-control-lg bg-warning bg-opacity-10 border-0"
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-orange-400 uppercase mb-2 block">Ubicación Geográfica</label>
-                <div className="relative">
+              <div className="mb-4">
+                <label className="form-label small fw-bold text-warning text-uppercase">Ubicación Geográfica</label>
+                <div className="position-relative">
                   <input
                     type="text"
                     name="ubicacion"
@@ -148,24 +149,28 @@ export default function ReportesTerreno() {
                     onChange={handleChange}
                     required
                     placeholder="Ej: Valparaíso, Sector Viña"
-                    className="w-full p-4 pl-12 bg-orange-50/30 border-2 border-transparent rounded-2xl focus:bg-white focus:border-orange-500 outline-none transition-all"
+                    className="form-control form-control-lg bg-warning bg-opacity-10 border-0 ps-5"
                   />
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-orange-400">near_me</span>
+                  <span className="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-warning">near_me</span>
                 </div>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-orange-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                className="btn btn-warning btn-lg w-100 fw-bold text-dark border-0 shadow"
+                style={{ background: 'linear-gradient(to right, #ff8f00, #ffc107)' }}
               >
                 {loading ? 'Enviando Alerta...' : 'Emitir Reporte'}
               </button>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
 
+        </div>
       </div>
-    </main>
+      <style>{`
+        .hover-shadow:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+      `}</style>
+    </div>
   );
 }

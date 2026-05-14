@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { apiDonaciones } from '../api';
 import toast from 'react-hot-toast';
 
@@ -36,21 +35,12 @@ export default function RegistroDonaciones() {
     try {
       const response = await apiDonaciones.post('/donaciones', formData);
       if (response.status === 200 || response.status === 201) {
-
         toast.success('Donación registrada correctamente');
-
-        setFormData({
-          tipo: '',
-          cantidad: '',
-          origen: ''
-        });
-
+        setFormData({ tipo: '', cantidad: '', origen: '' });
         cargarDonaciones();
-
       } else {
         toast.error('Error al registrar donación');
       }
-
     } catch (error) {
       console.error(error);
       toast.error('Error de conexión con el servicio de donaciones');
@@ -71,29 +61,28 @@ export default function RegistroDonaciones() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC] pb-12">
-      <div className="bg-[#1A4F8B] text-white py-12 px-8 mb-10">
-        <div className="max-w-4xl mx-auto flex items-center gap-6">
-          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md">
-            <span className="material-symbols-outlined text-4xl">inventory</span>
+    <div className="container-fluid p-0 bg-light min-vh-100">
+      <div className="bg-primary text-white py-5 px-4 mb-4 shadow">
+        <div className="container d-flex align-items-center gap-4">
+          <div className="bg-white bg-opacity-25 rounded d-flex align-items-center justify-content-center" style={{ width: '64px', height: '64px' }}>
+            <span className="material-symbols-outlined fs-1">inventory</span>
           </div>
           <div>
-            <h1 className="text-4xl font-black tracking-tight">Gestión de Inventario</h1>
-            <p className="text-blue-100 opacity-80">Registra el ingreso de ayuda humanitaria al sistema.</p>
+            <h1 className="display-5 fw-bold mb-0">Gestión de Inventario</h1>
+            <p className="fs-5 text-white-50 mb-0">Registra el ingreso de ayuda humanitaria al sistema.</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-5 gap-10">
-        
-        {/* Form Column */}
-        <div className="lg:col-span-2">
-          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 sticky top-10">
-            <h2 className="text-xl font-bold text-slate-800 mb-6">Nueva Donación</h2>
-            
-            <div className="space-y-5">
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase mb-2 block">Tipo de Ayuda</label>
+      <div className="container py-4">
+        <div className="row g-4">
+          {/* Form Column */}
+          <div className="col-lg-5">
+            <form onSubmit={handleSubmit} className="card shadow-sm border-0 p-4 sticky-top" style={{ top: '20px' }}>
+              <h4 className="fw-bold text-dark mb-4">Nueva Donación</h4>
+              
+              <div className="mb-3">
+                <label className="form-label small fw-bold text-secondary text-uppercase">Tipo de Ayuda</label>
                 <input
                   type="text"
                   name="tipo"
@@ -101,12 +90,12 @@ export default function RegistroDonaciones() {
                   onChange={handleChange}
                   required
                   placeholder="Ej: Alimentos No Perecibles"
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1A4F8B] outline-none transition-all"
+                  className="form-control form-control-lg bg-light"
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase mb-2 block">Cantidad (Unidades)</label>
+              <div className="mb-3">
+                <label className="form-label small fw-bold text-secondary text-uppercase">Cantidad (Unidades)</label>
                 <input
                   type="number"
                   name="cantidad"
@@ -114,12 +103,12 @@ export default function RegistroDonaciones() {
                   onChange={handleChange}
                   required
                   placeholder="0"
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1A4F8B] outline-none transition-all"
+                  className="form-control form-control-lg bg-light"
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase mb-2 block">Institución de Origen</label>
+              <div className="mb-4">
+                <label className="form-label small fw-bold text-secondary text-uppercase">Institución de Origen</label>
                 <input
                   type="text"
                   name="origen"
@@ -127,64 +116,69 @@ export default function RegistroDonaciones() {
                   onChange={handleChange}
                   required
                   placeholder="Ej: Banco de Alimentos"
-                  className="w-full p-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1A4F8B] outline-none transition-all"
+                  className="form-control form-control-lg bg-light"
                 />
               </div>
 
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full bg-[#1A4F8B] text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-blue-900/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+                className="btn btn-primary btn-lg w-100 fw-bold"
               >
                 {loading ? 'Procesando...' : 'Registrar Ingreso'}
               </button>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
 
-        {/* List Column */}
-        <div className="lg:col-span-3">
-          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#1A4F8B]">list_alt</span>
-            Últimos Ingresos
-          </h2>
-          
-          <div className="space-y-4">
-            {donaciones.length === 0 ? (
-              <div className="bg-white rounded-3xl p-10 text-center border-2 border-dashed border-slate-200">
-                <p className="text-slate-400">No hay registros de donaciones aún.</p>
-              </div>
-            ) : (
-              donaciones.map((d) => (
-                <div key={d.id} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group hover:shadow-md transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-50 text-[#1A4F8B] rounded-xl flex items-center justify-center">
-                      <span className="material-symbols-outlined">package_2</span>
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-700">{d.tipo}</p>
-                      <p className="text-xs text-slate-400">{d.origen}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <div className="text-right">
-                      <p className="text-xl font-black text-[#1A4F8B]">{d.cantidad}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase">Unid.</p>
-                    </div>
-                    <button 
-                      onClick={() => eliminarDonacion(d.id)}
-                      className="text-slate-300 hover:text-red-500 transition-colors"
-                    >
-                      <span className="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
+          {/* List Column */}
+          <div className="col-lg-7">
+            <h4 className="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+              <span className="material-symbols-outlined text-primary">list_alt</span>
+              Últimos Ingresos
+            </h4>
+            
+            <div className="d-flex flex-column gap-3">
+              {donaciones.length === 0 ? (
+                <div className="card border-0 shadow-sm p-5 text-center bg-white border border-secondary border-opacity-25 border-dashed">
+                  <p className="text-secondary mb-0">No hay registros de donaciones aún.</p>
                 </div>
-              ))
-            )}
+              ) : (
+                donaciones.map((d) => (
+                  <div key={d.id} className="card border-0 shadow-sm p-3 hover-shadow transition">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center gap-3">
+                        <div className="bg-primary bg-opacity-10 text-primary rounded d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
+                          <span className="material-symbols-outlined">package_2</span>
+                        </div>
+                        <div>
+                          <p className="fw-bold text-dark mb-0">{d.tipo}</p>
+                          <p className="small text-secondary mb-0">{d.origen}</p>
+                        </div>
+                      </div>
+                      <div className="d-flex align-items-center gap-4">
+                        <div className="text-end">
+                          <p className="fs-4 fw-bold text-primary mb-0">{d.cantidad}</p>
+                          <p className="small text-secondary text-uppercase fw-bold mb-0" style={{ fontSize: '10px' }}>Unid.</p>
+                        </div>
+                        <button 
+                          onClick={() => eliminarDonacion(d.id)}
+                          className="btn btn-link text-secondary hover-text-danger p-0"
+                        >
+                          <span className="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
-
       </div>
-    </main>
+      <style>{`
+        .hover-shadow:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+        .hover-text-danger:hover { color: #dc3545!important; }
+      `}</style>
+    </div>
   );
 }

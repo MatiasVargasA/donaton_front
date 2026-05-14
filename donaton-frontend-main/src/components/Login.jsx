@@ -14,25 +14,17 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
-
     setError('');
     setLoading(true);
 
     try {
-
-      const response = await api.post(
-        '/auth/login',
-        {
-          correo: email,
-          password: password
-        }
-      );
+      const response = await api.post('/auth/login', {
+        correo: email,
+        password: password
+      });
 
       const token = response.data.token;
-
-      // Usamos los datos reales que devuelve tu backend
       const userData = {
         nombre: response.data.nombre || response.data.user?.nombre || email.split('@')[0],
         correo: response.data.correo || response.data.user?.correo || email,
@@ -42,67 +34,57 @@ export default function Login() {
 
       login(userData, token);
       toast.success(`¡Bienvenido de nuevo, ${userData.nombre}!`);
-
       navigate('/');
-
     } catch (error) {
-
       console.error(error);
       toast.error('Credenciales incorrectas. Intenta de nuevo.');
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
   return (
-    <div className="min-h-screen flex items-stretch text-on-surface w-full bg-background absolute inset-0 z-50 overflow-y-auto">
-      <main className="flex w-full min-h-full">
-        {/* Left Panel: Imagery & Brand Message */}
-        <section className="hidden lg:flex lg:w-1/2 relative items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <img className="w-full h-full object-cover" data-alt="Humanitarian workers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8rqC4imeIBb5KpFUCatjl2htLsDTa58QM7P4T-xF30ZJwr8Fv9Wt4aitT2S8nhhgnROymQE2IOmjP7kefCQOD2UOLBQoXZLWj142AflX6w4eTRNufMZY3bQ7ATtcNPk9pyRnuBbPDSdNPwgpFJOTmdVv7GcER1kaMJdJEMQyi43QupybfabmH5q7fzM-6jPVDLRfTgT0WCeNGe3bL-TqrOSQ11RsQJ0wOhW8Ad_C3jMbUEb5IaXqZRL0ZCgC3Ih7RGlTtUXb9GsY" />
-            <div className="absolute inset-0 bg-primary/40 mix-blend-multiply"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
+    <div className="container-fluid p-0 vh-100 bg-light position-fixed top-0 start-0 z-3" style={{ overflowY: 'auto' }}>
+      <div className="row g-0 min-vh-100">
+        {/* Left Panel */}
+        <div className="col-lg-6 d-none d-lg-flex position-relative align-items-center justify-content-center overflow-hidden">
+          <div className="position-absolute w-100 h-100 start-0 top-0 z-0">
+            <img className="w-100 h-100" style={{ objectFit: 'cover' }} alt="Humanitarian workers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8rqC4imeIBb5KpFUCatjl2htLsDTa58QM7P4T-xF30ZJwr8Fv9Wt4aitT2S8nhhgnROymQE2IOmjP7kefCQOD2UOLBQoXZLWj142AflX6w4eTRNufMZY3bQ7ATtcNPk9pyRnuBbPDSdNPwgpFJOTmdVv7GcER1kaMJdJEMQyi43QupybfabmH5q7fzM-6jPVDLRfTgT0WCeNGe3bL-TqrOSQ11RsQJ0wOhW8Ad_C3jMbUEb5IaXqZRL0ZCgC3Ih7RGlTtUXb9GsY" />
+            <div className="position-absolute w-100 h-100 start-0 top-0 bg-primary opacity-50 mix-blend-multiply"></div>
           </div>
-          <div className="relative z-10 px-gutter max-w-2xl text-white text-left">
-            <h1 className="font-display-lg text-[48px] leading-[56px] font-bold mb-stack-sm">Donaton: Conectando Ayuda con Necesidad</h1>
-            <p className="font-body-lg text-[18px] leading-[28px] opacity-90 max-w-lg">
+          <div className="position-relative z-1 px-5 text-white" style={{ maxWidth: '600px' }}>
+            <h1 className="display-4 fw-bold mb-4">Donaton: Conectando Ayuda con Necesidad</h1>
+            <p className="fs-5 opacity-75">
               Optimizando la respuesta humanitaria global mediante una coordinación institucional precisa y transparente.
             </p>
           </div>
-        </section>
+        </div>
 
         {/* Right Panel: Login Form */}
-        <section className="w-full lg:w-1/2 flex items-center justify-center bg-surface-container-lowest p-6 md:p-12 overflow-y-auto">
-          <div className="w-full max-w-md flex flex-col gap-6 text-left my-auto">
-            {/* Brand Header */}
-            <div className="flex flex-col gap-2 items-center lg:items-start">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="material-symbols-outlined notranslate text-primary text-4xl">volunteer_activism</span>
-                <span className="font-headline-lg text-3xl font-bold text-primary tracking-tight">Donaton</span>
+        <div className="col-12 col-lg-6 d-flex align-items-center justify-content-center bg-white p-4 p-md-5">
+          <div className="w-100" style={{ maxWidth: '450px' }}>
+            <div className="text-center text-lg-start mb-5">
+              <div className="d-flex align-items-center justify-content-center justify-content-lg-start gap-2 mb-3">
+                <span className="material-symbols-outlined text-primary fs-1">volunteer_activism</span>
+                <span className="fs-2 fw-bold text-primary">Donaton</span>
               </div>
-              <h2 className="font-headline-md text-2xl font-semibold text-on-surface">Bienvenido de nuevo</h2>
-              <p className="font-body-md text-on-surface-variant">Inicie sesión en su cuenta institucional</p>
+              <h2 className="fs-4 fw-bold text-dark">Bienvenido de nuevo</h2>
+              <p className="text-secondary">Inicie sesión en su cuenta institucional</p>
             </div>
 
-            {/* Form */}
-            <form className="flex flex-col gap-6" onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="d-flex flex-column gap-4">
               {error && (
-                <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200">
+                <div className="alert alert-danger py-2 px-3 small border-danger text-danger">
                   {error}
                 </div>
               )}
 
-              {/* Email Field */}
-              <div className="flex flex-col gap-1">
-                <label className="font-label-md text-xs font-semibold text-outline uppercase tracking-wider" htmlFor="email">Correo Electrónico Institucional</label>
-                <div className="relative">
-                  <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">mail</span>
+              <div className="form-group">
+                <label className="small fw-bold text-secondary text-uppercase mb-1" htmlFor="email">Correo Electrónico Institucional</label>
+                <div className="position-relative">
+                  <span className="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">mail</span>
                   <input
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-md text-on-surface"
+                    className="form-control form-control-lg ps-5"
                     id="email"
                     name="email"
                     placeholder="ejemplo@organizacion.org"
@@ -114,16 +96,15 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Password Field */}
-              <div className="flex flex-col gap-1">
-                <div className="flex justify-between items-center">
-                  <label className="font-label-md text-xs font-semibold text-outline uppercase tracking-wider" htmlFor="password">Contraseña</label>
-                  <a className="text-xs font-medium text-primary hover:underline transition-all" href="#" onClick={(e) => { e.preventDefault(); alert('Enviando enlace de recuperación...'); }}>¿Olvidó su contraseña?</a>
+              <div className="form-group">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="small fw-bold text-secondary text-uppercase" htmlFor="password">Contraseña</label>
+                  <a className="small text-primary text-decoration-none" href="#" onClick={(e) => { e.preventDefault(); alert('Enviando enlace de recuperación...'); }}>¿Olvidó su contraseña?</a>
                 </div>
-                <div className="relative">
-                  <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl">lock</span>
+                <div className="position-relative">
+                  <span className="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">lock</span>
                   <input
-                    className="w-full pl-10 pr-10 py-3 bg-white border border-outline-variant rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-md text-on-surface"
+                    className="form-control form-control-lg ps-5 pe-5"
                     id="password"
                     name="password"
                     placeholder="••••••••"
@@ -132,53 +113,48 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  <button className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button" onClick={() => setShowPassword(!showPassword)}>
-                    <span className="material-symbols-outlined notranslate text-xl">{showPassword ? "visibility_off" : "visibility"}</span>
+                  <button className="btn btn-link position-absolute top-50 end-0 translate-middle-y text-secondary text-decoration-none" type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <span className="material-symbols-outlined">{showPassword ? "visibility_off" : "visibility"}</span>
                   </button>
                 </div>
               </div>
 
-              {/* Action Button */}
-              <button disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-on-primary py-4 rounded-lg font-bold shadow-sm transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed" type="submit">
+              <button disabled={loading} className="btn btn-primary btn-lg w-100 fw-bold mt-2" type="submit">
                 {loading ? 'Ingresando...' : 'Acceder al Sistema'}
               </button>
             </form>
 
-            {/* Divider */}
-            <div className="flex items-center gap-4 my-2">
-              <div className="h-px bg-outline-variant flex-grow"></div>
-              <span className="text-xs font-semibold text-outline">O</span>
-              <div className="h-px bg-outline-variant flex-grow"></div>
+            <div className="d-flex align-items-center gap-3 my-4">
+              <hr className="flex-grow-1 text-secondary" />
+              <span className="small text-secondary fw-bold">O</span>
+              <hr className="flex-grow-1 text-secondary" />
             </div>
 
-            {/* SSO Login */}
-            <button className="w-full flex items-center justify-center gap-3 border border-outline-variant bg-white py-3 rounded-lg font-medium text-on-surface hover:bg-slate-50 transition-all" type="button" onClick={() => alert('Iniciando sesión con proveedor SSO...')}>
-              <span className="material-symbols-outlined notranslate text-xl text-primary">id_card</span>
+            <button className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-3 fw-bold" type="button" onClick={() => alert('Iniciando sesión con proveedor SSO...')}>
+              <span className="material-symbols-outlined text-primary">id_card</span>
               Inicio de sesión con SSO
             </button>
 
-            {/* Registration Link */}
-            <div className="text-center mt-2">
-              <p className="text-sm text-on-surface-variant">
+            <div className="text-center mt-4">
+              <p className="small text-secondary">
                 ¿No tienes una cuenta?
-                <Link className="text-primary font-bold ml-1 hover:underline" to="/registro-usuario">
+                <Link className="text-primary fw-bold ms-1 text-decoration-none" to="/registro-usuario">
                   Crear Cuenta Institucional
                 </Link>
               </p>
             </div>
 
-            {/* Footer */}
-            <footer className="mt-8 text-center text-xs text-outline leading-relaxed">
-              <p>
-                © 2024 Donaton Humanitarian Platform.
-                <br />
-                <a className="hover:text-primary underline mx-1" href="#">Términos de Servicio</a> |
-                <a className="hover:text-primary underline mx-1" href="#">Soporte</a>
-              </p>
+            <footer className="mt-5 text-center small text-secondary">
+              <p className="mb-0">© 2024 Donaton Humanitarian Platform.</p>
+              <div className="d-flex justify-content-center gap-2 mt-1">
+                <a className="text-secondary text-decoration-none hover-text-primary" href="#">Términos de Servicio</a>
+                <span>|</span>
+                <a className="text-secondary text-decoration-none hover-text-primary" href="#">Soporte</a>
+              </div>
             </footer>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
   );
 }

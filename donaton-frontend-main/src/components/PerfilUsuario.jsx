@@ -5,114 +5,118 @@ export default function PerfilUsuario() {
   const { user } = useAuth();
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC]">
+    <div className="container-fluid py-4 bg-light min-vh-100">
       {/* Header / Cover Area */}
-      <div className="h-48 w-full bg-gradient-to-r from-[#1A4F8B] to-[#2E7D32] relative">
-        <div className="absolute -bottom-16 left-8 md:left-16 flex items-end gap-6">
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-white shadow-xl border-4 border-white flex items-center justify-center text-[#1A4F8B] text-5xl font-black overflow-hidden">
-            {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
-          </div>
-          <div className="pb-4 hidden md:block">
-            <h1 className="text-3xl font-bold text-white drop-shadow-md">
-              {user?.nombre || 'Usuario Registrado'}
-            </h1>
-            <p className="text-blue-100 flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm">verified</span>
-              {user?.rol || 'Coordinador Institucional'}
-            </p>
+      <div className="row mb-5">
+        <div className="col-12 px-0">
+          <div className="position-relative w-100" style={{ height: '200px', background: 'linear-gradient(to right, #003f87, #006722)' }}>
+            <div className="position-absolute bottom-0 start-0 ms-4 ms-md-5 mb-n5 d-flex align-items-end gap-4" style={{ transform: 'translateY(50%)' }}>
+              <div className="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center border border-4 border-white text-primary fw-bold" style={{ width: '120px', height: '120px', fontSize: '3rem' }}>
+                {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
+              <div className="d-none d-md-block text-white pb-2 mb-5">
+                <h1 className="fw-bold fs-2 text-shadow">
+                  {user?.nombre || 'Usuario Registrado'}
+                </h1>
+                <p className="d-flex align-items-center gap-2 mb-0 opacity-75">
+                  <span className="material-symbols-outlined fs-6">verified</span>
+                  {user?.rol || 'Coordinador Institucional'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="pt-20 px-8 md:px-16 pb-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+      <div className="row pt-5 mt-4 px-3 px-md-5">
+        <div className="col-lg-8 mb-4">
           {/* Main Info Card */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
-              <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#1A4F8B]">account_circle</span>
+          <div className="card border-0 shadow-sm mb-4">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                <span className="material-symbols-outlined text-primary">account_circle</span>
                 Información Institucional
-              </h2>
+              </h4>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-1">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Nombre Completo</p>
-                  <p className="text-lg font-semibold text-slate-700">{user?.nombre || 'No disponible'}</p>
+              <div className="row g-4">
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Nombre Completo</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">{user?.nombre || 'No disponible'}</p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Organización</p>
-                  <p className="text-lg font-semibold text-[#1A4F8B]">{user?.organizacion || 'Donatón Global'}</p>
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Organización</p>
+                  <p className="fs-5 fw-semibold text-primary mb-0">{user?.organizacion || 'Donatón Global'}</p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Correo Electrónico</p>
-                  <p className="text-lg font-semibold text-slate-700">{user?.correo || 'No disponible'}</p>
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Correo Electrónico</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">{user?.correo || 'No disponible'}</p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Ubicación</p>
-                  <p className="text-lg font-semibold text-slate-700">Chile (Central)</p>
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Ubicación</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">Chile (Central)</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Badge Section */}
-            <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-8 shadow-sm border border-slate-100">
-              <h2 className="text-xl font-bold text-slate-800 mb-6">Insignias y Logros</h2>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-3 bg-white p-3 rounded-2xl shadow-sm border border-blue-50">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+          {/* Badge Section */}
+          <div className="card border-0 shadow-sm bg-white">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold text-dark mb-4">Insignias y Logros</h4>
+              <div className="d-flex flex-wrap gap-3">
+                <div className="d-flex align-items-center gap-3 bg-light p-3 rounded border">
+                  <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center text-primary" style={{width: '40px', height: '40px'}}>
                     <span className="material-symbols-outlined">verified_user</span>
                   </div>
-                  <span className="font-bold text-sm text-slate-600">Verificado</span>
+                  <span className="fw-bold text-secondary">Verificado</span>
                 </div>
-                <div className="flex items-center gap-3 bg-white p-3 rounded-2xl shadow-sm border border-green-50">
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                <div className="d-flex align-items-center gap-3 bg-light p-3 rounded border">
+                  <div className="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center text-success" style={{width: '40px', height: '40px'}}>
                     <span className="material-symbols-outlined">volunteer_activism</span>
                   </div>
-                  <span className="font-bold text-sm text-slate-600">Donante Activo</span>
+                  <span className="fw-bold text-secondary">Donante Activo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar Info */}
+        <div className="col-lg-4">
+          <div className="card border-0 shadow-sm bg-primary text-white mb-4">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold mb-4">Resumen de Impacto</h4>
+              <div className="mb-4">
+                <div className="d-flex justify-content-between small mb-2 opacity-75">
+                  <span>Donaciones registradas</span>
+                  <span>85%</span>
+                </div>
+                <div className="progress bg-white bg-opacity-25" style={{height: '8px'}}>
+                  <div className="progress-bar bg-white" style={{width: '85%'}}></div>
+                </div>
+              </div>
+              <div className="row text-center pt-3 border-top border-white border-opacity-25">
+                <div className="col-6">
+                  <p className="display-6 fw-bold mb-0">12</p>
+                  <p className="small text-uppercase opacity-75 mb-0">Misiones</p>
+                </div>
+                <div className="col-6">
+                  <p className="display-6 fw-bold mb-0">54</p>
+                  <p className="small text-uppercase opacity-75 mb-0">Reportes</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Sidebar Info */}
-          <div className="space-y-8">
-            <div className="bg-[#1A4F8B] rounded-3xl p-8 text-white shadow-lg shadow-blue-900/20">
-              <h3 className="text-lg font-bold mb-4">Resumen de Impacto</h3>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between text-sm mb-2 opacity-80">
-                    <span>Donaciones registradas</span>
-                    <span>85%</span>
-                  </div>
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-white rounded-full" style={{ width: '85%' }}></div>
-                  </div>
-                </div>
-                <div className="pt-4 border-t border-white/10 grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <p className="text-2xl font-black">12</p>
-                    <p className="text-[10px] uppercase opacity-60">Misiones</p>
-                  </div>
-                  <div>
-                    <p className="text-2xl font-black">54</p>
-                    <p className="text-[10px] uppercase opacity-60">Reportes</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => alert('Función de edición próximamente')}
-              className="w-full py-4 bg-white border-2 border-slate-200 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
-            >
-              <span className="material-symbols-outlined">edit</span>
-              Editar Datos Públicos
-            </button>
-          </div>
-
+          <button 
+            onClick={() => alert('Función de edición próximamente')}
+            className="btn btn-outline-secondary w-100 py-3 fw-bold bg-white d-flex align-items-center justify-content-center gap-2"
+          >
+            <span className="material-symbols-outlined">edit</span>
+            Editar Datos Públicos
+          </button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
