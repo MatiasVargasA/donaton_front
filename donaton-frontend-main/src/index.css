@@ -1,40 +1,139 @@
+:root {
+  /* Material Design 3 inspired colors from the provided snippet */
+  --primary: #003f87;
+  --on-primary: #ffffff;
+  --primary-container: #0056b3;
+  --on-primary-container: #bbd0ff;
+  
+  --secondary: #ab3500;
+  --on-secondary: #ffffff;
+  --secondary-container: #fe6a34;
+  --on-secondary-container: #5d1900;
+  
+  --tertiary: #004c17;
+  --tertiary-container: #006722;
+  
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  
+  --background: #f8f9ff;
+  --on-background: #0b1c30;
+  
+  --surface: #f8f9ff;
+  --on-surface: #0b1c30;
+  --surface-variant: #d3e4fe;
+  --on-surface-variant: #424752;
+  
+  --outline: #727784;
+  --outline-variant: #c2c6d4;
+  
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #eff4ff;
+  --surface-container: #e5eeff;
+  --surface-container-high: #dce9ff;
+  --surface-container-highest: #d3e4fe;
+
+  --gutter: 16px;
+  --margin-desktop: 32px;
+}
+
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f8f9fa;
+  background-color: var(--background);
+  color: var(--on-background);
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
 }
 
-/* Custom layout adjustments for Bootstrap */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
+}
+
+/* Sidebar and Layout Utility */
 .sidebar-wrapper {
   width: 280px;
-  min-height: 100vh;
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
-  border-right: 1px solid #dee2e6;
-  background-color: #fff;
+  z-index: 1050;
+  background-color: var(--surface-container-lowest);
+  border-right: 1px solid var(--outline-variant);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content-wrapper {
   margin-left: 280px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding-top: 64px; /* Header height */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991.98px) {
   .sidebar-wrapper {
     transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease;
   }
-  .sidebar-wrapper.open {
+  .sidebar-wrapper.show {
     transform: translateX(0);
   }
   .main-content-wrapper {
     margin-left: 0;
   }
+}
+
+/* Custom Cards and Containers */
+.admin-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.btn-primary-custom {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--primary-container);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-secondary-custom {
+  background-color: var(--secondary-container);
+  color: var(--on-secondary-container);
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
 }

@@ -23,12 +23,15 @@ function ProtectedRoute({ children }) {
 }
 
 function MainLayout() {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   return (
     <div className="d-flex w-100 min-vh-100">
-      <Sidebar />
-      <div className="main-content-wrapper flex-grow-1 w-100 overflow-hidden d-flex flex-column">
-        <Header />
-        <div className="flex-grow-1 bg-light">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <div className="main-content-wrapper flex-grow-1 w-100 overflow-hidden">
+        <Header toggleSidebar={toggleSidebar} />
+        <main className="flex-grow-1">
           <Routes>
             <Route path="/" element={<PanelControlGlobal />} />
             <Route path="/mapa" element={<MapaNecesidades />} />
@@ -37,7 +40,7 @@ function MainLayout() {
             <Route path="/logistica" element={<GestionLogistica />} />
             <Route path="/perfil" element={<PerfilUsuario />} />
           </Routes>
-        </div>
+        </main>
       </div>
     </div>
   );
