@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiLogistica, apiNecesidades } from '../api';
+import { apiLogistica, apiNecesidades } from '../../../api';
 import toast from 'react-hot-toast';
 
 export default function GestionLogistica() {

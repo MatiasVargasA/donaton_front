@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './AuthContext';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import ReportesTerreno from './components/ReportesTerreno';
-import RegistroDonaciones from './components/RegistroDonaciones';
-import PanelControlGlobal from './components/PanelControlGlobal';
-import MapaNecesidades from './components/MapaNecesidades';
-import PerfilUsuario from './components/PerfilUsuario';
-import Login from './components/Login';
-import RegistroUsuario from './components/RegistroUsuario';
-import GestionLogistica from './components/GestionLogistica';
+import ReportesTerreno from './features/municipalidad/components/ReportesTerreno';
+import RegistroDonaciones from './features/logistica/components/RegistroDonaciones';
+import PanelControlGlobal from './features/logistica/components/PanelControlGlobal';
+import MapaNecesidades from './features/logistica/components/MapaNecesidades';
+import PerfilUsuario from './features/usuarios/components/PerfilUsuario';
+import Login from './features/usuarios/components/Login';
+import RegistroUsuario from './features/usuarios/components/RegistroUsuario';
+import GestionLogistica from './features/logistica/components/GestionLogistica';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 

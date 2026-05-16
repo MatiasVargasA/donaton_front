@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../AuthContext';
-import api from '../api';
+import { useAuth } from '../../../AuthContext';
+import api from '../../../api';
 import toast from 'react-hot-toast';
 
 export default function Login() {

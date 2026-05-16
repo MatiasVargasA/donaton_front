@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../api';
+import api from '../../../api';
 import toast from 'react-hot-toast';
 
 const RegistroUsuario = () => {
@@ -94,7 +94,7 @@ const RegistroUsuario = () => {
           <div className="d-flex flex-column flex-grow-1 justify-content-center px-4 py-5 mx-auto w-100" style={{ maxWidth: '500px' }}>
             <div className="mb-4">
               <h2 className="fw-bold text-primary">Crear una cuenta</h2>
-              <p className="text-secondary">Regístrese para comenzar a gestionar donaciones institucionales.</p>
+              <p className="text-secondary">Regístrese para comenzar a gestionar donaciones.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
@@ -116,7 +116,7 @@ const RegistroUsuario = () => {
               </div>
 
               <div className="form-group">
-                <label className="small fw-bold text-secondary text-uppercase mb-1" htmlFor="email">Correo Institucional</label>
+                <label className="small fw-bold text-secondary text-uppercase mb-1" htmlFor="email">Correo.</label>
                 <div className="position-relative">
                   <input
                     className="form-control form-control-lg pe-5"

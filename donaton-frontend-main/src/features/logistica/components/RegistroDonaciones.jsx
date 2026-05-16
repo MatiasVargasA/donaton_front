@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiDonaciones } from '../api';
+import { apiDonaciones } from '../../../api';
 import toast from 'react-hot-toast';
 
 export default function RegistroDonaciones() {

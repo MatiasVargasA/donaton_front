@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { apiNecesidades } from '../api';
+import { apiNecesidades } from '../../../api';
 import toast from 'react-hot-toast';
 
 export default function ReportesTerreno() {

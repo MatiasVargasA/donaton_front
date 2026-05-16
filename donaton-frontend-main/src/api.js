@@ -43,5 +43,5 @@ export const apiDonaciones = createInstance('http://localhost:8080');
 export const apiNecesidades = createInstance('http://localhost:8081');
 export const apiLogistica = createInstance('http://localhost:8082');
 
-// Exportación por defecto (usualmente para auth)
+// Auth
 export default apiAuth;
