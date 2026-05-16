@@ -1,242 +1,122 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 export default function PerfilUsuario() {
+  const { user } = useAuth();
+
   return (
-    <>
-      <main className="min-h-screen">
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6 h-16">
-          <div className="flex items-center gap-4">
-            <span className="text-xl font-bold md:hidden">Perfil</span>
-            <div className="hidden md:flex items-center">
-              <span className="text-2xl font-black text-[#1A4F8B] tracking-tight">Donaton</span>
-              <div className="h-6 w-px bg-slate-200 mx-4"></div>
-              <h2 className="font-public-sans text-sm font-medium text-slate-500">Perfil de Usuario</h2>
+    <div className="container-fluid py-4 bg-light min-vh-100">
+      {/* Header / Cover Area */}
+      <div className="row mb-5">
+        <div className="col-12 px-0">
+          <div className="position-relative w-100" style={{ height: '200px', background: 'linear-gradient(to right, #003f87, #006722)' }}>
+            <div className="position-absolute bottom-0 start-0 ms-4 ms-md-5 mb-n5 d-flex align-items-end gap-4" style={{ transform: 'translateY(50%)' }}>
+              <div className="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center border border-4 border-white text-primary fw-bold" style={{ width: '120px', height: '120px', fontSize: '3rem' }}>
+                {user?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
+              <div className="d-none d-md-block text-white pb-2 mb-5">
+                <h1 className="fw-bold fs-2 text-shadow">
+                  {user?.nombre || 'Usuario Registrado'}
+                </h1>
+                <p className="d-flex align-items-center gap-2 mb-0 opacity-75">
+                  <span className="material-symbols-outlined fs-6">verified</span>
+                  {user?.rol || 'Coordinador Institucional'}
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <span className="material-symbols-outlined notranslate text-slate-500 cursor-pointer p-2 hover:bg-slate-50 rounded-full transition-colors">notifications</span>
-              <span className="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border-2 border-white"></span>
-            </div>
-            <Link to="/perfil">
-              <img alt="Avatar del usuario administrativo" className="w-8 h-8 rounded-full border border-slate-200 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5i87aY5GVUeUjtZ7peH4rTv8XBxBUb8vyZXTcq-bj3XDB0ZAXK4I-u0vG3ft0SzRlhlKqORDCGJ9Yjty8JlKk250-qKDYhhGBUWDh4rXHqqRT86zveudy_95fKrUH7-wBeSyrvXWKeY55gdwJsrFxDQJ2t_3q5lRrJ-ma3CLdamoHI76A83_NCFkq-0RPPlFaUSX0o5dHVL3rS6Qy7aIehi7xeHpID55LW4j9AGLLhJxPdrrzfzAG-Pwrwj7WPBHASeh6SA7okks"/>
-            </Link>
-          </div>
-        </header>
+        </div>
+      </div>
 
-        <div className="p-8 max-w-7xl mx-auto space-y-stack-md">
-          {/* Hero Profile Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-            {/* User Identity Card */}
-            <div className="lg:col-span-2 bg-white rounded-xl border border-outline-variant p-stack-md flex flex-col md:flex-row gap-stack-md items-center md:items-start">
-              <div className="relative">
-                <img alt="Elena Rodríguez Profile" className="w-32 h-32 md:w-40 md:h-40 rounded-xl object-cover border-4 border-surface-container-low shadow-sm" data-alt="A high-quality, professional portrait of Elena Rodríguez" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASFAb7eJZ5l8JpVCyA4Pr6v329hs88ZJxnfRudCHYQQYuQhq3mO3EXxhSIL79dBk-iq8lrIBxVwl0338jFAg7EwAF69sKYorjKOogg_3aYSyJELHf--KESHEE54O6b2wm4KYkw4XToP7zr_2roJEBAcFo5CXkoWyso2CewOOVVGyTBBAw4gj1VsRsPQmkh1w8A9QiQWz_OkOLsd69uE7uZ4UxWVfftOjkIWloMvJ3vfH2afumk-eHfoD2Nv93I52emAejF4JmJznE"/>
-                <div className="absolute -bottom-2 -right-2 bg-[#1A4F8B] text-white p-2 rounded-lg shadow-lg">
-                  <span className="material-symbols-outlined text-sm" data-icon="verified" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+      <div className="row pt-5 mt-4 px-3 px-md-5">
+        <div className="col-lg-8 mb-4">
+          {/* Main Info Card */}
+          <div className="card border-0 shadow-sm mb-4">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                <span className="material-symbols-outlined text-primary">account_circle</span>
+                Información Institucional
+              </h4>
+              
+              <div className="row g-4">
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Nombre Completo</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">{user?.nombre || 'No disponible'}</p>
                 </div>
-              </div>
-              <div className="flex-grow space-y-stack-xs text-center md:text-left">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-stack-xs">
-                  <h1 className="font-headline-lg text-headline-lg text-on-surface">Elena Rodríguez</h1>
-                  <button className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2" onClick={() => alert('Modo edición activado.')}>
-                    <span className="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-                    Editar Perfil
-                  </button>
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Organización</p>
+                  <p className="fs-5 fw-semibold text-primary mb-0">{user?.organizacion || 'Donatón Global'}</p>
                 </div>
-                <p className="font-body-lg text-body-lg text-primary font-semibold">Coordinadora de Campo</p>
-                <div className="flex items-center justify-center md:justify-start gap-2 text-on-surface-variant font-body-md text-body-md">
-                  <span className="material-symbols-outlined text-sm" data-icon="corporate_fare">corporate_fare</span>
-                  Cruz Roja Internacional
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Correo Electrónico</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">{user?.correo || 'No disponible'}</p>
                 </div>
-                <div className="flex flex-wrap justify-center md:justify-start gap-2 pt-stack-sm">
-                  <span className="bg-surface-container text-primary px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span> Ginebra, CH
-                  </span>
-                  <span className="bg-surface-container text-primary px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]" data-icon="language">language</span> Español, Inglés, Francés
-                  </span>
-                </div>
-              </div>
-            </div>
-            {/* Contact Details */}
-            <div className="bg-white rounded-xl border border-outline-variant p-stack-md space-y-stack-sm">
-              <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Contacto</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container transition-colors group">
-                  <div className="bg-primary-fixed text-on-primary-fixed p-2 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
-                    <span className="material-symbols-outlined" data-icon="mail">mail</span>
-                  </div>
-                  <div>
-                    <p className="text-xs text-outline font-semibold">EMAIL</p>
-                    <p className="font-body-md text-body-md text-on-surface">e.rodriguez@ifrc.org</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-container transition-colors group">
-                  <div className="bg-primary-fixed text-on-primary-fixed p-2 rounded-lg group-hover:bg-primary group-hover:text-white transition-colors">
-                    <span className="material-symbols-outlined" data-icon="phone">phone</span>
-                  </div>
-                  <div>
-                    <p className="text-xs text-outline font-semibold">TELÉFONO</p>
-                    <p className="font-body-md text-body-md text-on-surface">+41 22 730 4212</p>
-                  </div>
+                <div className="col-12 col-md-6">
+                  <p className="small fw-bold text-secondary text-uppercase mb-1">Ubicación</p>
+                  <p className="fs-5 fw-semibold text-dark mb-0">Chile (Central)</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Personal Impact Statistics (Bento Style) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-            <div className="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl flex flex-col items-center justify-center text-center space-y-2 group hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#1A4F8B] shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-3xl" data-icon="volunteer_activism" style={{ fontVariationSettings: "'FILL' 1" }}>volunteer_activism</span>
-              </div>
-              <span className="font-display-lg text-display-lg text-primary">1,240</span>
-              <span className="font-label-md text-label-md text-outline uppercase tracking-wider">Donaciones Facilitadas</span>
-            </div>
-            <div className="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl flex flex-col items-center justify-center text-center space-y-2 group hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-secondary shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-3xl" data-icon="fact_check" style={{ fontVariationSettings: "'FILL' 1" }}>fact_check</span>
-              </div>
-              <span className="font-display-lg text-display-lg text-secondary">856</span>
-              <span className="font-label-md text-label-md text-outline uppercase tracking-wider">Reportes Verificados</span>
-            </div>
-            <div className="bg-surface-container-low border border-outline-variant p-stack-md rounded-xl flex flex-col items-center justify-center text-center space-y-2 group hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-tertiary shadow-sm mb-2 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-3xl" data-icon="rocket_launch" style={{ fontVariationSettings: "'FILL' 1" }}>rocket_launch</span>
-              </div>
-              <span className="font-display-lg text-display-lg text-tertiary">42</span>
-              <span className="font-label-md text-label-md text-outline uppercase tracking-wider">Misiones Completadas</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-            {/* Activity Feed */}
-            <div className="lg:col-span-2 space-y-stack-sm">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-headline-md text-headline-md text-on-surface">Historial de Actividad</h3>
-                <button className="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline" onClick={() => alert('Cargando historial completo...')}>Ver todo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span></button>
-              </div>
-              <div className="space-y-4">
-                {/* Activity Card 1 */}
-                <div className="bg-white p-stack-md rounded-xl border border-outline-variant hover:border-primary transition-colors flex gap-stack-md">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
-                      <span className="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
-                    </div>
-                    <div className="w-0.5 flex-grow bg-slate-100"></div>
+          {/* Badge Section */}
+          <div className="card border-0 shadow-sm bg-white">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold text-dark mb-4">Insignias y Logros</h4>
+              <div className="d-flex flex-wrap gap-3">
+                <div className="d-flex align-items-center gap-3 bg-light p-3 rounded border">
+                  <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center text-primary" style={{width: '40px', height: '40px'}}>
+                    <span className="material-symbols-outlined">verified_user</span>
                   </div>
-                  <div className="flex-grow space-y-1">
-                    <div className="flex justify-between items-start">
-                      <p className="font-body-md text-body-md font-bold text-on-surface">Validación de Carga Humanitaria</p>
-                      <span className="text-xs text-outline">Hace 2 horas</span>
-                    </div>
-                    <p className="text-on-surface-variant font-body-sm text-body-sm">Elena verificó el contenido de 50 kits de primeros auxilios destinados a la región norte.</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Completado</span>
-                      <span className="text-[10px] text-outline font-medium">ID: #HK-9821</span>
-                    </div>
-                  </div>
+                  <span className="fw-bold text-secondary">Verificado</span>
                 </div>
-                {/* Activity Card 2 */}
-                <div className="bg-white p-stack-md rounded-xl border border-outline-variant hover:border-primary transition-colors flex gap-stack-md">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
-                      <span className="material-symbols-outlined" data-icon="emergency">emergency</span>
-                    </div>
-                    <div className="w-0.5 flex-grow bg-slate-100"></div>
+                <div className="d-flex align-items-center gap-3 bg-light p-3 rounded border">
+                  <div className="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center text-success" style={{width: '40px', height: '40px'}}>
+                    <span className="material-symbols-outlined">volunteer_activism</span>
                   </div>
-                  <div className="flex-grow space-y-1">
-                    <div className="flex justify-between items-start">
-                      <p className="font-body-md text-body-md font-bold text-on-surface">Reporte de Emergencia: Inundaciones</p>
-                      <span className="text-xs text-outline">Ayer, 16:45</span>
-                    </div>
-                    <p className="text-on-surface-variant font-body-sm text-body-sm">Se emitió un reporte de necesidades críticas de agua potable en el sector costero.</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Urgente</span>
-                      <span className="text-[10px] text-outline font-medium">Zona A-4</span>
-                    </div>
-                  </div>
-                </div>
-                {/* Activity Card 3 */}
-                <div className="bg-white p-stack-md rounded-xl border border-outline-variant hover:border-primary transition-colors flex gap-stack-md">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
-                      <span className="material-symbols-outlined" data-icon="group">group</span>
-                    </div>
-                  </div>
-                  <div className="flex-grow space-y-1">
-                    <div className="flex justify-between items-start">
-                      <p className="font-body-md text-body-md font-bold text-on-surface">Reunión de Coordinación Regional</p>
-                      <span className="text-xs text-outline">24 May, 2024</span>
-                    </div>
-                    <p className="text-on-surface-variant font-body-sm text-body-sm">Coordinación con equipos de logística locales para optimizar rutas de entrega.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Account Settings & Privacy */}
-            <div className="space-y-stack-sm">
-              <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Configuración</h3>
-              <div className="bg-white rounded-xl border border-outline-variant overflow-hidden">
-                <div className="p-4 border-b border-outline-variant hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-outline" data-icon="notifications">notifications</span>
-                    <span className="font-body-md text-body-md text-on-surface">Notificaciones</span>
-                  </div>
-                  <span className="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
-                </div>
-                <div className="p-4 border-b border-outline-variant hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-outline" data-icon="language">language</span>
-                    <div>
-                      <span className="font-body-md text-body-md text-on-surface">Idioma</span>
-                      <p className="text-xs text-outline">Español (ES)</p>
-                    </div>
-                  </div>
-                  <span className="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
-                </div>
-                <div className="p-4 border-b border-outline-variant hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-outline" data-icon="security">security</span>
-                    <span className="font-body-md text-body-md text-on-surface">Seguridad y Acceso</span>
-                  </div>
-                  <span className="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
-                </div>
-                <div className="p-4 hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-outline" data-icon="visibility">visibility</span>
-                    <span className="font-body-md text-body-md text-on-surface">Privacidad de Datos</span>
-                  </div>
-                  <span className="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
-                </div>
-              </div>
-
-              {/* App Stats Summary */}
-              <div className="mt-stack-md bg-primary p-stack-md rounded-xl text-white">
-                <p className="font-label-md text-label-md opacity-80 mb-2 uppercase tracking-widest">Resumen del Sistema</p>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Tiempo de Respuesta</span>
-                    <span className="font-bold">4.2 min</span>
-                  </div>
-                  <div className="w-full bg-primary-container h-1 rounded-full">
-                    <div className="bg-white h-1 rounded-full" style={{ width: '85%' }}></div>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Eficiencia Logística</span>
-                    <span className="font-bold">92%</span>
-                  </div>
-                  <div className="w-full bg-primary-container h-1 rounded-full">
-                    <div className="bg-white h-1 rounded-full" style={{ width: '92%' }}></div>
-                  </div>
+                  <span className="fw-bold text-secondary">Donante Activo</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </>
+
+        {/* Sidebar Info */}
+        <div className="col-lg-4">
+          <div className="card border-0 shadow-sm bg-primary text-white mb-4">
+            <div className="card-body p-4 p-md-5">
+              <h4 className="fw-bold mb-4">Resumen de Impacto</h4>
+              <div className="mb-4">
+                <div className="d-flex justify-content-between small mb-2 opacity-75">
+                  <span>Donaciones registradas</span>
+                  <span>85%</span>
+                </div>
+                <div className="progress bg-white bg-opacity-25" style={{height: '8px'}}>
+                  <div className="progress-bar bg-white" style={{width: '85%'}}></div>
+                </div>
+              </div>
+              <div className="row text-center pt-3 border-top border-white border-opacity-25">
+                <div className="col-6">
+                  <p className="display-6 fw-bold mb-0">12</p>
+                  <p className="small text-uppercase opacity-75 mb-0">Misiones</p>
+                </div>
+                <div className="col-6">
+                  <p className="display-6 fw-bold mb-0">54</p>
+                  <p className="small text-uppercase opacity-75 mb-0">Reportes</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button 
+            onClick={() => alert('Función de edición próximamente')}
+            className="btn btn-outline-secondary w-100 py-3 fw-bold bg-white d-flex align-items-center justify-content-center gap-2"
+          >
+            <span className="material-symbols-outlined">edit</span>
+            Editar Datos Públicos
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

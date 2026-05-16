@@ -1,230 +1,234 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export default function PanelControlGlobal() {
   return (
-    <>
+    <div className="d-flex flex-column h-100 w-100">
+      {/* Dashboard Canvas */}
+      <div className="container-fluid p-4 mx-auto" style={{ maxWidth: '1600px' }}>
+        {/* Welcome Header */}
+        <div className="mb-4">
+          <h2 className="fw-bold text-dark mb-1">Centro de Comando Operativo</h2>
+          <p className="text-secondary fs-5">Estado actual de la red de ayuda humanitaria nacional.</p>
+        </div>
 
-      <main className="min-h-screen">
-        <header className="bg-white border-b border-slate-200 h-16 sticky top-0 z-30 flex justify-between items-center w-full px-4 md:px-6">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md hidden sm:block">
-              <span className="material-symbols-outlined notranslate absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-              <input className="w-full bg-slate-50 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#1A4F8B]/20" placeholder="Buscar ayuda, envíos o reportes..." type="text"/>
-            </div>
-            <button className="sm:hidden text-slate-500" onClick={() => alert('Abriendo búsqueda móvil...')}>
-              <span className="material-symbols-outlined notranslate">search</span>
-            </button>
-          </div>
-          <div className="flex items-center gap-3 md:gap-6">
-            <div className="flex items-center gap-2 md:gap-4">
-              <button className="text-slate-500 hover:bg-slate-50 p-2 rounded-full transition-colors cursor-pointer active:opacity-80" onClick={() => alert('Mostrando notificaciones...')}>
-                <span className="material-symbols-outlined notranslate">notifications</span>
-              </button>
-            </div>
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-3 md:pl-6">
-              <div className="text-right hidden xs:block">
-                <p className="text-sm font-bold text-on-surface leading-tight">Admin Central</p>
-                <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Coordinador Global</p>
+        {/* KPI Bento Grid */}
+        <div className="row g-4 mb-4">
+          {/* KPI Card 1 */}
+          <div className="col-12 col-md-6 col-lg-3">
+            <div className="card h-100 border-0 shadow-sm p-4">
+              <div className="d-flex justify-content-between align-items-start mb-3">
+                <span className="material-symbols-outlined text-primary fs-1">volunteer_activism</span>
+                <span className="badge bg-success bg-opacity-25 text-success">+12% vs last week</span>
               </div>
-              <Link to="/perfil" className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-container overflow-hidden border-2 border-white shadow-sm block">
-                <img alt="Avatar del usuario administrativo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApICQXy7hUbLDlEIdNycBw-69CVDxq2WT6960fELha-9O-XXx8QQ3cFDzTa0ipjdSrkFKqm4pqlzhw00WmH4Bi7pkKZIWpSI-ItJ0RxieO0i-rxSDR853JC8Orp7isxOjXTpCBptXwp6ttO_bGSA2mYuLj653czwZ9Mn9oWpp8YAxXOa7Ltj6w3ja4pgihdLg1_9gBQ7kLZT9F5syeTJTILOHVAnNEIhMRTYEFcCccoMRS6hKwJG2yR4C98ZAeYWj7I4x5ZRSFtLY"/>
-              </Link>
+              <div>
+                <p className="text-secondary text-uppercase small fw-bold mb-1 letter-spacing-1">Total Donaciones</p>
+                <h3 className="text-dark fw-bold mb-0">$4,280,500</h3>
+              </div>
             </div>
           </div>
-        </header>
-        <div className="p-8 max-w-7xl mx-auto">
-          <div className="mb-8">
-            <h2 className="font-headline-lg text-headline-lg text-on-surface mb-2">Resumen Operativo Global</h2>
-            <p className="font-body-md text-body-md text-slate-500">Estado en tiempo real de la respuesta humanitaria y distribución de recursos.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#1A4F8B] flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="payments">payments</span>
-                </div>
-                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">+12% hoy</span>
+
+          {/* KPI Card 2 */}
+          <div className="col-12 col-md-6 col-lg-3">
+            <div className="card h-100 border-0 shadow-sm p-4">
+              <div className="d-flex justify-content-between align-items-start mb-3">
+                <span className="material-symbols-outlined text-danger fs-1">priority_high</span>
+                <span className="badge bg-danger bg-opacity-25 text-danger">Urgente</span>
               </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Fondos Desplegados</p>
-              <h3 className="text-2xl font-black text-on-surface">$4.2M <span className="text-sm font-normal text-slate-400">USD</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="warning">warning</span>
-                </div>
-                <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded">Alta Prioridad</span>
+              <div>
+                <p className="text-secondary text-uppercase small fw-bold mb-1 letter-spacing-1">Necesidades Críticas</p>
+                <h3 className="text-dark fw-bold mb-0">42 Casos</h3>
               </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Alertas Críticas</p>
-              <h3 className="text-2xl font-black text-on-surface">14 <span className="text-sm font-normal text-slate-400">Activas</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="groups">groups</span>
-                </div>
-                <span className="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-1 rounded">Meta 85%</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Vidas Impactadas</p>
-              <h3 className="text-2xl font-black text-on-surface">128.4k <span className="text-sm font-normal text-slate-400">Personas</span></h3>
-            </div>
-            <div className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-3xl" data-icon="local_shipping">local_shipping</span>
-                </div>
-                <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">En ruta</span>
-              </div>
-              <p className="text-slate-500 font-label-md uppercase mb-1">Entregas Hoy</p>
-              <h3 className="text-2xl font-black text-on-surface">342 <span className="text-sm font-normal text-slate-400">Kits</span></h3>
             </div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-8">
-              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                  <h4 className="font-headline-md text-headline-md">Mapa de Intervención Activa</h4>
-                  <div className="flex gap-2">
-                    <span className="flex items-center gap-1 text-xs text-slate-500"><span className="w-2 h-2 rounded-full bg-red-500"></span> Emergencia</span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500"><span className="w-2 h-2 rounded-full bg-green-500"></span> Despliegue</span>
-                  </div>
-                </div>
-                <div className="relative h-[400px] w-full bg-slate-100 overflow-hidden">
-                  <img alt="Mapa regional interactivo" className="w-full h-full object-cover opacity-80" data-alt="clean minimal topographic map of a region with subtle grid lines and highlighted hot zones in red and blue" data-location="Mexico City" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMqX9djb8_4C_VhJVOxyZjNUAGlMgf0bP8s5iqS5znnEiqj_zjWwMFxjc-1x0OCCNrLhQN5WSjKkIpEgEsCzngvUXb1_vUkYVCuvXD7PMVjotXZGD5pCMX8_zDtdZHoxqA8hYhE5CV9PMfs7O9piYPIsg6xXjmijVF9pCvWASkY9s19DzV0QRwnrMA4CLC-XALzbumlrtfmwWEbv8Gb_ejdcw_5dNzTjD-y3xLBDXQJgWX3FtKWD45TnJeRIznOlURp7jjRtwwCo"/>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent"></div>
-                  <div className="absolute top-1/4 left-1/3 group cursor-pointer">
-                    <div className="w-4 h-4 bg-red-500 rounded-full animate-ping absolute opacity-75"></div>
-                    <div className="relative w-4 h-4 bg-red-600 border-2 border-white rounded-full"></div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Sector Norte: Agua Potable</div>
-                  </div>
-                  <div className="absolute bottom-1/3 right-1/4 group cursor-pointer">
-                    <div className="w-4 h-4 bg-green-500 rounded-full animate-ping absolute opacity-75"></div>
-                    <div className="relative w-4 h-4 bg-green-600 border-2 border-white rounded-full"></div>
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white px-3 py-1 rounded shadow-lg text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Logística Central: Suministros</div>
-                  </div>
-                </div>
-                <div className="p-4 bg-slate-50 flex justify-between items-center px-6">
-                  <p className="text-xs text-slate-500">Última actualización: hace 4 minutos</p>
-                  <button className="text-[#1A4F8B] text-xs font-bold flex items-center gap-1 hover:underline" onClick={() => alert('Navegando al mapa completo...')}>
-                    Ver Mapa Completo <span className="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
-                  </button>
-                </div>
+
+          {/* KPI Card 3 */}
+          <div className="col-12 col-md-6 col-lg-3">
+            <div className="card h-100 border-0 shadow-sm p-4">
+              <div className="d-flex justify-content-between align-items-start mb-3">
+                <span className="material-symbols-outlined text-warning fs-1">local_shipping</span>
+                <span className="badge bg-warning bg-opacity-25 text-warning text-dark">En Tránsito</span>
               </div>
-              <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                  <h4 className="font-headline-md text-headline-md">Flujo de Actividad</h4>
-                  <button className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full" onClick={() => alert('Abriendo filtros...')}>Filtrar</button>
-                </div>
-                <div className="p-6">
-                  <div className="relative space-y-8 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-100">
-                    <div className="relative pl-10">
-                      <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-blue-100 border-4 border-white flex items-center justify-center">
-                        <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-                      </div>
-                      <div className="flex justify-between items-start mb-1">
-                        <h5 className="text-sm font-bold text-on-surface">Envío confirmado a Sector Este</h5>
-                        <span className="text-[10px] font-bold text-slate-400">HACE 15 MIN</span>
-                      </div>
-                      <p className="text-sm text-slate-600 mb-2">2,500 kits de higiene médica han salido del almacén central.</p>
-                      <div className="flex gap-2">
-                        <span className="text-[10px] px-2 py-0.5 bg-surface-variant text-primary rounded font-bold uppercase tracking-wider">Logística</span>
-                        <span className="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded font-bold uppercase tracking-wider">ID: #8821</span>
-                      </div>
-                    </div>
-                    <div className="relative pl-10">
-                      <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-orange-100 border-4 border-white flex items-center justify-center">
-                        <span className="w-2 h-2 rounded-full bg-orange-600"></span>
-                      </div>
-                      <div className="flex justify-between items-start mb-1">
-                        <h5 className="text-sm font-bold text-on-surface">Alerta de Escasez: Zona Inundada A</h5>
-                        <span className="text-[10px] font-bold text-slate-400">HACE 1 HORA</span>
-                      </div>
-                      <p className="text-sm text-slate-600 mb-2">Se requiere refuerzo de raciones de alimentos secos para 500 familias.</p>
-                      <div className="flex gap-2">
-                        <span className="text-[10px] px-2 py-0.5 bg-orange-100 text-orange-700 rounded font-bold uppercase tracking-wider">Crítico</span>
-                        <span className="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded font-bold uppercase tracking-wider">Refugio 4</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div>
+                <p className="text-secondary text-uppercase small fw-bold mb-1 letter-spacing-1">Ayuda Despachada</p>
+                <h3 className="text-dark fw-bold mb-0">18 Toneladas</h3>
               </div>
             </div>
-            <div className="space-y-8">
-              <div className="bg-white border border-slate-200 rounded-xl shadow-sm">
-                <div className="p-6 border-b border-slate-100">
-                  <h4 className="font-headline-md text-headline-md">Necesidades Prioritarias</h4>
-                </div>
-                <div className="p-6 space-y-6">
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-blue-600" data-icon="water_drop">water_drop</span>
-                        <span className="text-sm font-bold">Agua Potable</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">75% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-600 rounded-full" style={{ width: '75%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-green-600" data-icon="medication">medication</span>
-                        <span className="text-sm font-bold">Insumos Médicos</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">42% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-600 rounded-full" style={{ width: '42%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-orange-600" data-icon="restaurant">restaurant</span>
-                        <span className="text-sm font-bold">Raciones Alimenticias</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">90% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-orange-600 rounded-full" style={{ width: '90%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-end mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-purple-600" data-icon="home">home</span>
-                        <span className="text-sm font-bold">Kits de Refugio</span>
-                      </div>
-                      <span className="text-xs font-bold text-slate-400">28% Cubierto</span>
-                    </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-purple-600 rounded-full" style={{ width: '28%' }}></div>
-                    </div>
-                  </div>
-                  <button className="w-full py-2 text-sm font-bold text-[#1A4F8B] border border-[#1A4F8B] rounded-lg hover:bg-blue-50 transition-colors" onClick={() => alert('Cargando detalles de inventario...')}>Ver Detalles de Inventario</button>
-                </div>
+          </div>
+
+          {/* KPI Card 4 */}
+          <div className="col-12 col-md-6 col-lg-3">
+            <div className="card h-100 border-0 shadow-sm p-4">
+              <div className="d-flex justify-content-between align-items-start mb-3">
+                <span className="material-symbols-outlined text-info fs-1">family_restroom</span>
+                <span className="badge bg-info bg-opacity-25 text-info">Impacto Real</span>
               </div>
-              <div className="bg-primary-container rounded-xl p-6 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-                <div className="relative z-10">
-                  <span className="material-symbols-outlined text-3xl mb-4" data-icon="volunteer_activism">volunteer_activism</span>
-                  <h4 className="text-lg font-bold mb-2">Impulsa una Campaña</h4>
-                  <p className="text-blue-100 text-sm mb-6 leading-relaxed">Las necesidades de Refugio han aumentado un 15% esta semana. Crea una nueva campaña de recaudación focalizada.</p>
-                  <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-slate-50 transition-colors" onClick={() => alert('Iniciando nueva campaña...')}>Iniciar Campaña</button>
-                </div>
+              <div>
+                <p className="text-secondary text-uppercase small fw-bold mb-1 letter-spacing-1">Familias Beneficiadas</p>
+                <h3 className="text-dark fw-bold mb-0">1,240</h3>
               </div>
             </div>
           </div>
         </div>
-      </main>
-      <div className="fixed bottom-8 right-8 z-50">
-        <button className="w-14 h-14 bg-[#1A4F8B] text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group" onClick={() => alert('Acción rápida global...')}>
-          <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform" data-icon="add">add</span>
-        </button>
+
+        {/* Main Layout Grid */}
+        <div className="row g-4">
+          {/* Weekly Flow Chart */}
+          <div className="col-lg-8">
+            <div className="card border-0 shadow-sm p-4 h-100">
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h4 className="fw-bold text-dark mb-0">Flujo Semanal de Ayuda</h4>
+                  <p className="text-secondary small mb-0">Toneladas de suministros distribuidos por día</p>
+                </div>
+                <select className="form-select form-select-sm w-auto border-0 bg-light">
+                  <option>Últimos 7 días</option>
+                  <option>Últimos 30 días</option>
+                </select>
+              </div>
+              
+              {/* Simple Chart Representation using standard Bootstrap progress bars/divs vertically */}
+              <div className="d-flex align-items-end justify-content-between pt-3" style={{ height: '300px' }}>
+                {[{day:'LUN', val: 40, label:'2.4T'}, {day:'MAR', val: 60, label:'3.8T'}, {day:'MIE', val: 80, label:'5.1T'}, {day:'JUE', val: 50, label:'2.9T'}, {day:'VIE', val: 95, label:'6.2T'}, {day:'SAB', val: 30, label:'1.8T'}, {day:'DOM', val: 15, label:'0.9T'}].map((item, i) => (
+                  <div key={i} className="d-flex flex-column align-items-center w-100 px-1">
+                    <div className="w-100 bg-light rounded-top position-relative d-flex align-items-end" style={{ height: '250px' }}>
+                      <div className="bg-primary w-100 rounded-top" style={{ height: `${item.val}%` }}></div>
+                    </div>
+                    <span className="text-secondary small fw-bold mt-2">{item.day}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Alerts */}
+          <div className="col-lg-4">
+            <div className="card border-0 shadow-sm p-4 h-100">
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <h4 className="fw-bold text-dark mb-0">Alertas Recientes</h4>
+                <span className="material-symbols-outlined text-secondary">more_vert</span>
+              </div>
+              
+              <div className="d-flex flex-column gap-3 mb-4">
+                <div className="d-flex gap-3 p-3 bg-danger bg-opacity-10 border-start border-danger border-4 rounded-end">
+                  <span className="material-symbols-outlined text-danger">flood</span>
+                  <div>
+                    <h6 className="fw-bold text-danger mb-1">Inundación en Sector Norte</h6>
+                    <p className="text-secondary small mb-1">Se requieren 500 kits de higiene urgentes.</p>
+                    <small className="fw-bold text-danger" style={{fontSize:'10px'}}>HACE 15 MIN</small>
+                  </div>
+                </div>
+
+                <div className="d-flex gap-3 p-3 bg-warning bg-opacity-10 border-start border-warning border-4 rounded-end">
+                  <span className="material-symbols-outlined text-warning">warning</span>
+                  <div>
+                    <h6 className="fw-bold text-warning mb-1">Escasez de Agua Potable</h6>
+                    <p className="text-secondary small mb-1">Municipalidad de Santa Rosa reporta desabastecimiento.</p>
+                    <small className="fw-bold text-warning" style={{fontSize:'10px'}}>HACE 2 HORAS</small>
+                  </div>
+                </div>
+
+                <div className="d-flex gap-3 p-3 bg-light border-start border-secondary border-4 rounded-end">
+                  <span className="material-symbols-outlined text-secondary">info</span>
+                  <div>
+                    <h6 className="fw-bold text-dark mb-1">Cierre de Ruta 7</h6>
+                    <p className="text-secondary small mb-1">Logística afectada para despachos al sur.</p>
+                    <small className="fw-bold text-secondary" style={{fontSize:'10px'}}>HACE 4 HORAS</small>
+                  </div>
+                </div>
+              </div>
+
+              <button className="btn btn-outline-primary w-100 fw-bold mt-auto">
+                Ver todas las alertas
+              </button>
+            </div>
+          </div>
+
+          {/* Recent Dispatches List */}
+          <div className="col-12">
+            <div className="card border-0 shadow-sm">
+              <div className="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                <h4 className="fw-bold text-dark mb-0">Despachos Recientes</h4>
+                <div className="d-flex gap-2">
+                  <button className="btn btn-outline-secondary btn-sm fw-bold px-3">Filtrar</button>
+                  <button className="btn btn-primary btn-sm fw-bold px-3">Exportar Log</button>
+                </div>
+              </div>
+              <div className="table-responsive">
+                <table className="table table-hover mb-0 align-middle">
+                  <thead className="table-light text-secondary">
+                    <tr>
+                      <th className="px-4 py-3 border-0">ID Despacho</th>
+                      <th className="px-4 py-3 border-0">Destino</th>
+                      <th className="px-4 py-3 border-0">Suministro</th>
+                      <th className="px-4 py-3 border-0">Fecha</th>
+                      <th className="px-4 py-3 border-0">Estado</th>
+                      <th className="px-4 py-3 border-0"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-3 fw-bold">#D-8829</td>
+                      <td className="px-4 py-3 text-secondary">Centro Comunitario El Sol</td>
+                      <td className="px-4 py-3 text-secondary">Alimentos No Perecederos</td>
+                      <td className="px-4 py-3 text-secondary">Hoy, 10:45 AM</td>
+                      <td className="px-4 py-3">
+                        <span className="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2">
+                          <span className="bg-success rounded-circle" style={{width:'8px',height:'8px'}}></span> Entregado
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-end">
+                        <button className="btn btn-link text-decoration-none text-primary fw-bold p-0">Detalles</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 fw-bold">#D-8830</td>
+                      <td className="px-4 py-3 text-secondary">Hospital Regional Norte</td>
+                      <td className="px-4 py-3 text-secondary">Insumos Médicos Clase A</td>
+                      <td className="px-4 py-3 text-secondary">Hoy, 08:30 AM</td>
+                      <td className="px-4 py-3">
+                        <span className="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2">
+                          <span className="bg-warning rounded-circle spinner-grow spinner-grow-sm" style={{width:'8px',height:'8px'}}></span> En Camino
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-end">
+                        <button className="btn btn-link text-decoration-none text-primary fw-bold p-0">Detalles</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 fw-bold">#D-8831</td>
+                      <td className="px-4 py-3 text-secondary">Campamento Esperanza</td>
+                      <td className="px-4 py-3 text-secondary">Carpas y Mantas Termicas</td>
+                      <td className="px-4 py-3 text-secondary">Pendiente</td>
+                      <td className="px-4 py-3">
+                        <span className="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 d-inline-flex align-items-center gap-2">
+                          <span className="bg-secondary rounded-circle" style={{width:'8px',height:'8px'}}></span> En Preparación
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-end">
+                        <button className="btn btn-link text-decoration-none text-primary fw-bold p-0">Detalles</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+
+      {/* Sticky Footer Branding */}
+      <footer className="mt-auto px-4 py-3 bg-light border-top d-flex justify-content-between align-items-center w-100">
+        <div className="d-flex align-items-center gap-2 text-secondary opacity-75">
+          <span className="material-symbols-outlined fs-6">shield</span>
+          <span className="fw-bold text-uppercase" style={{fontSize: '10px', letterSpacing: '1px'}}>Protocolo de Emergencia Activado</span>
+        </div>
+        <p className="mb-0 text-secondary fw-medium" style={{fontSize: '10px'}}>© 2024 Donaton Central - Red Global de Ayuda Humanitaria</p>
+      </footer>
+
+      {/* FAB */}
+      <button className="btn btn-primary rounded-circle position-fixed shadow-lg d-flex align-items-center justify-content-center" style={{bottom: '30px', right: '30px', width: '56px', height: '56px', zIndex: 100}}>
+        <span className="material-symbols-outlined fs-4">add_alert</span>
+      </button>
+    </div>
   );
 }
