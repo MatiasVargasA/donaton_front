@@ -18,6 +18,11 @@ export default function Sidebar() {
     navigate('/login');
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const NavContent = () => (
