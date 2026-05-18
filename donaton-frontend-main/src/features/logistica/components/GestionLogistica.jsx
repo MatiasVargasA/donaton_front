@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { apiLogistica, apiNecesidades } from '../../../api';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 export default function GestionLogistica() {
-  const [envios, setEnvios] = useState([]);
-  const [necesidades, setNecesidades] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     destino: '',
@@ -13,54 +10,56 @@ export default function GestionLogistica() {
     estado: 'PENDIENTE'
   });
 
-  useEffect(() => {
-    cargarDatos();
-  }, []);
+  // Datos estáticos ya que no hay conexión con el backend
+  const necesidades = [
+    { id: 1, ubicacion: 'Zona Crítica: Sector Gamma', descripcion: 'Emergencia Médica' },
+    { id: 2, ubicacion: 'Sector A', descripcion: 'Refugio Temporal' }
+  ];
 
-  const cargarDatos = async () => {
-    try {
-      const [resEnvios, resNecesidades] = await Promise.all([
-        apiLogistica.get('/logistica'),
-        apiNecesidades.get('/necesidades')
-      ]);
-      setEnvios(resEnvios.data);
-      setNecesidades(resNecesidades.data);
-    } catch (error) {
-      console.error(error);
-      toast.error('Error al cargar datos logísticos');
+  const enviosEstaticos = [
+    {
+      id: 881,
+      transporte: 'Frigorífico',
+      carga: 'Insulina (2,500 dosis)',
+      estado: 'URGENTE'
+    },
+    {
+      id: 890,
+      transporte: 'Carga Pesada',
+      carga: 'Kits de Refugio (40 tons)',
+      estado: 'EN PREPARACIÓN'
+    },
+    {
+      id: 905,
+      transporte: 'Ligero',
+      carga: 'Agua Potable (500 gal)',
+      estado: 'PENDIENTE'
     }
-  };
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const response = await apiLogistica.post('/logistica', formData);
-      if (response.status === 200 || response.status === 201) {
-        toast.success('Envío programado correctamente');
-        setFormData({
-          destino: '',
-          transporte: 'Camión Institucional',
-          cantidad: '',
-          estado: 'PENDIENTE'
-        });
-        // Close modal if using one (Bootstrap modal requires JS or state-driven toggle)
-        const modalElement = document.getElementById('despachoModal');
+    // Simular el registro exitoso
+    setTimeout(() => {
+      toast.success('Envío programado correctamente (Simulado)');
+      setFormData({
+        destino: '',
+        transporte: 'Camión Institucional',
+        cantidad: '',
+        estado: 'PENDIENTE'
+      });
+      const modalElement = document.getElementById('despachoModal');
+      if (modalElement && window.bootstrap) {
         const modal = window.bootstrap.Modal.getInstance(modalElement);
         if (modal) modal.hide();
-        
-        cargarDatos();
       }
-    } catch (error) {
-      console.error(error);
-      toast.error('Error al registrar el envío');
-    } finally {
       setLoading(false);
-    }
+    }, 800);
   };
 
   return (
@@ -79,6 +78,15 @@ export default function GestionLogistica() {
               <option>Crítica (Nivel 1)</option>
               <option>Alta (Nivel 2)</option>
               <option>Estándar</option>
+            </select>
+          </div>
+          <div className="d-flex flex-column gap-1">
+            <span className="small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Tipo de Transporte</span>
+            <select className="form-select form-select-sm rounded-3 bg-surface-container-low border-outline-variant">
+              <option>Cualquier vehículo</option>
+              <option>Frigorífico</option>
+              <option>Carga Pesada</option>
+              <option>Ligero / Ágil</option>
             </select>
           </div>
           <button 
@@ -104,9 +112,9 @@ export default function GestionLogistica() {
                 <span className="material-symbols-outlined text-primary">warehouse</span>
               </div>
               <div className="d-flex flex-column gap-4">
-                <HubIndicator label="Hub Norte - Monterrey" percent={92} status="error" subtext="Capacidad Crítica: 1200m² restantes." />
-                <HubIndicator label="Puerto Central - Veracruz" percent={45} status="tertiary" subtext="Operación estable: Flujo constante." />
-                <HubIndicator label="Base Sur - Chiapas" percent={78} status="secondary" subtext="Carga alta: Priorizar despachos." />
+                <HubIndicator label="Hub Norte - Monterrey" percent={92} status="danger" subtext="Capacidad Crítica: 1200m² restantes." />
+                <HubIndicator label="Puerto Central - Veracruz" percent={45} status="success" subtext="Operación estable: Flujo constante." />
+                <HubIndicator label="Base Sur - Chiapas" percent={78} status="warning" subtext="Carga alta: Priorizar despachos." />
               </div>
               <button className="btn btn-outline-primary w-100 mt-4 rounded-3 fw-bold small py-2">Ver todos los hubs</button>
             </div>
@@ -116,7 +124,7 @@ export default function GestionLogistica() {
               <h3 className="h6 fw-bold mb-3">Gestión de Flota</h3>
               <div className="d-flex flex-column gap-3">
                 <FleetItem icon="local_shipping" title="Camión #MX-402" status="En Ruta" route="Hub Norte → Sector A" color="primary" />
-                <FleetItem icon="ac_unit" title="Frigo #RF-11" status="Disponible" route="Sin ruta asignada" color="secondary" />
+                <FleetItem icon="ac_unit" title="Frigo #RF-11" status="Disponible" route="Sin ruta asignada" color="success" />
               </div>
             </div>
 
@@ -157,7 +165,7 @@ export default function GestionLogistica() {
                       <span className="small fw-bold text-danger text-uppercase" style={{ fontSize: '10px' }}>Destino</span>
                       <div className="d-flex align-items-center gap-2 mt-1">
                         <span className="material-symbols-outlined text-danger small" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
-                        <p className="small fw-bold mb-0 text-truncate">Sector Gamma</p>
+                        <p className="small fw-bold mb-0 text-truncate">Zona Crítica: Sector Gamma</p>
                       </div>
                     </div>
                   </div>
@@ -196,37 +204,31 @@ export default function GestionLogistica() {
                     </tr>
                   </thead>
                   <tbody className="divide-y">
-                    {envios.length === 0 ? (
-                      <tr>
-                        <td colSpan="5" className="text-center py-5 text-secondary">No hay órdenes registradas.</td>
-                      </tr>
-                    ) : (
-                      envios.map((e) => (
-                        <tr key={e.id} className="transition-all hover-bg-light align-middle">
-                          <td className="px-4 py-3 small fw-bold text-primary">ORD-2024-{e.id}</td>
-                          <td className="px-4 py-3">
-                            <div className="d-flex align-items-center gap-2 small text-on-surface-variant">
-                              <span className="material-symbols-outlined small">
-                                {e.transporte.includes('Avión') ? 'flight' : e.transporte.includes('Camión') ? 'local_shipping' : 'directions_car'}
-                              </span>
-                              {e.transporte}
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 small text-on-surface-variant">{e.destino} ({e.cantidad} Unid.)</td>
-                          <td className="px-4 py-3">
-                            <span className={`badge rounded-pill px-3 py-1 ${getStatusBadgeClass(e.estado)}`}>
-                              {e.estado}
+                    {enviosEstaticos.map((e) => (
+                      <tr key={e.id} className="transition-all hover-bg-light align-middle">
+                        <td className="px-4 py-3 small fw-bold text-primary">ORD-2024-{e.id}</td>
+                        <td className="px-4 py-3">
+                          <div className="d-flex align-items-center gap-2 small text-on-surface-variant">
+                            <span className="material-symbols-outlined small">
+                              {e.transporte.includes('Frigo') ? 'ac_unit' : e.transporte.includes('Ligero') ? 'package_2' : 'local_shipping'}
                             </span>
-                          </td>
-                          <td className="px-4 py-3 text-end">
-                            <div className="d-flex justify-content-end gap-1">
-                              <button className="btn btn-icon-sm p-1 rounded hover-bg-light text-secondary"><span className="material-symbols-outlined small">print</span></button>
-                              <button className="btn btn-primary btn-sm rounded-3 px-3 fw-bold small">Confirmar</button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    )}
+                            {e.transporte}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 small text-on-surface-variant">{e.carga}</td>
+                        <td className="px-4 py-3">
+                          <span className={`badge rounded-pill px-3 py-1 ${getStatusBadgeClass(e.estado)}`}>
+                            {e.estado}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-end">
+                          <div className="d-flex justify-content-end gap-1">
+                            <button className="btn btn-icon-sm p-1 rounded hover-bg-light text-secondary"><span className="material-symbols-outlined small">print</span></button>
+                            <button className="btn btn-primary btn-sm rounded-3 px-3 fw-bold small">Confirmar</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -360,10 +362,10 @@ const FleetItem = ({ icon, title, status, route, color }) => (
 
 const getStatusBadgeClass = (status) => {
   switch (status) {
-    case 'ENTREGADO': return 'bg-tertiary-subtle text-tertiary';
-    case 'EN CAMINO': return 'bg-primary-subtle text-primary';
+    case 'ENTREGADO': return 'bg-success-subtle text-success';
     case 'URGENTE': return 'bg-danger-subtle text-danger';
-    case 'EN PREPARACIÓN': return 'bg-secondary-subtle text-secondary';
+    case 'EN PREPARACIÓN': return 'bg-warning-subtle text-warning';
+    case 'PENDIENTE': return 'bg-secondary-subtle text-secondary';
     default: return 'bg-light text-secondary';
   }
 };

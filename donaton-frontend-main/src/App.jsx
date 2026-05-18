@@ -15,10 +15,7 @@ import { Toaster } from 'react-hot-toast';
 import './App.css';
 
 function ProtectedRoute({ children }) {
-  const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  // Bypass de autenticación solicitado para poder ver la vista sin backend
   return children;
 }
 
