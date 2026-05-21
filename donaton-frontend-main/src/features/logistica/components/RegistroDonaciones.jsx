@@ -70,9 +70,9 @@ export default function RegistroDonaciones() {
             Administre el flujo de recursos humanitarios con trazabilidad completa y monitoreo de stock en tiempo real.
           </p>
         </div>
-        <button 
+        <button
           className="btn btn-primary-custom d-flex align-items-center gap-2 shadow-sm"
-          data-bs-toggle="modal" 
+          data-bs-toggle="modal"
           data-bs-target="#registroModal"
         >
           <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>inventory</span>
@@ -85,7 +85,7 @@ export default function RegistroDonaciones() {
         {/* Left Column (Main Table) */}
         <div className="col-12 col-xl-9">
           <div className="d-flex flex-column gap-4">
-            
+
             {/* Smart Filters */}
             <div className="admin-card py-3 px-3 d-flex align-items-center gap-3 overflow-auto">
               <span className="small fw-bold text-secondary text-nowrap">Categorías:</span>
@@ -145,7 +145,7 @@ export default function RegistroDonaciones() {
                             </div>
                           </td>
                           <td className="px-4 py-3 text-end">
-                            <button 
+                            <button
                               onClick={() => eliminarDonacion(d.id)}
                               className="btn btn-link text-secondary hover-text-danger p-0"
                             >
@@ -257,8 +257,8 @@ export default function RegistroDonaciones() {
                     style={{ borderRadius: '0.75rem' }}
                   />
                 </div>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
                   style={{ borderRadius: '0.75rem' }}
                   disabled={loading}
@@ -270,7 +270,7 @@ export default function RegistroDonaciones() {
           </div>
         </div>
       </div>
-      
+
       <style>{`
         .hover-text-danger:hover { color: #dc3545!important; }
         .modal-backdrop.show { opacity: 0.2; }

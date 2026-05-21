@@ -35,7 +35,7 @@ export default function Login() {
       login(userData, token);
       toast.success(`¡Bienvenido de nuevo, ${userData.nombre}!`);
       
-      if (userData.rol === 'USUARIO') {
+      if (userData.rol === 'USUARIO' || userData.rol === 'USER') {
         navigate('/portal-donante');
       } else {
         navigate('/');
