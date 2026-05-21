@@ -46,6 +46,16 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               <span className="material-symbols-outlined">volunteer_activism</span>
               <span className="fw-semibold">Mis Donaciones</span>
             </NavLink>
+            <NavLink 
+              to="/impacto" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">monitoring</span>
+              <span className="fw-semibold">Impacto Social</span>
+            </NavLink>
           </>
         ) : (
           <>

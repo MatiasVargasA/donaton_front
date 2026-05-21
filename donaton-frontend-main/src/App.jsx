@@ -13,6 +13,7 @@ import RegistroUsuario from './features/usuarios/components/RegistroUsuario';
 import GestionLogistica from './features/logistica/components/GestionLogistica';
 import PortalDonante from './features/usuarios/components/PortalDonante';
 import MisDonaciones from './features/usuarios/components/MisDonaciones';
+import ImpactoSocial from './features/usuarios/components/ImpactoSocial';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 
@@ -40,6 +41,7 @@ function MainLayout() {
             <Route path="/perfil" element={<PerfilUsuario />} />
             <Route path="/portal-donante" element={<PortalDonante />} />
             <Route path="/mis-donaciones" element={<MisDonaciones />} />
+            <Route path="/impacto" element={<ImpactoSocial />} />
           </Routes>
         </main>
       </div>
