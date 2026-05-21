@@ -34,7 +34,12 @@ export default function Login() {
 
       login(userData, token);
       toast.success(`¡Bienvenido de nuevo, ${userData.nombre}!`);
-      navigate('/');
+      
+      if (userData.rol === 'USUARIO') {
+        navigate('/portal-donante');
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       console.error(error);
       toast.error('Credenciales incorrectas. Intenta de nuevo.');

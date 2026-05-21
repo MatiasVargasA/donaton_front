@@ -36,7 +36,7 @@ const RegistroUsuario = () => {
         correo: formData.email,
         password: formData.password,
         organizacion: formData.organization,
-        rol: 'USER'
+        rol: 'USUARIO' // por defecto será USUARIO
       });
 
       toast.success('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');

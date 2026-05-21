@@ -11,6 +11,7 @@ import PerfilUsuario from './features/usuarios/components/PerfilUsuario';
 import Login from './features/usuarios/components/Login';
 import RegistroUsuario from './features/usuarios/components/RegistroUsuario';
 import GestionLogistica from './features/logistica/components/GestionLogistica';
+import PortalDonante from './features/usuarios/components/PortalDonante';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 
@@ -36,6 +37,7 @@ function MainLayout() {
             <Route path="/reportes" element={<ReportesTerreno />} />
             <Route path="/logistica" element={<GestionLogistica />} />
             <Route path="/perfil" element={<PerfilUsuario />} />
+            <Route path="/portal-donante" element={<PortalDonante />} />
           </Routes>
         </main>
       </div>
