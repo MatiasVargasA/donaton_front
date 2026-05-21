@@ -15,12 +15,8 @@ import PortalDonante from './features/usuarios/components/PortalDonante';
 import MisDonaciones from './features/usuarios/components/MisDonaciones';
 import ImpactoSocial from './features/usuarios/components/ImpactoSocial';
 import { Toaster } from 'react-hot-toast';
+import RoleRoute from './components/RoleRoute';
 import './App.css';
-
-function ProtectedRoute({ children }) {
-  // Bypass de autenticación solicitado para poder ver la vista sin backend
-  return children;
-}
 
 function MainLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
@@ -33,15 +29,16 @@ function MainLayout() {
         <Header toggleSidebar={toggleSidebar} />
         <main className="flex-grow-1">
           <Routes>
-            <Route path="/" element={<PanelControlGlobal />} />
-            <Route path="/mapa" element={<MapaNecesidades />} />
-            <Route path="/registro" element={<RegistroDonaciones />} />
-            <Route path="/reportes" element={<ReportesTerreno />} />
-            <Route path="/logistica" element={<GestionLogistica />} />
-            <Route path="/perfil" element={<PerfilUsuario />} />
-            <Route path="/portal-donante" element={<PortalDonante />} />
-            <Route path="/mis-donaciones" element={<MisDonaciones />} />
-            <Route path="/impacto" element={<ImpactoSocial />} />
+            <Route path="/" element={<RoleRoute allowedRoles={['ADMIN']}><PanelControlGlobal /></RoleRoute>} />
+            <Route path="/mapa" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD']}><MapaNecesidades /></RoleRoute>} />
+            <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><RegistroDonaciones /></RoleRoute>} />
+            <Route path="/reportes" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
+            <Route path="/municipalidad" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
+            <Route path="/logistica" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><GestionLogistica /></RoleRoute>} />
+            <Route path="/perfil" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD', 'USUARIO', 'USER']}><PerfilUsuario /></RoleRoute>} />
+            <Route path="/portal-donante" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><PortalDonante /></RoleRoute>} />
+            <Route path="/mis-donaciones" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><MisDonaciones /></RoleRoute>} />
+            <Route path="/impacto" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><ImpactoSocial /></RoleRoute>} />
           </Routes>
         </main>
       </div>
@@ -60,9 +57,9 @@ function App() {
 
           {/* Rutas protegidas bajo MainLayout */}
           <Route path="/*" element={
-            <ProtectedRoute>
+            <RoleRoute>
               <MainLayout />
-            </ProtectedRoute>
+            </RoleRoute>
           } />
         </Routes>
       </Router>

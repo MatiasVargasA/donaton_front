@@ -37,6 +37,10 @@ export default function Login() {
       
       if (userData.rol === 'USUARIO' || userData.rol === 'USER') {
         navigate('/portal-donante');
+      } else if (userData.rol === 'LOGISTICA') {
+        navigate('/logistica');
+      } else if (userData.rol === 'MUNICIPALIDAD') {
+        navigate('/municipalidad');
       } else {
         navigate('/');
       }
