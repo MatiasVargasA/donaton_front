@@ -4,7 +4,7 @@ import { useAuth } from '../AuthContext';
 import toast from 'react-hot-toast';
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,76 +13,104 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     navigate('/login');
   };
 
+  const isUser = user?.rol === 'USUARIO' || user?.rol === 'USER';
+
   const NavContent = () => (
     <div className="d-flex flex-column h-100">
       <div className="mb-4 px-2 pt-2">
         <h1 className="h4 fw-bold text-primary mb-0">Donaton</h1>
-        <p className="text-secondary small mb-0">Admin Console</p>
+        <p className="text-secondary small mb-0">{isUser ? 'Portal del Donante' : 'Admin Console'}</p>
       </div>
 
       <nav className="nav flex-column flex-grow-1 gap-2">
-        <NavLink 
-          to="/" 
-          onClick={() => window.innerWidth < 992 && toggleSidebar()}
-          className={({ isActive }) => 
-            `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
-          }
-          end
-        >
-          <span className="material-symbols-outlined">dashboard</span>
-          <span className="fw-semibold">Dashboard</span>
-        </NavLink>
-
-        <NavLink 
-          to="/registro" 
-          onClick={() => window.innerWidth < 992 && toggleSidebar()}
-          className={({ isActive }) => 
-            `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
-          }
-        >
-          <span className="material-symbols-outlined">inventory_2</span>
-          <span className="fw-semibold">Inventory</span>
-        </NavLink>
-
-        <NavLink 
-          to="/mapa" 
-          onClick={() => window.innerWidth < 992 && toggleSidebar()}
-          className={({ isActive }) => 
-            `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
-          }
-        >
-          <span className="material-symbols-outlined">map</span>
-          <span className="fw-semibold">Needs Map</span>
-        </NavLink>
-
-        <NavLink 
-          to="/logistica" 
-          onClick={() => window.innerWidth < 992 && toggleSidebar()}
-          className={({ isActive }) => 
-            `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
-          }
-        >
-          <span className="material-symbols-outlined">local_shipping</span>
-          <span className="fw-semibold">Logistics</span>
-        </NavLink>
-
-        <NavLink 
-          to="/reportes" 
-          onClick={() => window.innerWidth < 992 && toggleSidebar()}
-          className={({ isActive }) => 
-            `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
-          }
-        >
-          <span className="material-symbols-outlined">analytics</span>
-          <span className="fw-semibold">Reports</span>
-        </NavLink>
+        {isUser ? (
+          <>
+            <NavLink 
+              to="/portal-donante" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+              end
+            >
+              <span className="material-symbols-outlined">home</span>
+              <span className="fw-semibold">Inicio</span>
+            </NavLink>
+            <NavLink 
+              to="/mis-donaciones" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">volunteer_activism</span>
+              <span className="fw-semibold">Mis Donaciones</span>
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink 
+              to="/" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+              end
+            >
+              <span className="material-symbols-outlined">dashboard</span>
+              <span className="fw-semibold">Dashboard</span>
+            </NavLink>
+            <NavLink 
+              to="/registro" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">inventory_2</span>
+              <span className="fw-semibold">Inventory</span>
+            </NavLink>
+            <NavLink 
+              to="/mapa" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">map</span>
+              <span className="fw-semibold">Needs Map</span>
+            </NavLink>
+            <NavLink 
+              to="/logistica" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">local_shipping</span>
+              <span className="fw-semibold">Logistics</span>
+            </NavLink>
+            <NavLink 
+              to="/reportes" 
+              onClick={() => window.innerWidth < 992 && toggleSidebar()}
+              className={({ isActive }) => 
+                `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+              }
+            >
+              <span className="material-symbols-outlined">analytics</span>
+              <span className="fw-semibold">Reports</span>
+            </NavLink>
+          </>
+        )}
       </nav>
 
       <div className="mt-auto">
-        <button className="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2 mb-4 py-2">
-          <span className="material-symbols-outlined">add</span>
-          New Dispatch
-        </button>
+        {!isUser && (
+          <button className="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2 mb-4 py-2">
+            <span className="material-symbols-outlined">add</span>
+            New Dispatch
+          </button>
+        )}
 
         <div className="pt-3 border-top">
           <NavLink 
