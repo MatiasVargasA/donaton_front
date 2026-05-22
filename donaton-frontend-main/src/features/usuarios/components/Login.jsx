@@ -34,7 +34,7 @@ export default function Login() {
 
       login(userData, token);
       toast.success(`¡Bienvenido de nuevo, ${userData.nombre}!`);
-      
+
       if (userData.rol === 'USUARIO' || userData.rol === 'USER') {
         navigate('/portal-donante');
       } else if (userData.rol === 'LOGISTICA') {
@@ -78,7 +78,7 @@ export default function Login() {
                 <span className="fs-2 fw-bold text-primary">Donaton</span>
               </div>
               <h2 className="fs-4 fw-bold text-dark">Bienvenido de nuevo</h2>
-              <p className="text-secondary">Inicie sesión en su cuenta institucional</p>
+              <p className="text-secondary">Inicie sesión en su cuenta como usuario Donante</p>
             </div>
 
             <form onSubmit={handleLogin} className="d-flex flex-column gap-4">
@@ -89,7 +89,7 @@ export default function Login() {
               )}
 
               <div className="form-group">
-                <label className="small fw-bold text-secondary text-uppercase mb-1" htmlFor="email">Correo Electrónico Institucional</label>
+                <label className="small fw-bold text-secondary text-uppercase mb-1" htmlFor="email">Correo Electrónico</label>
                 <div className="position-relative">
                   <span className="material-symbols-outlined position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary">mail</span>
                   <input
@@ -133,28 +133,17 @@ export default function Login() {
               </button>
             </form>
 
-            <div className="d-flex align-items-center gap-3 my-4">
-              <hr className="flex-grow-1 text-secondary" />
-              <span className="small text-secondary fw-bold">O</span>
-              <hr className="flex-grow-1 text-secondary" />
-            </div>
-
-            <button className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2 py-3 fw-bold" type="button" onClick={() => alert('Iniciando sesión con proveedor SSO...')}>
-              <span className="material-symbols-outlined text-primary">id_card</span>
-              Inicio de sesión con SSO
-            </button>
-
             <div className="text-center mt-4">
               <p className="small text-secondary">
                 ¿No tienes una cuenta?
                 <Link className="text-primary fw-bold ms-1 text-decoration-none" to="/registro-usuario">
-                  Crear Cuenta Institucional
+                  Crear Cuenta Donante
                 </Link>
               </p>
             </div>
 
             <footer className="mt-5 text-center small text-secondary">
-              <p className="mb-0">© 2024 Donaton Humanitarian Platform.</p>
+              <p className="mb-0">© 2026 Donaton Humanitarian Platform.</p>
               <div className="d-flex justify-content-center gap-2 mt-1">
                 <a className="text-secondary text-decoration-none hover-text-primary" href="#">Términos de Servicio</a>
                 <span>|</span>

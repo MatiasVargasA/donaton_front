@@ -31,12 +31,23 @@ const RegistroUsuario = () => {
     }
 
     try {
+      let rolAsignado = 'USUARIO';
+      const emailLower = formData.email.toLowerCase();
+      
+      if (emailLower.endsWith('@logistica.com')) {
+        rolAsignado = 'LOGISTICA';
+      } else if (emailLower.endsWith('@municipalidad.com') || emailLower.endsWith('@gov.cl') || emailLower.endsWith('@gov.com')) {
+        rolAsignado = 'MUNICIPALIDAD';
+      } else if (emailLower.endsWith('@admin.com')) {
+        rolAsignado = 'ADMIN';
+      }
+
       await api.post('/usuarios', {
         nombre: formData.fullName,
         correo: formData.email,
         password: formData.password,
         organizacion: formData.organization,
-        rol: 'USUARIO' // por defecto será USUARIO
+        rol: rolAsignado 
       });
 
       toast.success('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
