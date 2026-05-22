@@ -34,11 +34,11 @@ const RegistroUsuario = () => {
       let rolAsignado = 'USUARIO';
       const emailLower = formData.email.toLowerCase();
       
-      if (emailLower.endsWith('@logistica.com')) {
+      if (emailLower.endsWith('@logistica.com') || emailLower.endsWith('@logistica.cl')) {
         rolAsignado = 'LOGISTICA';
       } else if (emailLower.endsWith('@municipalidad.com') || emailLower.endsWith('@gov.cl') || emailLower.endsWith('@gov.com')) {
         rolAsignado = 'MUNICIPALIDAD';
-      } else if (emailLower.endsWith('@admin.com')) {
+      } else if (emailLower.endsWith('@admin.com') || emailLower.endsWith('@admin.cl')) {
         rolAsignado = 'ADMIN';
       }
 
