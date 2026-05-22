@@ -28,7 +28,7 @@ export default function Login() {
       const userData = {
         nombre: response.data.nombre || response.data.user?.nombre || email.split('@')[0],
         correo: response.data.correo || response.data.user?.correo || email,
-        rol: response.data.role || response.data.user?.rol || 'USER',
+        rol: response.data.rol || response.data.role || response.data.user?.rol || response.data.user?.role || 'USER',
         organizacion: response.data.organizacion || response.data.user?.organizacion || 'Donatón'
       };
 
