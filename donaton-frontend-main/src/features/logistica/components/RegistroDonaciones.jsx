@@ -22,6 +22,17 @@ export default function RegistroDonaciones() {
 
   const [donaciones, setDonaciones] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('TODAS');
+
+  const getStatusBadgeClass = (status) => {
+    switch (status) {
+      case 'ACEPTADA': return 'bg-success-subtle text-success border-success-subtle';
+      case 'RECIBIDA': return 'bg-info-subtle text-info border-info-subtle';
+      case 'PENDIENTE': return 'bg-warning-subtle text-warning border-warning-subtle';
+      case 'RECHAZADA': return 'bg-danger-subtle text-danger border-danger-subtle';
+      default: return 'bg-secondary-subtle text-secondary border-secondary-subtle';
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -87,6 +98,17 @@ export default function RegistroDonaciones() {
       cargarDonaciones();
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const recibirEnAlmacen = async (id) => {
+    try {
+      await apiDonaciones.put(`/donaciones/${id}/estado?estado=RECIBIDA`);
+      toast.success('Donación recibida en almacén correctamente');
+      cargarDonaciones();
+    } catch (error) {
+      console.error(error);
+      toast.error('Error al recibir la donación');
     }
   };
 
@@ -315,9 +337,9 @@ export default function RegistroDonaciones() {
       {/* Dashboard Header & CTA */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
         <div>
-          <h2 className="h3 fw-bold text-on-surface mb-2">Gestión de Inventario</h2>
+          <h2 className="h3 fw-bold text-on-surface mb-2">Donaciones Entrantes</h2>
           <p className="text-on-surface-variant mb-0" style={{ maxWidth: '600px' }}>
-            Administre el flujo de recursos humanitarios con trazabilidad completa y monitoreo de stock en tiempo real.
+            Visualiza todas las donaciones. Acepta en almacén las donaciones que ya fueron verificadas y aceptadas por la Municipalidad.
           </p>
         </div>
         <button
@@ -338,16 +360,14 @@ export default function RegistroDonaciones() {
 
             {/* Smart Filters */}
             <div className="admin-card py-3 px-3 d-flex align-items-center gap-3 overflow-auto">
-              <span className="small fw-bold text-secondary text-nowrap">Categorías:</span>
+              <span className="small fw-bold text-secondary text-nowrap">Estado:</span>
               <div className="d-flex gap-2">
-                <button className="btn btn-sm rounded-pill px-4 bg-primary text-white">Todos</button>
-                <button className="btn btn-sm rounded-pill px-4 bg-surface-container-high text-on-surface-variant border-0">Alimentos</button>
-                <button className="btn btn-sm rounded-pill px-4 bg-surface-container-high text-on-surface-variant border-0">Insumos Médicos</button>
+                <button onClick={() => setStatusFilter('TODAS')} className={`btn btn-sm rounded-pill px-4 ${statusFilter === 'TODAS' ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant border-0'}`}>Todas</button>
+                <button onClick={() => setStatusFilter('PENDIENTE')} className={`btn btn-sm rounded-pill px-4 ${statusFilter === 'PENDIENTE' ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant border-0'}`}>Pendientes</button>
+                <button onClick={() => setStatusFilter('ACEPTADA')} className={`btn btn-sm rounded-pill px-4 ${statusFilter === 'ACEPTADA' ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant border-0'}`}>Aceptadas</button>
+                <button onClick={() => setStatusFilter('RECIBIDA')} className={`btn btn-sm rounded-pill px-4 ${statusFilter === 'RECIBIDA' ? 'bg-primary text-white' : 'bg-surface-container-high text-on-surface-variant border-0'}`}>Recibidas</button>
               </div>
               <div className="ms-auto d-flex gap-2 ps-3 border-start">
-                <button className="btn btn-icon-sm border rounded-3 text-secondary p-2">
-                  <span className="material-symbols-outlined small">filter_list</span>
-                </button>
                 <button className="btn btn-icon-sm border rounded-3 text-secondary p-2">
                   <span className="material-symbols-outlined small">download</span>
                 </button>
@@ -362,48 +382,62 @@ export default function RegistroDonaciones() {
                     <tr>
                       <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Nombre del Ítem</th>
                       <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Cantidad</th>
-                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Fecha</th>
                       <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Origen</th>
-                      <th className="px-4 py-3 border-0"></th>
+                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Estado</th>
+                      <th className="px-4 py-3 border-0">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y">
-                    {donaciones.length === 0 ? (
+                    {donaciones.filter(d => statusFilter === 'TODAS' || d.estado === statusFilter || (statusFilter === 'PENDIENTE' && !d.estado)).length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="text-center py-5 text-secondary">No hay registros aún.</td>
+                        <td colSpan="5" className="text-center py-5 text-secondary">No hay donaciones que coincidan.</td>
                       </tr>
                     ) : (
-                      donaciones.map((d) => (
-                        <tr key={d.id} className="transition-all hover-bg-light">
-                          <td className="px-4 py-3">
-                            <div className="d-flex align-items-center gap-3">
-                              <div className="rounded-3 bg-primary-subtle p-2 d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
-                                <span className="material-symbols-outlined text-primary">package_2</span>
-                              </div>
-                              <div>
-                                <p className="small fw-bold text-dark mb-0">{d.tipo}</p>
-                                <p className="small text-secondary mb-0">Suministro General</p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 small fw-bold text-dark">{d.cantidad} Unid.</td>
-                          <td className="px-4 py-3 small text-secondary">Reciente</td>
-                          <td className="px-4 py-3">
-                            <div className="d-flex align-items-center gap-2">
-                              <div className="bg-primary rounded-circle" style={{ width: '8px', height: '8px' }}></div>
-                              <span className="small fw-bold text-primary">{d.origen}</span>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 text-end">
-                            <button
-                              onClick={() => eliminarDonacion(d.id)}
-                              className="btn btn-link text-secondary hover-text-danger p-0"
-                            >
-                              <span className="material-symbols-outlined">delete</span>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
+                      donaciones
+                        .filter(d => statusFilter === 'TODAS' || d.estado === statusFilter || (statusFilter === 'PENDIENTE' && !d.estado))
+                        .map((d) => {
+                          const estadoReal = d.estado || 'PENDIENTE';
+                          return (
+                            <tr key={d.id} className="transition-all hover-bg-light align-middle">
+                              <td className="px-4 py-3">
+                                <div className="d-flex align-items-center gap-3">
+                                  <div className="rounded-3 bg-primary-subtle p-2 d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
+                                    <span className="material-symbols-outlined text-primary">package_2</span>
+                                  </div>
+                                  <div>
+                                    <p className="small fw-bold text-dark mb-0">{d.categoria || d.tipo || 'General'}</p>
+                                    <p className="small text-secondary mb-0">{d.descripcion || 'Sin descripción'}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-4 py-3 small fw-bold text-dark">{d.cantidad} Unid.</td>
+                              <td className="px-4 py-3">
+                                <div className="d-flex align-items-center gap-2">
+                                  <span className="small fw-bold text-primary">{d.nombreDonante || d.origen || 'Anónimo'}</span>
+                                </div>
+                              </td>
+                              <td className="px-4 py-3">
+                                <span className={`badge rounded-pill px-3 py-1 border ${getStatusBadgeClass(estadoReal)}`}>
+                                  {estadoReal}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3 text-end">
+                                {estadoReal === 'ACEPTADA' ? (
+                                  <button
+                                    onClick={() => recibirEnAlmacen(d.id)}
+                                    className="btn btn-info btn-sm text-white fw-bold px-3 rounded-pill"
+                                  >
+                                    Recibir en Almacén
+                                  </button>
+                                ) : (
+                                  <span className="small text-secondary">
+                                    {estadoReal === 'RECIBIDA' ? 'En Stock' : 'Solo Visualización'}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })
                     )}
                   </tbody>
                 </table>

@@ -12,7 +12,7 @@ export default function DonacionesOverview() {
   const cargarDonaciones = async () => {
     setLoading(true);
     try {
-      const response = await apiDonaciones.get('/donaciones/estado/PENDIENTE');
+      const response = await apiDonaciones.get('/donaciones');
       setDonaciones(response.data);
     } catch (error) {
       console.error(error);
@@ -81,10 +81,7 @@ export default function DonacionesOverview() {
   // Validación de una donación
   const handleValidate = async (id, status) => {
     try {
-      await apiDonaciones.put(`/donaciones/${id}/estado`, {
-        nuevoEstado: status,
-        mensajeMunicipalidad: `Estado actualizado a ${status}`
-      });
+      await apiDonaciones.put(`/donaciones/${id}/estado?estado=${status}`);
       toast.success(`¡Donación ${status.toLowerCase()} correctamente!`);
       cargarDonaciones();
     } catch (error) {
@@ -345,79 +342,7 @@ export default function DonacionesOverview() {
           </div>
         </div>
 
-        {/* Stats overlay section */}
-        <div className="row g-4 mb-4">
-          {/* Chart Cards */}
-          <div className="col-12 col-lg-8">
-            <div className="card border-0 shadow-sm p-4 bg-white" style={{ borderRadius: '1.25rem' }}>
-              <h3 className="h6 fw-bold text-dark mb-4">Tendencias de Distribución Semanal</h3>
 
-              <div className="d-flex align-items-end justify-content-between gap-2 px-2" style={{ height: '200px' }}>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '40%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">420</span>
-                </div>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '65%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">680</span>
-                </div>
-                <div className="flex-grow-1 bg-primary rounded-top position-relative group" style={{ height: '85%' }}>
-                  <span className="position-absolute text-dark top-0 start-50 translate-middle-x mt-n4 small fw-bold">950</span>
-                </div>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '55%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">580</span>
-                </div>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '92%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">1020</span>
-                </div>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '75%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">820</span>
-                </div>
-                <div className="flex-grow-1 bg-light rounded-top position-relative group hover-bg-primary" style={{ height: '60%', transition: 'all 0.2s' }}>
-                  <span className="position-absolute top-0 start-50 translate-middle-x mt-n4 small fw-bold opacity-0 group-hover-opacity-100">640</span>
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-between mt-3 text-uppercase text-secondary fw-bold px-2" style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}>
-                <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Storage capacity card */}
-          <div className="col-12 col-lg-4">
-            <div className="card border-0 shadow-sm p-4 bg-white h-100 d-flex flex-column justify-content-between" style={{ borderRadius: '1.25rem' }}>
-              <div>
-                <h3 className="h6 fw-bold text-primary mb-1">Capacidad de Almacén</h3>
-                <p className="small text-secondary mb-0">Centro de Acopio Principal</p>
-              </div>
-
-              <div className="my-4">
-                <div className="d-flex justify-content-between mb-2">
-                  <span className="small fw-bold text-dark">Espacio Total Utilizado</span>
-                  <span className="small fw-bold text-dark">78%</span>
-                </div>
-                <div className="progress rounded-pill bg-light" style={{ height: '12px' }}>
-                  <div
-                    className="progress-bar rounded-pill bg-warning shadow-sm"
-                    role="progressbar"
-                    style={{ width: '78%' }}
-                    aria-valuenow="78"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => toast.success('Gestión de Almacén Abierta')}
-                className="btn btn-primary btn-lg w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 py-3"
-                style={{ borderRadius: '0.75rem' }}
-              >
-                <span className="material-symbols-outlined">warehouse</span>
-                Gestionar Almacén
-              </button>
-            </div>
-          </div>
-        </div>
 
       </div>
 

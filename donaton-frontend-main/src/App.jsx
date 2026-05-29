@@ -12,6 +12,7 @@ import PerfilUsuario from './features/usuarios/components/PerfilUsuario';
 import Login from './features/usuarios/components/Login';
 import RegistroUsuario from './features/usuarios/components/RegistroUsuario';
 import GestionLogistica from './features/logistica/components/GestionLogistica';
+import InventarioStock from './features/logistica/components/InventarioStock';
 import PortalDonante from './features/usuarios/components/PortalDonante';
 import MisDonaciones from './features/usuarios/components/MisDonaciones';
 import ImpactoSocial from './features/usuarios/components/ImpactoSocial';
@@ -35,6 +36,7 @@ function MainLayout() {
             <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'USUARIO', 'USER']}><RegistroDonaciones /></RoleRoute>} />
             <Route path="/reportes" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
             <Route path="/municipalidad" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><DonacionesOverview /></RoleRoute>} />
+            <Route path="/inventario" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><InventarioStock /></RoleRoute>} />
             <Route path="/logistica" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><GestionLogistica /></RoleRoute>} />
             <Route path="/perfil" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD', 'USUARIO', 'USER']}><PerfilUsuario /></RoleRoute>} />
             <Route path="/portal-donante" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><PortalDonante /></RoleRoute>} />
