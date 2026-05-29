@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { apiDonaciones } from '../../../api';
 
 export default function GestionLogistica() {
   const [loading, setLoading] = useState(false);
+  const [envios, setEnvios] = useState([]);
   const [formData, setFormData] = useState({
     destino: '',
     transporte: 'Camión Institucional',
@@ -16,26 +18,34 @@ export default function GestionLogistica() {
     { id: 2, ubicacion: 'Sector A', descripcion: 'Refugio Temporal' }
   ];
 
-  const enviosEstaticos = [
-    {
-      id: 881,
-      transporte: 'Frigorífico',
-      carga: 'Insulina (2,500 dosis)',
-      estado: 'URGENTE'
-    },
-    {
-      id: 890,
-      transporte: 'Carga Pesada',
-      carga: 'Kits de Refugio (40 tons)',
-      estado: 'EN PREPARACIÓN'
-    },
-    {
-      id: 905,
-      transporte: 'Ligero',
-      carga: 'Agua Potable (500 gal)',
-      estado: 'PENDIENTE'
+
+  const cargarEnvios = async () => {
+    try {
+      const response = await apiDonaciones.get('/donaciones/estado/ACEPTADA');
+      setEnvios(response.data);
+    } catch (error) {
+      console.error(error);
+      setEnvios([]);
     }
-  ];
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      cargarEnvios();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const actualizarEstado = async (id, nuevoEstado) => {
+    try {
+      await apiDonaciones.put(`/donaciones/${id}/estado`, { nuevoEstado });
+      toast.success(`Estado actualizado a ${nuevoEstado}`);
+      cargarEnvios();
+    } catch (error) {
+      console.error(error);
+      toast.error('Error al actualizar el estado');
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -204,18 +214,18 @@ export default function GestionLogistica() {
                     </tr>
                   </thead>
                   <tbody className="divide-y">
-                    {enviosEstaticos.map((e) => (
+                    {envios.map((e) => (
                       <tr key={e.id} className="transition-all hover-bg-light align-middle">
-                        <td className="px-4 py-3 small fw-bold text-primary">ORD-2024-{e.id}</td>
+                        <td className="px-4 py-3 small fw-bold text-primary">ORD-2026-{e.id}</td>
                         <td className="px-4 py-3">
                           <div className="d-flex align-items-center gap-2 small text-on-surface-variant">
                             <span className="material-symbols-outlined small">
-                              {e.transporte.includes('Frigo') ? 'ac_unit' : e.transporte.includes('Ligero') ? 'package_2' : 'local_shipping'}
+                              {e.categoria?.includes('Med') ? 'ac_unit' : 'local_shipping'}
                             </span>
-                            {e.transporte}
+                            {e.categoria || 'Suministro'}
                           </div>
                         </td>
-                        <td className="px-4 py-3 small text-on-surface-variant">{e.carga}</td>
+                        <td className="px-4 py-3 small text-on-surface-variant">{e.descripcion || `${e.cantidad} unidades`}</td>
                         <td className="px-4 py-3">
                           <span className={`badge rounded-pill px-3 py-1 ${getStatusBadgeClass(e.estado)}`}>
                             {e.estado}
@@ -223,12 +233,17 @@ export default function GestionLogistica() {
                         </td>
                         <td className="px-4 py-3 text-end">
                           <div className="d-flex justify-content-end gap-1">
-                            <button className="btn btn-icon-sm p-1 rounded hover-bg-light text-secondary"><span className="material-symbols-outlined small">print</span></button>
-                            <button className="btn btn-primary btn-sm rounded-3 px-3 fw-bold small">Confirmar</button>
+                            <button onClick={() => actualizarEstado(e.id, 'EN_RUTA')} className="btn btn-warning btn-sm rounded-3 px-3 fw-bold small text-white">En Ruta</button>
+                            <button onClick={() => actualizarEstado(e.id, 'ENTREGADA')} className="btn btn-success btn-sm rounded-3 px-3 fw-bold small">Entregar</button>
                           </div>
                         </td>
                       </tr>
                     ))}
+                    {envios.length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="text-center py-4 text-secondary small">No hay despachos pendientes.</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -362,9 +377,9 @@ const FleetItem = ({ icon, title, status, route, color }) => (
 
 const getStatusBadgeClass = (status) => {
   switch (status) {
-    case 'ENTREGADO': return 'bg-success-subtle text-success';
-    case 'URGENTE': return 'bg-danger-subtle text-danger';
-    case 'EN PREPARACIÓN': return 'bg-warning-subtle text-warning';
+    case 'ENTREGADA': return 'bg-success-subtle text-success';
+    case 'EN_RUTA': return 'bg-warning-subtle text-warning';
+    case 'ACEPTADA': return 'bg-primary-subtle text-primary';
     case 'PENDIENTE': return 'bg-secondary-subtle text-secondary';
     default: return 'bg-light text-secondary';
   }

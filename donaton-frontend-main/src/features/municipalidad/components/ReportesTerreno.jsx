@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { apiNecesidades } from '../../../api';
 import toast from 'react-hot-toast';
 
@@ -12,10 +12,6 @@ export default function ReportesTerreno() {
   const [necesidades, setNecesidades] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    cargarNecesidades();
-  }, []);
-
   const cargarNecesidades = async () => {
     try {
       const response = await apiNecesidades.get('/necesidades');
@@ -24,6 +20,13 @@ export default function ReportesTerreno() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      cargarNecesidades();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -1,27 +1,24 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Cargar usuario y token desde localStorage al iniciar
+  const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('donaton_user');
     const token = localStorage.getItem('donaton_token');
-
     if (savedUser && token) {
       try {
-        setUser(JSON.parse(savedUser));
+        return JSON.parse(savedUser);
       } catch (e) {
         console.error("Error parsing saved user", e);
         localStorage.removeItem('donaton_user');
         localStorage.removeItem('donaton_token');
       }
     }
-    setLoading(false);
-  }, []);
+    return null;
+  });
+  const [loading] = useState(false);
 
   const login = (userData, token) => {
     setUser(userData);

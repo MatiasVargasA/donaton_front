@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -22,10 +22,6 @@ export default function MapaNecesidades() {
 
   const position = [-33.4489, -70.6693];
 
-  useEffect(() => {
-    cargarNecesidades();
-  }, []);
-
   const cargarNecesidades = async () => {
     try {
       const response = await apiNecesidades.get('/necesidades');
@@ -37,12 +33,22 @@ export default function MapaNecesidades() {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      cargarNecesidades();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
   const getCoords = (ubicacion, index) => {
     const loc = ubicacion?.toLowerCase() || '';
     if (loc.includes('valparaíso')) return [-33.0472, -71.6127 + (index * 0.01)];
     if (loc.includes('concepción')) return [-36.8201, -73.0444 + (index * 0.01)];
     if (loc.includes('la serena')) return [-29.9027, -71.2519 + (index * 0.01)];
-    return [-33.4489 + (Math.random() - 0.5) * 0.1, -70.6693 + (Math.random() - 0.5) * 0.1];
+    // Deterministic offset to avoid impure Math.random during render
+    const latOffset = (((index * 17) % 100) - 50) * 0.001;
+    const lngOffset = (((index * 31) % 100) - 50) * 0.001;
+    return [-33.4489 + latOffset, -70.6693 + lngOffset];
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../../api';
 import toast from 'react-hot-toast';
@@ -34,11 +34,11 @@ const RegistroUsuario = () => {
       let rolAsignado = 'USUARIO';
       const emailLower = formData.email.toLowerCase();
       
-      if (emailLower.endsWith('@logistica.com') || emailLower.endsWith('@logistica.cl')) {
+      if (emailLower.endsWith('@logistica.cl')) {
         rolAsignado = 'LOGISTICA';
-      } else if (emailLower.endsWith('@municipalidad.com') || emailLower.endsWith('@gov.cl') || emailLower.endsWith('@gov.com')) {
+      } else if (emailLower.endsWith('@mun.cl')) {
         rolAsignado = 'MUNICIPALIDAD';
-      } else if (emailLower.endsWith('@admin.com') || emailLower.endsWith('@admin.cl')) {
+      } else if (emailLower.endsWith('@admin.cl') || emailLower.endsWith('@admin.com')) {
         rolAsignado = 'ADMIN';
       }
 
@@ -103,9 +103,25 @@ const RegistroUsuario = () => {
             <span className="fs-4 fw-bold text-primary">Donaton</span>
           </div>
           <div className="d-flex flex-column flex-grow-1 justify-content-center px-4 py-5 mx-auto w-100" style={{ maxWidth: '500px' }}>
-            <div className="mb-4">
+            <div className="mb-3">
               <h2 className="fw-bold text-primary">Crear una cuenta</h2>
               <p className="text-secondary">Regístrese para comenzar a gestionar donaciones.</p>
+            </div>
+
+            {/* Info Banner for Domain Roles */}
+            <div className="alert alert-info border-0 shadow-sm bg-info-subtle d-flex align-items-start gap-3 p-3 mb-4" style={{ borderRadius: '0.75rem', borderLeft: '4px solid var(--bs-info) !important' }}>
+              <span className="material-symbols-outlined text-info mt-0">info</span>
+              <div>
+                <h6 className="fw-bold text-info-dark mb-1 small" style={{ color: '#055160' }}>Dominios y Asignación de Roles</h6>
+                <p className="text-secondary mb-0 small" style={{ fontSize: '0.85rem' }}>
+                  El rol de su usuario se asignará de manera automática según el dominio de su correo:
+                </p>
+                <ul className="text-secondary mb-0 ps-3 mt-1 small" style={{ fontSize: '0.82rem' }}>
+                  <li><strong>Logística:</strong> Correo que termina en <code className="text-primary fw-bold">@logistica.cl</code></li>
+                  <li><strong>Municipalidad:</strong> Correo que termina en <code className="text-primary fw-bold">@mun.cl</code></li>
+                  <li><strong>Donante (Usuario):</strong> Cualquier otro dominio de correo.</li>
+                </ul>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
@@ -136,6 +152,7 @@ const RegistroUsuario = () => {
                     placeholder="nombre@organizacion.org"
                     required
                     type="email"
+                    autoComplete="email"
                     value={formData.email}
                     onChange={handleChange}
                   />
@@ -176,6 +193,7 @@ const RegistroUsuario = () => {
                       placeholder="••••••••"
                       required
                       type="password"
+                      autoComplete="new-password"
                       value={formData.password}
                       onChange={handleChange}
                     />
@@ -192,6 +210,7 @@ const RegistroUsuario = () => {
                       placeholder="••••••••"
                       required
                       type="password"
+                      autoComplete="new-password"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                     />

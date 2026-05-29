@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './AuthContext';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import ReportesTerreno from './features/municipalidad/components/ReportesTerreno';
+import DonacionesOverview from './features/municipalidad/components/DonacionesOverview';
 import RegistroDonaciones from './features/logistica/components/RegistroDonaciones';
 import PanelControlGlobal from './features/logistica/components/PanelControlGlobal';
 import MapaNecesidades from './features/logistica/components/MapaNecesidades';
@@ -31,9 +32,9 @@ function MainLayout() {
           <Routes>
             <Route path="/" element={<RoleRoute allowedRoles={['ADMIN']}><PanelControlGlobal /></RoleRoute>} />
             <Route path="/mapa" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD']}><MapaNecesidades /></RoleRoute>} />
-            <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><RegistroDonaciones /></RoleRoute>} />
+            <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'USUARIO', 'USER']}><RegistroDonaciones /></RoleRoute>} />
             <Route path="/reportes" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
-            <Route path="/municipalidad" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
+            <Route path="/municipalidad" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><DonacionesOverview /></RoleRoute>} />
             <Route path="/logistica" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><GestionLogistica /></RoleRoute>} />
             <Route path="/perfil" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD', 'USUARIO', 'USER']}><PerfilUsuario /></RoleRoute>} />
             <Route path="/portal-donante" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><PortalDonante /></RoleRoute>} />
