@@ -12,7 +12,10 @@ import PerfilUsuario from './features/usuarios/components/PerfilUsuario';
 import Login from './features/usuarios/components/Login';
 import RegistroUsuario from './features/usuarios/components/RegistroUsuario';
 import GestionLogistica from './features/logistica/components/GestionLogistica';
+import DashboardLogistica from './features/logistica/components/DashboardLogistica';
+import NuevoDespacho from './features/logistica/components/NuevoDespacho';
 import InventarioStock from './features/logistica/components/InventarioStock';
+import NuevaDonacion from './features/logistica/components/NuevaDonacion';
 import PortalDonante from './features/usuarios/components/PortalDonante';
 import MisDonaciones from './features/usuarios/components/MisDonaciones';
 import ImpactoSocial from './features/usuarios/components/ImpactoSocial';
@@ -33,11 +36,14 @@ function MainLayout() {
           <Routes>
             <Route path="/" element={<RoleRoute allowedRoles={['ADMIN']}><PanelControlGlobal /></RoleRoute>} />
             <Route path="/mapa" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD']}><MapaNecesidades /></RoleRoute>} />
-            <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'USUARIO', 'USER']}><RegistroDonaciones /></RoleRoute>} />
+            <Route path="/nueva-donacion" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'USUARIO', 'USER']}><NuevaDonacion /></RoleRoute>} />
+            <Route path="/registro" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><RegistroDonaciones /></RoleRoute>} />
             <Route path="/reportes" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><ReportesTerreno /></RoleRoute>} />
             <Route path="/municipalidad" element={<RoleRoute allowedRoles={['ADMIN', 'MUNICIPALIDAD']}><DonacionesOverview /></RoleRoute>} />
             <Route path="/inventario" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><InventarioStock /></RoleRoute>} />
-            <Route path="/logistica" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><GestionLogistica /></RoleRoute>} />
+            <Route path="/logistica" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><DashboardLogistica /></RoleRoute>} />
+            <Route path="/despachos" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><GestionLogistica /></RoleRoute>} />
+            <Route path="/crear-despacho" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA']}><NuevoDespacho /></RoleRoute>} />
             <Route path="/perfil" element={<RoleRoute allowedRoles={['ADMIN', 'LOGISTICA', 'MUNICIPALIDAD', 'USUARIO', 'USER']}><PerfilUsuario /></RoleRoute>} />
             <Route path="/portal-donante" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><PortalDonante /></RoleRoute>} />
             <Route path="/mis-donaciones" element={<RoleRoute allowedRoles={['USUARIO', 'USER']}><MisDonaciones /></RoleRoute>} />

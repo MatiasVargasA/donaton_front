@@ -40,6 +40,8 @@ const createInstance = (baseURL) => {
   return instance;
 };
 
+
+
 // Exportamos las instancias para cada microservicio
 export const apiAuth = createInstance(import.meta.env.VITE_API_URL || 'http://localhost:8083');
 export const apiDonaciones = createInstance('http://localhost:8080');

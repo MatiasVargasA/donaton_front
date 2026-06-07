@@ -73,7 +73,7 @@ export default function MisDonaciones() {
     if (!estado) return 'En proceso';
     const e = estado.toUpperCase();
     if (e === 'PENDIENTE') return 'En proceso';
-    if (e === 'ACEPTADA') return 'Aceptado';
+    if (e === 'ACEPTADA' || e === 'RECIBIDA' || e === 'EN_LOGISTICA') return 'Aceptado';
     if (e === 'RECHAZADA') return 'Rechazado';
     if (e === 'EN_RUTA') return 'En ruta';
     if (e === 'ENTREGADA') return 'Entregado';

@@ -1,49 +1,158 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { apiDonaciones } from '../../../api';
+import { apiDonaciones, apiNecesidades, apiLogistica } from '../../../api';
 
 export default function GestionLogistica() {
   const [loading, setLoading] = useState(false);
-  const [envios, setEnvios] = useState([]);
+  const [necesidades, setNecesidades] = useState([]);
+  const [historialDespachos, setHistorialDespachos] = useState([]);
+  const [filtroAlerta, setFiltroAlerta] = useState('PENDIENTES');
+  
+  const [despachoSeleccionado, setDespachoSeleccionado] = useState(null);
   const [formData, setFormData] = useState({
-    destino: '',
+    cantidadAEnviar: '',
     transporte: 'Camión Institucional',
-    cantidad: '',
-    estado: 'PENDIENTE'
+    responsable: '',
+    observaciones: ''
   });
 
-  // Datos estáticos ya que no hay conexión con el backend
-  const necesidades = [
-    { id: 1, ubicacion: 'Zona Crítica: Sector Gamma', descripcion: 'Emergencia Médica' },
-    { id: 2, ubicacion: 'Sector A', descripcion: 'Refugio Temporal' }
-  ];
-
-
-  const cargarEnvios = async () => {
+  const cargarNecesidades = async () => {
     try {
-      const response = await apiDonaciones.get('/donaciones/estado/ACEPTADA');
-      setEnvios(response.data);
+      // Endpoint sugerido por el usuario
+      const response = await apiNecesidades.get('/necesidades/activas');
+      setNecesidades(response.data);
     } catch (error) {
-      console.error(error);
-      setEnvios([]);
+      console.error("Error cargando necesidades activas", error);
+      // Fallback a /necesidades si /activas no existe temporalmente
+      try {
+        const fallbackRes = await apiNecesidades.get('/necesidades');
+        // Filtramos simulando "activas" si es necesario
+        setNecesidades(fallbackRes.data.filter(n => parseInt(n.cantidadNecesaria || 0, 10) > 0));
+      } catch (fallbackError) {
+        setNecesidades([]);
+      }
+    }
+  };
+
+  const cargarHistorial = async () => {
+    try {
+      const response = await apiLogistica.get('/despachos');
+      setHistorialDespachos(response.data);
+    } catch (error) {
+      console.error("Error cargando historial de despachos", error);
+      // Mantener vacío si no existe el endpoint aún
+      setHistorialDespachos([]);
     }
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      cargarEnvios();
-    }, 0);
-    return () => clearTimeout(timer);
+    cargarNecesidades();
+    cargarHistorial();
   }, []);
 
-  const actualizarEstado = async (id, nuevoEstado) => {
+  const validarStock = async (categoria, cantidadRequerida) => {
+    // 1. Obtener donaciones válidas
+    const resDon = await apiDonaciones.get('/donaciones');
+    const donacionesValidas = resDon.data.filter(
+      d => d.estado === 'EN_LOGISTICA' || d.estado === 'RECIBIDA'
+    );
+
+    let catMatch = categoria || 'General';
+    catMatch = catMatch.charAt(0).toUpperCase() + catMatch.slice(1).toLowerCase();
+
+    // 2. Sumar entradas de la categoría
+    const candidatas = donacionesValidas.filter(d => {
+      let c = d.categoria || d.tipo || 'General';
+      c = c.charAt(0).toUpperCase() + c.slice(1).toLowerCase();
+      return c === catMatch || c.includes(catMatch) || catMatch.includes(c);
+    });
+    const stockEntradas = candidatas.reduce((sum, d) => sum + parseInt(d.cantidad || 0, 10), 0);
+
+    // 3. Obtener despachos (salidas)
+    let stockSalidas = 0;
     try {
-      await apiDonaciones.put(`/donaciones/${id}/estado`, { nuevoEstado });
-      toast.success(`Estado actualizado a ${nuevoEstado}`);
-      cargarEnvios();
+      const resDespachos = await apiLogistica.get('/despachos');
+      const despachosCat = resDespachos.data.filter(d => {
+        let c = d.categoria || 'General';
+        c = c.charAt(0).toUpperCase() + c.slice(1).toLowerCase();
+        return c === catMatch || c.includes(catMatch) || catMatch.includes(c);
+      });
+      stockSalidas = despachosCat.reduce((sum, d) => sum + parseInt(d.cantidad || d.cantidadAEnviar || d.unidades || 0, 10), 0);
+    } catch(e) {
+      console.warn("No se pudo cargar historial de despachos para validar stock", e);
+    }
+
+    // 4. Calcular stock real
+    let stockReal = stockEntradas - stockSalidas;
+    if (stockReal < 0) stockReal = 0;
+
+    if (stockReal < cantidadRequerida && catMatch !== 'Otro') {
+      throw new Error(`Stock insuficiente. Se requiere ${cantidadRequerida} de ${catMatch}, pero el inventario real disponible es ${stockReal}.`);
+    }
+    
+    // Al ser un modelo de inventario no destructivo, ya no modificamos donaciones físicas.
+  };
+
+  const despachar = async (e) => {
+    e.preventDefault();
+    if (!despachoSeleccionado) return;
+    const necesidad = despachoSeleccionado;
+
+    const aEnviar = parseInt(formData.cantidadAEnviar, 10);
+    const solicitada = parseInt(necesidad.cantidadNecesaria, 10);
+
+    if (isNaN(aEnviar) || aEnviar <= 0) {
+      toast.error('Ingrese una cantidad válida mayor a 0.');
+      return;
+    }
+    if (aEnviar > solicitada) {
+      toast.error('No puedes enviar más de lo solicitado originalmente.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      // 1. Validar Stock Real Dinámicamente (Lanza error si no hay)
+      await validarStock(necesidad.categoria, aEnviar);
+
+      // 2. Ejecutar POST a /despachos
+      const payloadDespacho = {
+        destino: necesidad.comuna || necesidad.ubicacion,
+        ubicacion: necesidad.comuna || necesidad.ubicacion,
+        categoria: necesidad.categoria,
+        cantidad: aEnviar,
+        transporte: formData.transporte,
+        responsable: formData.responsable,
+        descripcion: formData.observaciones || 'Despacho a terreno',
+        estado: 'EN_RUTA',
+        fechaEnvio: new Date().toISOString()
+      };
+      await apiLogistica.post('/despachos', payloadDespacho);
+
+      // 3. Actualizar la necesidad descontando la cantidad enviada
+      const restante = solicitada - aEnviar;
+      try {
+        await apiNecesidades.put(`/necesidades/${necesidad.id}`, {
+          ...necesidad,
+          cantidadNecesaria: restante.toString(),
+          estado: restante === 0 ? "COMPLETADO" : "EN PROCESO"
+        });
+      } catch (err) {
+        console.warn("No se pudo actualizar la necesidad en apiNecesidades", err);
+      }
+
+      toast.success('Despacho realizado y en ruta');
+      
+      // Recargar datos
+      cargarNecesidades();
+      cargarHistorial();
+      setDespachoSeleccionado(null);
     } catch (error) {
       console.error(error);
-      toast.error('Error al actualizar el estado');
+      toast.error(error.message || 'No fue posible realizar el despacho');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,336 +160,318 @@ export default function GestionLogistica() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    // Simular el registro exitoso
-    setTimeout(() => {
-      toast.success('Envío programado correctamente (Simulado)');
-      setFormData({
-        destino: '',
-        transporte: 'Camión Institucional',
-        cantidad: '',
-        estado: 'PENDIENTE'
-      });
-      const modalElement = document.getElementById('despachoModal');
-      if (modalElement && window.bootstrap) {
-        const modal = window.bootstrap.Modal.getInstance(modalElement);
-        if (modal) modal.hide();
-      }
-      setLoading(false);
-    }, 800);
+  const confirmarDespacho = (necesidad) => {
+    setDespachoSeleccionado(necesidad);
+    setFormData({
+      cantidadAEnviar: necesidad.cantidadNecesaria || '',
+      transporte: 'Camión Municipal',
+      responsable: '',
+      observaciones: ''
+    });
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Fecha desconocida';
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return dateString; // Fallback
+    return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   return (
-    <div className="p-3 p-md-4">
-      {/* Header & Filters Section */}
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
-        <div>
-          <h2 className="h3 fw-bold text-on-surface mb-1">Panel de Logística y Distribución</h2>
-          <p className="text-on-surface-variant mb-0">Gestión operativa en tiempo real de recursos y flotas.</p>
-        </div>
-        <div className="d-flex flex-wrap gap-3">
-          <div className="d-flex flex-column gap-1">
-            <span className="small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Filtrar por Urgencia</span>
-            <select className="form-select form-select-sm rounded-3 bg-surface-container-low border-outline-variant">
-              <option>Todas las prioridades</option>
-              <option>Crítica (Nivel 1)</option>
-              <option>Alta (Nivel 2)</option>
-              <option>Estándar</option>
-            </select>
-          </div>
-          <div className="d-flex flex-column gap-1">
-            <span className="small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Tipo de Transporte</span>
-            <select className="form-select form-select-sm rounded-3 bg-surface-container-low border-outline-variant">
-              <option>Cualquier vehículo</option>
-              <option>Frigorífico</option>
-              <option>Carga Pesada</option>
-              <option>Ligero / Ágil</option>
-            </select>
-          </div>
-          <button 
-            className="btn btn-secondary-custom d-flex align-items-center gap-2 shadow-sm align-self-end"
-            data-bs-toggle="modal" 
-            data-bs-target="#despachoModal"
-          >
-            <span className="material-symbols-outlined">add_task</span>
-            Nuevo Despacho
-          </button>
-        </div>
+    <div className="p-3 p-md-4 min-vh-100 bg-light">
+      {/* Header */}
+      <div className="mb-4">
+        <h2 className="h3 fw-bold text-dark mb-1">Despacho de Logística</h2>
+        <p className="text-secondary mb-0">Visualiza reportes de terreno y realiza despachos asignando inventario automáticamente.</p>
       </div>
 
       <div className="row g-4">
-        {/* Column 1: Storage Hubs & Fleet */}
-        <div className="col-12 col-xl-4 flex flex-column gap-4">
-          <div className="d-flex flex-column gap-4">
+        {/* Active Needs Column */}
+        <div className="col-12 col-xl-12">
+          <div className="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+            <div className="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+              <h3 className="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+                <span className="material-symbols-outlined text-danger">crisis_alert</span>
+                Reportes / Necesidades
+              </h3>
+              <button onClick={cargarNecesidades} className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 rounded-pill px-3">
+                <span className="material-symbols-outlined small">refresh</span>
+                Actualizar
+              </button>
+            </div>
+
+            <div className="bg-light p-3 border-bottom d-flex gap-2">
+              <button 
+                onClick={() => setFiltroAlerta('PENDIENTES')}
+                className={`btn btn-sm px-4 rounded-pill fw-bold ${filtroAlerta === 'PENDIENTES' ? 'btn-danger shadow-sm' : 'btn-outline-secondary bg-white'}`}
+              >
+                Pendientes por Despachar
+              </button>
+              <button 
+                onClick={() => setFiltroAlerta('COMPLETADAS')}
+                className={`btn btn-sm px-4 rounded-pill fw-bold ${filtroAlerta === 'COMPLETADAS' ? 'btn-success shadow-sm' : 'btn-outline-secondary bg-white'}`}
+              >
+                Completadas / Despachadas
+              </button>
+            </div>
             
-            {/* Storage Hubs */}
-            <div className="admin-card">
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <h3 className="h6 fw-bold mb-0">Centros de Acopio</h3>
-                <span className="material-symbols-outlined text-primary">warehouse</span>
-              </div>
-              <div className="d-flex flex-column gap-4">
-                <HubIndicator label="Hub Norte - Monterrey" percent={92} status="danger" subtext="Capacidad Crítica: 1200m² restantes." />
-                <HubIndicator label="Puerto Central - Veracruz" percent={45} status="success" subtext="Operación estable: Flujo constante." />
-                <HubIndicator label="Base Sur - Chiapas" percent={78} status="warning" subtext="Carga alta: Priorizar despachos." />
-              </div>
-              <button className="btn btn-outline-primary w-100 mt-4 rounded-3 fw-bold small py-2">Ver todos los hubs</button>
-            </div>
+            <div className="table-responsive">
+              <table className="table table-hover mb-0 align-middle">
+                <thead className="bg-light">
+                  <tr>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Comuna / Ubicación</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Categoría</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0 text-end">Cantidad</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Prioridad</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Estado</th>
+                    <th className="px-4 py-3 border-0 text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(() => {
+                    const filtradas = necesidades.filter(n => {
+                      if (filtroAlerta === 'PENDIENTES') return parseInt(n.cantidadNecesaria || 0, 10) > 0 && n.estado !== 'COMPLETADO';
+                      return parseInt(n.cantidadNecesaria || 0, 10) <= 0 || n.estado === 'COMPLETADO';
+                    });
 
-            {/* Fleet Management */}
-            <div className="admin-card">
-              <h3 className="h6 fw-bold mb-3">Gestión de Flota</h3>
-              <div className="d-flex flex-column gap-3">
-                <FleetItem icon="local_shipping" title="Camión #MX-402" status="En Ruta" route="Hub Norte → Sector A" color="primary" />
-                <FleetItem icon="ac_unit" title="Frigo #RF-11" status="Disponible" route="Sin ruta asignada" color="success" />
-              </div>
-            </div>
+                    if (filtradas.length === 0) {
+                      return (
+                        <tr>
+                          <td colSpan="6" className="text-center py-5 text-secondary">
+                            No hay necesidades {filtroAlerta.toLowerCase()} en este momento.
+                          </td>
+                        </tr>
+                      );
+                    }
 
-          </div>
-        </div>
-
-        {/* Column 2: Route Planner & Orders */}
-        <div className="col-12 col-xl-8">
-          <div className="d-flex flex-column gap-4">
-            
-            {/* Visual Route Planner Card */}
-            <div className="admin-card p-0 overflow-hidden shadow-sm d-flex flex-column" style={{ height: '400px' }}>
-              <div className="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
-                <h3 className="h6 fw-bold mb-0">Planificador de Rutas Activo</h3>
-                <div className="d-flex gap-2">
-                  <button className="btn btn-icon-sm p-1 rounded hover-bg-light text-secondary"><span className="material-symbols-outlined">layers</span></button>
-                  <button className="btn btn-icon-sm p-1 rounded hover-bg-light text-secondary"><span className="material-symbols-outlined">zoom_in</span></button>
-                </div>
-              </div>
-              <div className="flex-grow-1 position-relative bg-light overflow-hidden">
-                <img 
-                  alt="Route Map" 
-                  className="w-100 h-100 object-fit-cover opacity-50 grayscale brightness-90" 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdVixDg69d_H_A0VNmdipjpwUKFCakaJqPHyO-qAmCn00pfUYgN3F9g8HLnhOM73UA1N47TtE9wah2OCnyIuaC1PkZnU_6EWEg3WbUq1U4ZJbw6627ogTXvMc1VC0BWfXFFXxXr3Ogi3QbBX-iCJwUD77uRVzT7ATVLKtJP-rfVZ5zW3XBxCC8G7R1ZQ6LKMFa3CzR6XnSji3761mq98FfoJ3ggk9QQm40vyNz1iaFfJPKr9M7Tig94wT-vB5V5Rmpmv0h192mzZo" 
-                />
-                
-                {/* Route Visualization Overlays */}
-                <div className="position-absolute inset-0 p-3 p-md-4 d-flex flex-column justify-content-between pointer-events-none w-100 h-100" style={{ top: 0, left: 0 }}>
-                  <div className="d-flex justify-content-between align-items-start w-100">
-                    <div className="bg-white border p-2 p-md-3 rounded-4 shadow-sm pointer-events-auto border-primary-subtle" style={{ maxWidth: '45%' }}>
-                      <span className="small fw-bold text-primary text-uppercase" style={{ fontSize: '10px' }}>Origen</span>
-                      <div className="d-flex align-items-center gap-2 mt-1">
-                        <span className="material-symbols-outlined text-primary small" style={{ fontVariationSettings: "'FILL' 1" }}>warehouse</span>
-                        <p className="small fw-bold mb-0 text-truncate">Hub Norte Monterrey</p>
-                      </div>
-                    </div>
-                    <div className="bg-white border p-2 p-md-3 rounded-4 shadow-sm pointer-events-auto border-danger-subtle" style={{ maxWidth: '45%' }}>
-                      <span className="small fw-bold text-danger text-uppercase" style={{ fontSize: '10px' }}>Destino</span>
-                      <div className="d-flex align-items-center gap-2 mt-1">
-                        <span className="material-symbols-outlined text-danger small" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
-                        <p className="small fw-bold mb-0 text-truncate">Zona Crítica: Sector Gamma</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="align-self-center bg-primary text-white px-4 py-2 rounded-pill shadow-lg d-flex align-items-center gap-3 pointer-events-auto animate-pulse-slow">
-                    <div className="text-center">
-                      <span className="d-block small opacity-75" style={{ fontSize: '9px' }}>TIEMPO EST.</span>
-                      <span className="fw-bold">4h 25m</span>
-                    </div>
-                    <div className="vr opacity-25"></div>
-                    <div className="text-center">
-                      <span className="d-block small opacity-75" style={{ fontSize: '9px' }}>DISTANCIA</span>
-                      <span className="fw-bold">342 km</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Orders Table Card */}
-            <div className="admin-card p-0 overflow-hidden shadow-sm">
-              <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-                <h3 className="h6 fw-bold mb-0">Órdenes de Despacho</h3>
-                <button className="btn btn-link btn-sm text-primary fw-bold text-decoration-none d-flex align-items-center gap-1">
-                  Ver historial <span className="material-symbols-outlined small">arrow_forward</span>
-                </button>
-              </div>
-              <div className="table-responsive">
-                <table className="table table-hover mb-0">
-                  <thead className="bg-surface-container-low border-bottom">
-                    <tr>
-                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">ID Orden</th>
-                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Tipo</th>
-                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Carga</th>
-                      <th className="px-4 py-3 small fw-bold text-secondary text-uppercase tracking-wider border-0">Estado</th>
-                      <th className="px-4 py-3 border-0 text-end">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {envios.map((e) => (
-                      <tr key={e.id} className="transition-all hover-bg-light align-middle">
-                        <td className="px-4 py-3 small fw-bold text-primary">ORD-2026-{e.id}</td>
+                    return filtradas.map(n => (
+                      <tr key={n.id} className="transition-all hover-bg-light">
                         <td className="px-4 py-3">
-                          <div className="d-flex align-items-center gap-2 small text-on-surface-variant">
-                            <span className="material-symbols-outlined small">
-                              {e.categoria?.includes('Med') ? 'ac_unit' : 'local_shipping'}
-                            </span>
-                            {e.categoria || 'Suministro'}
-                          </div>
+                          <div className="fw-bold text-dark">{n.comuna || n.ubicacion}</div>
+                          <div className="small text-secondary">{n.descripcion}</div>
                         </td>
-                        <td className="px-4 py-3 small text-on-surface-variant">{e.descripcion || `${e.cantidad} unidades`}</td>
+                        <td className="px-4 py-3 fw-semibold text-primary">{n.categoria || 'General'}</td>
+                        <td className="px-4 py-3 text-end fw-bold text-dark">{n.cantidadNecesaria} de {n.categoria || 'Suministro'}</td>
                         <td className="px-4 py-3">
-                          <span className={`badge rounded-pill px-3 py-1 ${getStatusBadgeClass(e.estado)}`}>
-                            {e.estado}
+                          <span className={`badge rounded-pill px-3 py-1 ${
+                            n.prioridad === 'Alta' ? 'bg-danger text-white' : 
+                            n.prioridad === 'Media' ? 'bg-warning text-dark' : 'bg-info text-white'
+                          }`}>
+                            {n.prioridad || 'Media'}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-end">
-                          <div className="d-flex justify-content-end gap-1">
-                            <button onClick={() => actualizarEstado(e.id, 'EN_RUTA')} className="btn btn-warning btn-sm rounded-3 px-3 fw-bold small text-white">En Ruta</button>
-                            <button onClick={() => actualizarEstado(e.id, 'ENTREGADA')} className="btn btn-success btn-sm rounded-3 px-3 fw-bold small">Entregar</button>
-                          </div>
+                        <td className="px-4 py-3">
+                          <span className={`badge border px-2 py-1 ${filtroAlerta === 'PENDIENTES' ? 'bg-light text-secondary' : 'bg-success-subtle text-success border-success-subtle'}`}>
+                            {filtroAlerta === 'PENDIENTES' ? (n.estado || 'Activo') : 'Completado'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {filtroAlerta === 'PENDIENTES' && (
+                            <button 
+                              onClick={() => confirmarDespacho(n)}
+                              className="btn btn-primary btn-sm rounded-pill px-3 fw-bold shadow-sm d-inline-flex align-items-center gap-1"
+                            >
+                              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>local_shipping</span>
+                              Despachar
+                            </button>
+                          )}
                         </td>
                       </tr>
-                    ))}
-                    {envios.length === 0 && (
-                      <tr>
-                        <td colSpan="5" className="text-center py-4 text-secondary small">No hay despachos pendientes.</td>
+                    ));
+                  })()}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Dispatch History Column */}
+          <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div className="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+              <h3 className="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+                <span className="material-symbols-outlined text-success">history</span>
+                Historial de Despachos
+              </h3>
+              <button onClick={cargarHistorial} className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 rounded-pill px-3">
+                <span className="material-symbols-outlined small">refresh</span>
+                Actualizar Historial
+              </button>
+            </div>
+            
+            <div className="table-responsive" style={{ maxHeight: '400px' }}>
+              <table className="table table-hover mb-0 align-middle">
+                <thead className="bg-light sticky-top">
+                  <tr>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Fecha</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Destino (Comuna)</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0">Categoría</th>
+                    <th className="px-4 py-3 small fw-bold text-secondary text-uppercase border-0 text-end">Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {historialDespachos.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" className="text-center py-5 text-secondary">
+                        Aún no se han registrado despachos en el sistema.
+                      </td>
+                    </tr>
+                  ) : (
+                    historialDespachos.slice().reverse().map((d, index) => (
+                      <tr key={d.id || index} className="transition-all">
+                        <td className="px-4 py-3 text-secondary small">
+                          {formatDate(d.fechaEnvio || d.fechaCreacion || d.timestamp || d.fecha || d.fechaDespacho || d.createdAt)}
+                        </td>
+                        <td className="px-4 py-3 fw-semibold text-dark">
+                          <span className="material-symbols-outlined text-secondary me-2" style={{ fontSize: '16px', verticalAlign: 'text-bottom' }}>location_on</span>
+                          {d.ubicacion || d.destino || d.comuna || 'No especificado'}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="badge bg-primary-subtle text-primary border-0">
+                            {d.categoria || 'General'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-end fw-bold text-dark">
+                          {d.cantidadNecesaria || d.cantidad || d.unidades} Unid.
+                        </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Confirmation Modal */}
+      {despachoSeleccionado && (
+        <>
+          <div className="modal-backdrop fade show" style={{ zIndex: 1040 }}></div>
+          <div className="modal fade show d-block" tabIndex="-1" style={{ zIndex: 1050 }}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content border-0 shadow-lg rounded-4">
+                <div className="modal-header border-bottom-0 pb-0 bg-white">
+                  <h5 className="fw-bold text-dark d-flex align-items-center gap-2 mb-0">
+                    <span className="material-symbols-outlined text-primary">local_shipping</span>
+                    Configurar Despacho Operativo
+                  </h5>
+                  <button type="button" className="btn-close" onClick={() => setDespachoSeleccionado(null)} disabled={loading}></button>
+                </div>
+                <form onSubmit={despachar}>
+                  <div className="modal-body p-4">
+                    <div className="p-3 bg-light rounded-3 mb-4 border">
+                      <div className="row g-2">
+                        <div className="col-12 d-flex justify-content-between border-bottom pb-2">
+                          <span className="small text-secondary fw-bold">Destino:</span>
+                          <span className="fw-bold text-dark">{despachoSeleccionado.comuna || despachoSeleccionado.ubicacion}</span>
+                        </div>
+                        <div className="col-12 d-flex justify-content-between border-bottom py-2">
+                          <span className="small text-secondary fw-bold">Categoría:</span>
+                          <span className="fw-bold text-primary">{despachoSeleccionado.categoria}</span>
+                        </div>
+                        <div className="col-12 d-flex justify-content-between pt-2">
+                          <span className="small text-secondary fw-bold">Cantidad Solicitada:</span>
+                          <span className="fw-bold text-danger">{despachoSeleccionado.cantidadNecesaria} de {despachoSeleccionado.categoria || 'Suministro'}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="row g-3">
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold text-secondary small">Cantidad a Enviar</label>
+                        <input 
+                          type="number" 
+                          className="form-control bg-light" 
+                          name="cantidadAEnviar"
+                          value={formData.cantidadAEnviar}
+                          onChange={handleChange}
+                          max={despachoSeleccionado.cantidadNecesaria}
+                          min="1"
+                          required
+                        />
+                      </div>
+                      
+                      <div className="col-md-6">
+                        <label className="form-label fw-bold text-secondary small">Transporte</label>
+                        <select 
+                          className="form-select bg-light" 
+                          name="transporte"
+                          value={formData.transporte}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="Camión Municipal">Camión Municipal</option>
+                          <option value="Camión Institucional">Camión Institucional</option>
+                          <option value="Furgón de Rescate">Furgón de Rescate</option>
+                          <option value="Vehículo Particular">Vehículo Particular</option>
+                          <option value="Helicóptero">Helicóptero</option>
+                        </select>
+                      </div>
+
+                      <div className="col-md-12">
+                        <label className="form-label fw-bold text-secondary small">Responsable del Envío</label>
+                        <input 
+                          type="text" 
+                          className="form-control bg-light" 
+                          name="responsable"
+                          value={formData.responsable}
+                          onChange={handleChange}
+                          placeholder="Ej: Juan Pérez"
+                          required
+                        />
+                      </div>
+
+                      <div className="col-md-12">
+                        <label className="form-label fw-bold text-secondary small">Observaciones</label>
+                        <textarea 
+                          className="form-control bg-light" 
+                          name="observaciones"
+                          value={formData.observaciones}
+                          onChange={handleChange}
+                          rows="2"
+                          placeholder="Ej: Primera entrega, llegar por acceso principal..."
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="modal-footer border-top-0 bg-white p-4">
+                    <button 
+                      type="button"
+                      className="btn btn-light rounded-pill px-4 fw-bold border" 
+                      onClick={() => setDespachoSeleccionado(null)}
+                      disabled={loading}
+                    >
+                      Cancelar
+                    </button>
+                    <button 
+                      type="submit"
+                      className="btn btn-primary rounded-pill px-4 fw-bold d-flex align-items-center justify-content-center gap-2"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                          Procesando...
+                        </>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>send</span>
+                          Realizar Despacho
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
-
           </div>
-        </div>
-      </div>
-
-      {/* Dispatch Modal */}
-      <div className="modal fade" id="despachoModal" tabIndex="-1" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content border-0 shadow-lg" style={{ borderRadius: '1.5rem' }}>
-            <div className="modal-header border-0 pb-0">
-              <h5 className="modal-title fw-bold text-primary">Nuevo Despacho Operativo</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="modal-body p-4">
-                <div className="mb-3">
-                  <label className="form-label small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Destino (Reporte Terreno)</label>
-                  <select
-                    name="destino"
-                    value={formData.destino}
-                    onChange={handleChange}
-                    required
-                    className="form-select form-select-lg bg-light border-0 fw-bold"
-                    style={{ borderRadius: '0.75rem' }}
-                  >
-                    <option value="">Seleccione destino...</option>
-                    {necesidades.map((n) => (
-                      <option key={n.id} value={n.ubicacion}>{n.ubicacion} - {n.descripcion}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Medio de Transporte</label>
-                  <select
-                    name="transporte"
-                    value={formData.transporte}
-                    onChange={handleChange}
-                    className="form-select form-select-lg bg-light border-0 fw-bold"
-                    style={{ borderRadius: '0.75rem' }}
-                  >
-                    <option value="Camión Institucional">Camión Institucional</option>
-                    <option value="Vehículo de Rescate">Vehículo de Rescate</option>
-                    <option value="Avión de Carga">Avión de Carga</option>
-                    <option value="Embarcación">Embarcación</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label className="form-label small fw-bold text-secondary text-uppercase" style={{ fontSize: '10px' }}>Cantidad a Despachar</label>
-                  <input
-                    type="number"
-                    name="cantidad"
-                    value={formData.cantidad}
-                    onChange={handleChange}
-                    required
-                    placeholder="0"
-                    className="form-control form-control-lg bg-light border-0 fw-bold"
-                    style={{ borderRadius: '0.75rem' }}
-                  />
-                </div>
-                <button 
-                  type="submit" 
-                  className="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
-                  style={{ borderRadius: '0.75rem' }}
-                  disabled={loading}
-                >
-                  {loading ? 'Procesando...' : 'Iniciar Despacho'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Floating Notification */}
-      <div className="position-fixed bottom-0 end-0 p-4 z-3" style={{ maxWidth: '350px' }}>
-        <div className="admin-card bg-dark text-white p-3 shadow-lg d-flex align-items-start gap-3 border-0 transition-all">
-          <span className="material-symbols-outlined text-warning" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>
-          <div className="flex-grow-1">
-            <h4 className="small fw-bold mb-1">Actualización de Flota</h4>
-            <p className="small opacity-75 mb-0" style={{ fontSize: '11px' }}>3 vehículos han ingresado a mantenimiento preventivo.</p>
-          </div>
-          <button className="btn btn-sm p-0 text-white opacity-50 hover-opacity-100"><span className="material-symbols-outlined small">close</span></button>
-        </div>
-      </div>
+        </>
+      )}
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         .hover-bg-light:hover { background-color: var(--surface-container-low) !important; }
-        .hover-opacity-100:hover { opacity: 1 !important; }
-        .object-fit-cover { object-fit: cover; }
+        .bg-primary-subtle { background-color: #eaf1ff !important; }
       `}} />
     </div>
   );
 }
-
-const HubIndicator = ({ label, percent, status, subtext }) => (
-  <div>
-    <div className="d-flex justify-content-between mb-2 align-items-center">
-      <span className="small fw-bold text-dark">{label}</span>
-      <span className={`small fw-bold text-${status}`}>{percent}%</span>
-    </div>
-    <div className="progress" style={{ height: '6px' }}>
-      <div className={`progress-bar bg-${status}`} style={{ width: `${percent}%` }}></div>
-    </div>
-    <p className="small text-secondary mt-2 mb-0" style={{ fontSize: '11px' }}>{subtext}</p>
-  </div>
-);
-
-const FleetItem = ({ icon, title, status, route, color }) => (
-  <div className="d-flex align-items-center gap-3 p-2 rounded-3 bg-light border border-transparent transition-all cursor-pointer hover-border-outline">
-    <div className={`rounded-circle bg-${color}-subtle d-flex align-items-center justify-content-center`} style={{ width: '40px', height: '40px' }}>
-      <span className={`material-symbols-outlined text-${color} small`}>{icon}</span>
-    </div>
-    <div className="flex-grow-1">
-      <div className="d-flex justify-content-between align-items-center">
-        <span className="small fw-bold text-dark">{title}</span>
-        <span className={`badge rounded-pill bg-${color}-subtle text-${color} border-0`} style={{ fontSize: '9px' }}>{status}</span>
-      </div>
-      <p className="small text-secondary mb-0" style={{ fontSize: '11px' }}>Ruta: {route}</p>
-    </div>
-    <style dangerouslySetInnerHTML={{ __html: `
-      .hover-border-outline:hover { border-color: var(--outline-variant) !important; }
-    `}} />
-  </div>
-);
-
-const getStatusBadgeClass = (status) => {
-  switch (status) {
-    case 'ENTREGADA': return 'bg-success-subtle text-success';
-    case 'EN_RUTA': return 'bg-warning-subtle text-warning';
-    case 'ACEPTADA': return 'bg-primary-subtle text-primary';
-    case 'PENDIENTE': return 'bg-secondary-subtle text-secondary';
-    default: return 'bg-light text-secondary';
-  }
-};

@@ -40,7 +40,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   <span className="fw-semibold">Inicio</span>
                 </NavLink>
                 <NavLink 
-                  to="/registro" 
+                  to="/nueva-donacion" 
                   onClick={() => window.innerWidth < 992 && toggleSidebar()}
                   className={({ isActive }) => 
                     `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
@@ -80,8 +80,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   }
                   end
                 >
-                  <span className="material-symbols-outlined">dashboard</span>
-                  <span className="fw-semibold">Dashboard</span>
+                  <span className="material-symbols-outlined">home</span>
+                  <span className="fw-semibold">Inicio</span>
                 </NavLink>
 
                 {isLogistica && (
@@ -107,7 +107,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                       <span className="fw-semibold">Stock / Inventario</span>
                     </NavLink>
                     <NavLink 
-                      to="/logistica" 
+                      to="/despachos" 
                       onClick={() => window.innerWidth < 992 && toggleSidebar()}
                       className={({ isActive }) => 
                         `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
@@ -115,6 +115,16 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                     >
                       <span className="material-symbols-outlined">local_shipping</span>
                       <span className="fw-semibold">Despachos</span>
+                    </NavLink>
+                    <NavLink 
+                      to="/crear-despacho" 
+                      onClick={() => window.innerWidth < 992 && toggleSidebar()}
+                      className={({ isActive }) => 
+                        `nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive ? 'bg-primary text-white shadow-sm' : 'text-secondary-emphasis hover-bg-light'}`
+                      }
+                    >
+                      <span className="material-symbols-outlined">send</span>
+                      <span className="fw-semibold">Nuevo Despacho</span>
                     </NavLink>
                   </>
                 )}
@@ -147,10 +157,16 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           </nav>
 
           <div className="mt-auto">
-            {!isUser && (
-              <button className="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2 mb-4 py-2">
+            {isLogistica && (
+              <button onClick={() => navigate('/crear-despacho')} className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mb-4 py-2 text-white shadow-sm rounded-pill">
                 <span className="material-symbols-outlined">add</span>
-                New Dispatch
+                Nuevo Despacho
+              </button>
+            )}
+            {isMun && (
+              <button onClick={() => navigate('/reportes')} className="btn btn-secondary-custom w-100 d-flex align-items-center justify-content-center gap-2 mb-4 py-2">
+                <span className="material-symbols-outlined">crisis_alert</span>
+                Nueva Alerta
               </button>
             )}
 
